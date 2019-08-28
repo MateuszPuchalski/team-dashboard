@@ -14,9 +14,7 @@ export default class App extends Component {
     return (
       <div className="dashboard">
         <Sidebar />
-
         <Route path="/player/:id" component={PlayerInfo} />
-
         <SeasonStats />
         <PhysicalForm />
         <Chart />
