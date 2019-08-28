@@ -23,6 +23,14 @@ yarn-debug.log*
 yarn-error.log*
 
 # photos
-./public/awatars
-./public/logo
-./public/statues
+/public/avatars
+/public/logo
+/public/statues
+/src/images
+
+#css
+/src/index.css
+/src/main.css
+/src/main.min.css
+/src/normalize.css
+
