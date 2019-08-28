@@ -6,10 +6,7 @@ class Logo extends Component {
     this.state = {};
   }
   render() {
-    console.log("WWWWWOWOOWOWOOW");
-    console.log(this.props.match);
     const { against } = this.props.match;
-    console.log(against);
     return (
       <div className="logo">
         <img src={process.env.PUBLIC_URL + `/logo/${against}.png`} alt="LOGO" />
