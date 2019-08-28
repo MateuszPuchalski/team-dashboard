@@ -1,0 +1,131 @@
+body {
+  position: static;
+  width: auto;
+  height: 1000px;
+  background-image: url("./images/backgroundmat.jpg");
+  background-size: 100% 100%;
+}
+#root {
+  width: 100%;
+  height: 100%;
+  font-family: "Anton", sans-serif;
+  letter-spacing: 1.3px;
+}
+.dashboard {
+  margin: auto;
+  margin-top: 1rem;
+  display: grid;
+  width: 90%;
+  height: 90%;
+  grid-template-columns: 1fr 3fr 3fr 3fr;
+  grid-template-rows: 25% 25% 25% 25%;
+  grid-template-areas:
+    "s m . . "
+    "s m sS . "
+    "s m pF pF "
+    "s m c c ";
+  box-shadow: 3px 3px 10px;
+  background: rgb(151, 151, 151);
+  .sidebar {
+    grid-area: s;
+    display: grid;
+    grid-template-rows: 3fr repeat(6, 2fr) 2fr;
+    height: 100%;
+    background: rgba(128, 128, 128, 0.815);
+    // background: #00111f;
+    align-items: center;
+    justify-items: center;
+    grid-gap: 1%;
+    .sidebar__item {
+      max-height: 90px;
+      max-width: 90px;
+      display: block;
+      margin: auto;
+      border-radius: 50%;
+      &:hover {
+        border: 2px solid white;
+      }
+    }
+    #herb {
+      max-width: 200px;
+      max-height: 200px;
+    }
+  }
+  .playerInfo {
+    grid-area: m;
+    display: grid;
+    /*Why 70 % works ?!??*/
+    grid-template-rows: 1fr 70% 1fr;
+    grid-template-areas:
+      "info"
+      "statue"
+      "metrics";
+    color: white;
+    .info {
+      grid-area: info;
+      h1,
+      p {
+        margin-left: 3rem;
+      }
+    }
+    .statue {
+      grid-area: statue;
+      img {
+        max-width: 100%;
+        max-height: 100%;
+        display: block;
+        margin: auto;
+        position: sticky;
+      }
+      h1 {
+        position: absolute;
+        margin-left: 3rem;
+        font-size: 7rem;
+        color: rgba(255, 255, 255, 0.15);
+      }
+    }
+    .metrics {
+      grid-area: metrics;
+      display: flex;
+      flex-flow: row;
+      align-items: center;
+      text-align: center;
+      div {
+        flex-grow: 1;
+        h1 {
+          font-size: 2.5rem;
+        }
+      }
+    }
+  }
+  .seasonStats {
+    grid-area: sS;
+  }
+  .physicalForm {
+    grid-area: pF;
+    display: flex;
+    flex-flow: row;
+    .logo {
+      text-align: center;
+      height: 60%;
+      width: 20%;
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
+  }
+  .chart {
+    grid-area: c;
+    #canvasLine {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+.dashboard > * {
+  color: white;
+}
+p {
+  font-weight: lighter;
+}
