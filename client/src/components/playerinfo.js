@@ -6,55 +6,79 @@ class PlayerInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: null,
       name: "",
       surname: "",
       position: "",
       age: "",
       height: null,
       weight: null,
-      nr: null
+      nr: null,
+      isLoading: true,
+      error: null,
+      urlPlayerId: null,
+      active: false
     };
     // this.fetchData = this.fetchData.bind(this);
   }
 
-  fetchData = async () => {
-    // this.setState({ idUrl: this.props.match.params.id });
-    const data = await fetch(`/players/${this.props.match.params.id}`);
-    const metrics = await data.json();
-    const final = await metrics[0];
-    await this.setState({ ...final });
-  };
+  // this.setState({ idUrl: this.props.match.params.id });
+  // const data = await fetch(`/players/${this.props.match.params.id}`);
+  fetchData() {
+    fetch(`/players/${this.props.match.params.id}`)
+      .then(response => response.json())
+      .then(data =>
+        this.setState({
+          ...data[0],
+          isLoading: false,
+          urlPlayerId: this.props.match.params.id,
+          active: true
+        })
+      );
+  }
+  componentDidMount() {
+    this.fetchData();
+  }
 
-  componentDidUpdate(prevProps) {
-    // Typowy sposób użycia (nie zapomnij porównać właściwości):
-    if (this.props.match.params.id !== prevProps.match.params.id) {
+  componentDidUpdate() {
+    // Typical usage (don't forget to compare props):
+    if (this.props.match.params.id != this.state.urlPlayerId) {
       this.fetchData();
-      this.setState({ idUrl: this.props.match.params.id });
     }
+  }
+  componentWillUnmount() {
+    this.setState({ active: false });
   }
 
   render() {
-    return (
-      <div className="playerInfo">
-        <div className="info">
-          <h1>
-            {this.state.name.toUpperCase()} {this.state.surname.toUpperCase()}
-          </h1>
-          <p>{this.state.position}</p>
-        </div>
+    const { isLoading, error } = this.state;
 
-        <Statue
-          nr={this.state.nr}
-          name={this.state.name}
-          surname={this.state.surname}
-        />
-        <Metrics
-          weight={this.state.weight}
-          height={this.state.height}
-          age={this.state.age}
-        />
-      </div>
+    return (
+      <>
+        {!isLoading ? (
+          <div className="playerInfo">
+            <div className="info">
+              <h1>
+                {this.state.name.toUpperCase()}{" "}
+                {this.state.surname.toUpperCase()}
+              </h1>
+              <p>{this.state.position}</p>
+            </div>
+
+            <Statue
+              nr={this.state.nr}
+              name={this.state.name}
+              surname={this.state.surname}
+            />
+            <Metrics
+              weight={this.state.weight}
+              height={this.state.height}
+              age={this.state.age}
+            />
+          </div>
+        ) : (
+          <h3>Loading...</h3>
+        )}
+      </>
     );
   }
 }
