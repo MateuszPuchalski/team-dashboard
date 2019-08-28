@@ -5,10 +5,10 @@ class Chart extends Component {
     super(props);
     this.state = {
       data: {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        labels: ["UMCS Lublin", "Blue", "Yellow", "Green", "Purple", "Orange"],
         datasets: [
           {
-            label: "# of Votes",
+            label: "# of Goals",
             data: [10, 11, 3, 8, 2, 4],
             backgroundColor: [
               "rgba(255, 99, 132, 0.2)",
@@ -41,6 +41,14 @@ class Chart extends Component {
                 stepSize: 2,
                 suggestedMin: 0,
                 suggestedMax: 10
+              },
+              gridLines: { display: false }
+            }
+          ],
+          xAxes: [
+            {
+              gridLines: {
+                display: false
               }
             }
           ]
