@@ -9,7 +9,7 @@ class Chart extends Component {
         datasets: [
           {
             label: "# of Votes",
-            data: [12, 19, 3, 5, 2, 3],
+            data: [10, 11, 3, 8, 2, 4],
             backgroundColor: [
               "rgba(255, 99, 132, 0.2)",
               "rgba(54, 162, 235, 0.2)",
@@ -30,7 +30,22 @@ class Chart extends Component {
           }
         ]
       },
-      options: { responsive: true, maintainAspectRatio: false }
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+                stepSize: 2,
+                suggestedMin: 0,
+                suggestedMax: 10
+              }
+            }
+          ]
+        }
+      }
     };
   }
   render() {
