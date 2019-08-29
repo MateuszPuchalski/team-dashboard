@@ -15,9 +15,9 @@ export default class App extends Component {
       <div className="dashboard">
         <Sidebar />
         <Route path="/player/:id" component={PlayerInfo} />
-        <SeasonStats />
-        <PhysicalForm />
-        <Chart />
+        <Route path="/player/:id" component={SeasonStats} />
+        <Route path="/player/:id" component={PhysicalForm} />
+        <Route path="/player/:id" component={Chart} />
       </div>
     );
   }
