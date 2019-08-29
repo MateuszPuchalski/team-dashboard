@@ -30,8 +30,7 @@ class PlayerInfo extends Component {
         this.setState({
           ...data[0],
           isLoading: false,
-          urlPlayerId: this.props.match.params.id,
-          active: true
+          urlPlayerId: this.props.match.params.id
         })
       );
   }
@@ -44,9 +43,6 @@ class PlayerInfo extends Component {
     if (this.props.match.params.id != this.state.urlPlayerId) {
       this.fetchData();
     }
-  }
-  componentWillUnmount() {
-    this.setState({ active: false });
   }
 
   render() {
