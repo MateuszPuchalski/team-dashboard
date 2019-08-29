@@ -17,17 +17,26 @@ class Avatar extends Component {
   }
 
   render() {
+    // console.log(window.location.href[window.location.href.length - 1]);
+    // let classNames = "sidebar__item";
+    // console.log(this.state.id);
+    // if (
+    //   window.location.href[window.location.href.length - 1] == this.state.id
+    // ) {
+    //   classNames += " avatarSelected";
+    // }
     return (
-      <Link to={`/player/${this.props.id}`}>
-        <img
-          className={this.props.className}
-          src={
-            process.env.PUBLIC_URL +
-            `/avatars/${this.state.name}${this.state.surname}.png`
-          }
-          alt={`${this.state.name} ${this.state.surname}`}
-        />
-      </Link>
+      <div className={"sidebar__item"}>
+        <Link to={`/player/${this.props.id}`}>
+          <img
+            src={
+              process.env.PUBLIC_URL +
+              `/avatars/${this.state.name}${this.state.surname}.png`
+            }
+            alt={`${this.state.name} ${this.state.surname}`}
+          />
+        </Link>
+      </div>
     );
   }
 }
