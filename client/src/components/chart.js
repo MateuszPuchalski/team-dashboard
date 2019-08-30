@@ -40,7 +40,7 @@ class Chart extends Component {
                 beginAtZero: true,
                 stepSize: 2,
                 suggestedMin: 0,
-                suggestedMax: 12
+                suggestedMax: 8
               },
               gridLines: { display: false }
             }
@@ -63,7 +63,7 @@ class Chart extends Component {
     fetch(`/players/${this.props.match.params.id}/goals`)
       .then(response => response.json())
       .then(data => {
-        console.log(data);
+        data.sort((a, b) => new Date(a.date) - new Date(b.date));
         let goals = [];
         let clubNames = [];
         data.forEach(element => {
