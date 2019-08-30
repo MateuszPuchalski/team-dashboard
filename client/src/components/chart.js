@@ -5,10 +5,10 @@ class Chart extends Component {
     super(props);
     this.state = {
       data: {
-        labels: ["UMCS Lublin", "Blue", "Yellow", "Green", "Purple"],
+        labels: [],
         datasets: [
           {
-            label: "# of Goals",
+            label: "Goals",
             data: [],
             backgroundColor: [
               "rgba(255, 99, 132, 0.2)",
@@ -40,7 +40,7 @@ class Chart extends Component {
                 beginAtZero: true,
                 stepSize: 2,
                 suggestedMin: 0,
-                suggestedMax: 10
+                suggestedMax: 12
               },
               gridLines: { display: false }
             }
@@ -64,18 +64,19 @@ class Chart extends Component {
       .then(response => response.json())
       .then(data => {
         console.log(data);
-        let arr = [];
+        let goals = [];
+        let clubNames = [];
         data.forEach(element => {
-          arr.push(element.goals);
+          goals.push(element.goals);
+          clubNames.push(element.against.substring(0, 3));
         });
-        console.log(arr);
         this.setState({
           data: {
-            labels: ["UMCS Lublin", "Blue", "Yellow", "Green", "Purple"],
+            labels: clubNames,
             datasets: [
               {
-                label: "# of Goals",
-                data: arr,
+                label: "Goals",
+                data: goals,
                 backgroundColor: [
                   "rgba(255, 99, 132, 0.2)",
                   "rgba(54, 162, 235, 0.2)",
@@ -101,6 +102,7 @@ class Chart extends Component {
         });
       });
   }
+
   componentDidMount() {
     this.fetchData();
   }
