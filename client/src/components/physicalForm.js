@@ -14,12 +14,13 @@ class PhysicalForm extends Component {
   fetchMatches() {
     fetch("/matches")
       .then(response => response.json())
-      .then(data =>
+      .then(data => {
+        data.sort((a, b) => new Date(a.date) - new Date(b.date));
         this.setState({
           matches: data,
           isLoading: false
-        })
-      );
+        });
+      });
   }
   componentDidMount() {
     this.fetchMatches();

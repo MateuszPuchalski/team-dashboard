@@ -3,6 +3,7 @@ const mysql = require("mysql");
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
+  charset: "utf8",
   database: "dashboard"
 });
 
