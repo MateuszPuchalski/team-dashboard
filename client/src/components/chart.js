@@ -53,8 +53,32 @@ class Chart extends Component {
             }
           ]
         }
-      }
+      },
+      urlPlayerId: null,
+      isLoading: true
     };
+  }
+
+  fetchData() {
+    fetch(`/players/${this.props.match.params.id}/goals`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        this.setState({
+          isLoading: false,
+          urlPlayerId: this.props.match.params.id
+        });
+      });
+  }
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  componentDidUpdate() {
+    // Typical usage (don't forget to compare props):
+    if (this.props.match.params.id != this.state.urlPlayerId) {
+      this.fetchData();
+    }
   }
   render() {
     return (
