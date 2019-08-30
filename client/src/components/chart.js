@@ -5,11 +5,11 @@ class Chart extends Component {
     super(props);
     this.state = {
       data: {
-        labels: ["UMCS Lublin", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        labels: ["UMCS Lublin", "Blue", "Yellow", "Green", "Purple"],
         datasets: [
           {
             label: "# of Goals",
-            data: [10, 11, 3, 8, 2, 4],
+            data: [],
             backgroundColor: [
               "rgba(255, 99, 132, 0.2)",
               "rgba(54, 162, 235, 0.2)",
@@ -64,7 +64,38 @@ class Chart extends Component {
       .then(response => response.json())
       .then(data => {
         console.log(data);
+        let arr = [];
+        data.forEach(element => {
+          arr.push(element.goals);
+        });
+        console.log(arr);
         this.setState({
+          data: {
+            labels: ["UMCS Lublin", "Blue", "Yellow", "Green", "Purple"],
+            datasets: [
+              {
+                label: "# of Goals",
+                data: arr,
+                backgroundColor: [
+                  "rgba(255, 99, 132, 0.2)",
+                  "rgba(54, 162, 235, 0.2)",
+                  "rgba(255, 206, 86, 0.2)",
+                  "rgba(75, 192, 192, 0.2)",
+                  "rgba(153, 102, 255, 0.2)",
+                  "rgba(255, 159, 64, 0.2)"
+                ],
+                borderColor: [
+                  "rgba(255, 99, 132, 1)",
+                  "rgba(54, 162, 235, 1)",
+                  "rgba(255, 206, 86, 1)",
+                  "rgba(75, 192, 192, 1)",
+                  "rgba(153, 102, 255, 1)",
+                  "rgba(255, 159, 64, 1)"
+                ],
+                borderWidth: 1
+              }
+            ]
+          },
           isLoading: false,
           urlPlayerId: this.props.match.params.id
         });
@@ -81,9 +112,14 @@ class Chart extends Component {
     }
   }
   render() {
+    const { isLoading } = this.state;
     return (
       <div className="chart">
-        <Line data={this.state.data} options={this.state.options} />
+        {!isLoading ? (
+          <Line data={this.state.data} options={this.state.options} />
+        ) : (
+          <h3>Loading...</h3>
+        )}
       </div>
     );
   }
