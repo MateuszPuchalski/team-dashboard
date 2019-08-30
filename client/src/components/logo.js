@@ -6,11 +6,11 @@ class Logo extends Component {
     this.state = {};
   }
   render() {
-    const { against } = this.props.match;
+    const { against, date } = this.props.match;
     return (
       <div className="logo">
         <img src={process.env.PUBLIC_URL + `/logo/${against}.png`} alt="LOGO" />
-        <p>Aug. 19</p>
+        <p>{date.substring(5)}</p>
       </div>
     );
   }
