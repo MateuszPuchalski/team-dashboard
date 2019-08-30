@@ -8,7 +8,7 @@ body {
 #root {
   width: 100%;
   height: 100%;
-  font-family: "Anton", sans-serif;
+  font-family: "Oswald", sans-serif;
   letter-spacing: 1.3px;
 }
 .dashboard {
@@ -107,6 +107,9 @@ body {
   }
   .seasonStats {
     grid-area: sS;
+    p span {
+      font-weight: bold;
+    }
   }
   .physicalForm {
     grid-area: pF;
@@ -124,6 +127,7 @@ body {
   }
   .chart {
     grid-area: c;
+    margin: 0 2vw;
     #canvasLine {
       width: 100%;
       height: 100%;
