@@ -40,7 +40,7 @@ class Chart extends Component {
                 beginAtZero: true,
                 stepSize: 2,
                 suggestedMin: 0,
-                suggestedMax: 8
+                suggestedMax: 10
               },
               gridLines: { display: false }
             }
