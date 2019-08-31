@@ -18,10 +18,11 @@ body {
   width: 90%;
   height: 90%;
   grid-template-columns: 120px 1fr 1fr 1fr;
-  grid-template-rows: 25% 25% 25% 25%;
+  grid-template-rows: 15% 10% 25% 25% 25%;
   grid-template-areas:
-    "s m . . "
-    "s m sS . "
+    "s . . . "
+    "s m . ."
+    "s m sS court "
     "s m pF pF "
     "s m c c ";
   box-shadow: 3px 3px 10px;
@@ -124,11 +125,12 @@ body {
     .logo {
       flex-grow: 1;
       text-align: center;
-      height: 100px;
-      width: 100px;
+      height: auto;
+      width: auto;
+      align-self: flex-end;
       img {
-        max-width: 100%;
-        max-height: 100%;
+        max-width: 100px;
+        max-height: 100px;
       }
     }
   }
@@ -139,6 +141,11 @@ body {
       width: 100%;
       height: 100%;
     }
+  }
+  #court {
+    grid-area: court;
+    // width: 100%;
+    // height: 100%;
   }
 }
 .dashboard > * {
