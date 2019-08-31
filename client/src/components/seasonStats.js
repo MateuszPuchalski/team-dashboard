@@ -3,25 +3,58 @@ import React, { Component } from "react";
 class SeasonStats extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isLoading: true,
+      urlPlayerId: null
+    };
   }
+  fetchData() {
+    fetch(`/players/${this.props.match.params.id}/goals`)
+      .then(response => response.json())
+      .then(data => {
+        let goals = 0;
+        data.forEach(element => {
+          goals += element.goals;
+        });
+
+        this.setState({
+          appearances: data.length,
+          goals: goals,
+          isLoading: false,
+          urlPlayerId: this.props.match.params.id
+        });
+        console.log(data[0].goals);
+      });
+  }
+
+  componentDidMount() {
+    this.fetchData();
+  }
+  componentDidUpdate() {
+    // Typical usage (don't forget to compare props):
+    if (this.props.match.params.id != this.state.urlPlayerId) {
+      this.fetchData();
+    }
+  }
+
   render() {
+    const { isLoading } = this.state;
     return (
-      <div className="seasonStats">
-        <h2>SEASON STATS</h2>
-        <p>
-          Appearances: <span>10</span>
-        </p>
-        <p>
-          Goals: <span>100</span>
-        </p>
-        <p>
-          Shots (per game): <span>14</span>
-        </p>
-        <p>
-          Shot Accuracy: <span>72%</span>
-        </p>
-      </div>
+      <>
+        {!isLoading ? (
+          <div className="seasonStats">
+            <h2>SEASON STATS</h2>
+            <p>
+              Appearances: <span>{this.state.appearances}</span>
+            </p>
+            <p>
+              Goals: <span>{this.state.goals}</span>
+            </p>
+          </div>
+        ) : (
+          <h3>Loading...</h3>
+        )}
+      </>
     );
   }
 }
