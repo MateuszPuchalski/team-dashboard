@@ -43,7 +43,7 @@ class SeasonStats extends Component {
       <>
         {!isLoading ? (
           <div className="seasonStats">
-            <h2>SEASON STATS</h2>
+            <h3>SEASON STATS</h3>
             <p>
               Appearances: <span>{this.state.appearances}</span>
             </p>
