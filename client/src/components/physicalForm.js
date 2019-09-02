@@ -29,20 +29,26 @@ class PhysicalForm extends Component {
   render() {
     const { isLoading, matches, error } = this.state;
     return (
-      <div className="physicalForm">
-        {error ? <p>{error.message}</p> : null}
+      <div className="physicalFormWrapper">
+        <div className="physicalFormHeader">
+          <h3>PHYSICAL FORM</h3>
+          <p>Average Rating: 8.5</p>
+        </div>
+        <div className="physicalForm">
+          {error ? <p>{error.message}</p> : null}
 
-        {!isLoading ? (
-          <>
-            <Logo match={matches[0]} />
-            <Logo match={matches[1]} />
-            <Logo match={matches[2]} />
-            <Logo match={matches[3]} />
-            <Logo match={matches[4]} />
-          </>
-        ) : (
-          <h3>Loading...</h3>
-        )}
+          {!isLoading ? (
+            <>
+              <Logo match={matches[0]} />
+              <Logo match={matches[1]} />
+              <Logo match={matches[2]} />
+              <Logo match={matches[3]} />
+              <Logo match={matches[4]} />
+            </>
+          ) : (
+            <h3>Loading...</h3>
+          )}
+        </div>
       </div>
     );
   }
