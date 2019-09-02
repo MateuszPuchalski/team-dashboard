@@ -3,13 +3,17 @@ import React, { Component } from "react";
 class Court extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      position: "",
+      isLoading: true,
+      urlPlayerId: null
+    };
   }
 
   draw() {
     let canvas = document.getElementById("court");
     let ctx = canvas.getContext("2d");
-
+    ctx.setLineDash([]);
     // court outline
     ctx.strokeRect(0, 0, 300, 150);
 
@@ -45,49 +49,6 @@ class Court extends Component {
     ctx.lineTo(250, 75);
     ctx.stroke();
 
-    //positions
-
-    //goalkeeper
-    ctx.beginPath();
-    ctx.arc(7, 75, 7, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.stroke();
-
-    //left wing
-    ctx.beginPath();
-    ctx.arc(290, 10, 7, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.stroke();
-
-    //right wing
-    ctx.beginPath();
-    ctx.arc(290, 140, 7, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.stroke();
-
-    //right play
-    ctx.beginPath();
-    ctx.arc(230, 20, 7, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.stroke();
-    //playmaker
-    ctx.beginPath();
-    ctx.arc(200, 75, 7, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.stroke();
-
-    //pivot
-    ctx.beginPath();
-    ctx.arc(250, 75, 7, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.stroke();
-
-    //left play
-    ctx.beginPath();
-    ctx.arc(230, 130, 7, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.stroke();
-
     // dashed left line
     ctx.beginPath();
     ctx.moveTo(25, 0);
@@ -104,12 +65,69 @@ class Court extends Component {
     ctx.stroke();
   }
 
+  drawPositions() {
+    let canvas = document.getElementById("court");
+    let ctx = canvas.getContext("2d");
+    ctx.setLineDash([]);
+    //positions
+    const positions = {
+      Bramkarz: [7, 75],
+      "Lewe Skrzydło": [290, 10],
+      "Prawe Skrzydło": [290, 140],
+      "Prawe Rozegranie": [230, 130],
+      "Lewe Rozegranie": [230, 20],
+      "Środkowy Rozgrywający": [200, 74],
+      Obrotowy: [242, 75]
+    };
+
+    for (let key in positions) {
+      console.log(positions[key]);
+      ctx.beginPath();
+      ctx.arc(positions[key][0], positions[key][1], 7, 0, 2 * Math.PI);
+      if (this.state.position == key) {
+        ctx.fill();
+      }
+      ctx.stroke();
+    }
+  }
+  clear() {
+    const canvas = document.getElementById("court");
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  fetchData() {
+    fetch(`/players/${this.props.match.params.id}`)
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          ...data[0],
+          isLoading: false,
+          urlPlayerId: this.props.match.params.id
+        });
+        this.clear();
+        this.draw();
+        this.drawPositions();
+      });
+  }
+
   componentDidMount() {
-    this.draw();
+    this.fetchData();
+  }
+
+  componentDidUpdate() {
+    // Typical usage (don't forget to compare props):
+    if (this.props.match.params.id != this.state.urlPlayerId) {
+      this.fetchData();
+    }
   }
 
   render() {
-    return <canvas id="court"></canvas>;
+    return (
+      <div className="court">
+        <h3>PLAYING POSITON</h3>
+        <canvas id="court"></canvas>
+      </div>
+    );
   }
 }
 
