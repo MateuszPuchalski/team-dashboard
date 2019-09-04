@@ -81,7 +81,6 @@ class Court extends Component {
     };
 
     for (let key in positions) {
-      console.log(positions[key]);
       ctx.beginPath();
       ctx.arc(positions[key][0], positions[key][1], 7, 0, 2 * Math.PI);
       if (this.state.position == key) {
