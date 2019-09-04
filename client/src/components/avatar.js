@@ -27,7 +27,7 @@ class Avatar extends Component {
     // }
     return (
       <div className={"sidebar__item"}>
-        <Link to={`/player/${this.props.id}`}>
+        <Link to={`/players/${this.props.id}`}>
           <img
             src={
               process.env.PUBLIC_URL +
