@@ -15,11 +15,11 @@ export default class App extends Component {
     return (
       <div className="dashboard">
         <Sidebar />
-        <Route path="/player/:id" component={PlayerInfo} />
-        <Route path="/player/:id" component={SeasonStats} />
-        <Route path="/player/:id" component={PhysicalForm} />
-        <Route path="/player/:id" component={Chart} />
-        <Route path="/player/:id" component={Court} />
+        <Route path="/players/:id" component={PlayerInfo} />
+        <Route path="/players/:id" component={SeasonStats} />
+        <Route path="/players/:id" component={PhysicalForm} />
+        <Route path="/players/:id" component={Court} />
+        <Route path="/players/:id" component={Chart} />
       </div>
     );
   }
