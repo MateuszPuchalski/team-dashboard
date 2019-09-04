@@ -23,7 +23,6 @@ class SeasonStats extends Component {
           isLoading: false,
           urlPlayerId: this.props.match.params.id
         });
-        console.log(data[0].goals);
       });
   }
 
