@@ -1,138 +1,92 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
-class Chart extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: {
-        labels: [],
-        datasets: [
-          {
-            label: "Goals",
-            data: [],
-            backgroundColor: [],
-            borderColor: [],
-            borderWidth: 1
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true,
-                stepSize: 2,
-                suggestedMin: 0,
-                suggestedMax: 10
-              },
-              gridLines: { display: false }
-            }
-          ],
-          xAxes: [
-            {
-              gridLines: {
-                display: false
-              }
-            }
-          ]
+import ChartDataLabels from "chartjs-plugin-datalabels";
+
+export default function Chart(props) {
+  const [goals, setGoals] = useState([]);
+
+  const chartData = {
+    data: {
+      labels: ["noych", "noych", "noych", "noych", "noych"],
+      datasets: [
+        {
+          label: "Goals",
+          data: goals,
+          borderColor: "red",
+          borderWidth: 5,
+          fill: false
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        // Change options for ALL labels of THIS CHART
+        datalabels: {
+          color: "white",
+          align: "bottom",
+          borderWidth: 2,
+          borderRadius: 3,
+          backgroundColor: ["red", "green", "red", "green", "green"],
+          offset: 10
         }
       },
-      urlPlayerId: null,
-      isLoading: true
-    };
-  }
+      legend: { display: false },
 
-  fetchData() {
-    fetch(`/players/${this.props.match.params.id}/goals`)
-      .then(response => response.json())
-      .then(data => {
-        data.sort((a, b) => new Date(a.date) - new Date(b.date));
-        let goals = [];
-        let clubNames = [];
-        data.forEach(element => {
-          goals.push(element.goals);
-          clubNames.push(element.against.substring(0, 3));
-        });
-        this.setState({
-          data: {
-            labels: clubNames,
-            datasets: [
-              {
-                label: "Goals",
-                data: goals,
-                backgroundColor: [],
-                borderColor: ["red"],
-                borderWidth: 5,
-                fill: false
-              }
-            ]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            legend: { display: false },
-            tooltips: {
-              enabled: true,
-              backgroundColor: "red"
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              display: false,
+              beginAtZero: true,
+              stepSize: 2,
+              suggestedMin: 0,
+              suggestedMax: 10
             },
-            scales: {
-              yAxes: [
-                {
-                  ticks: {
-                    display: false,
-                    beginAtZero: true,
-                    stepSize: 2,
-                    suggestedMin: 0,
-                    suggestedMax: 10
-                  },
-                  gridLines: {
-                    display: false,
-                    drawBorder: false
-                  }
-                }
-              ],
-              xAxes: [
-                {
-                  ticks: { display: false },
-                  gridLines: {
-                    display: false,
-                    drawBorder: false
-                  }
-                }
-              ]
+            gridLines: {
+              display: false,
+              drawBorder: false
             }
-          },
-          isLoading: false,
-          urlPlayerId: this.props.match.params.id
-        });
-      });
-  }
-
-  componentDidMount() {
-    this.fetchData();
-  }
-
-  componentDidUpdate() {
-    // Typical usage (don't forget to compare props):
-    if (this.props.match.params.id != this.state.urlPlayerId) {
-      this.fetchData();
+          }
+        ],
+        xAxes: [
+          {
+            ticks: { display: false },
+            gridLines: {
+              display: false,
+              drawBorder: false
+            }
+          }
+        ]
+      }
     }
-  }
-  render() {
-    const { isLoading } = this.state;
-    return (
-      <div className="chart">
-        {!isLoading ? (
-          <Line data={this.state.data} options={this.state.options} />
-        ) : (
-          <h3>Loading...</h3>
-        )}
-      </div>
-    );
-  }
-}
+  };
 
-export default Chart;
+  const fetchData = async id => {
+    const data = await fetch(`/players/${id}/goals`);
+    const items = await data.json();
+
+    items.sort((a, b) => new Date(a.date) - new Date(b.date));
+    let goals = [];
+    let clubNames = [];
+    items.forEach(element => {
+      goals.push(element.goals);
+      clubNames.push(element.against.substring(0, 3));
+    });
+    setGoals(goals);
+
+    console.log(props.match.params.id);
+    console.log(goals);
+  };
+
+  useEffect(() => {
+    fetchData(props.match.params.id);
+  }, [props.match.params.id]);
+
+  return (
+    <div className="chart">
+      <Line data={chartData.data} options={chartData.options} />
+    </div>
+  );
+}
