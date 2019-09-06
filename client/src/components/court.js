@@ -13,6 +13,7 @@ class Court extends Component {
   draw() {
     let canvas = document.getElementById("court");
     let ctx = canvas.getContext("2d");
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
     ctx.setLineDash([]);
     // court outline
     ctx.strokeRect(0, 0, 300, 150);
@@ -71,7 +72,7 @@ class Court extends Component {
     ctx.setLineDash([]);
     //positions
     const positions = {
-      Bramkarz: [7, 75],
+      Bramkarz: [10, 75],
       "Lewe Skrzydło": [290, 10],
       "Prawe Skrzydło": [290, 140],
       "Prawe Rozegranie": [230, 130],
@@ -84,9 +85,12 @@ class Court extends Component {
       ctx.beginPath();
       ctx.arc(positions[key][0], positions[key][1], 7, 0, 2 * Math.PI);
       if (this.state.position == key) {
+        ctx.strokeStyle = "rgba(229, 29, 34, 0.7)";
+        ctx.fillStyle = "rgba(229, 29, 34, 0.7)";
         ctx.fill();
       }
       ctx.stroke();
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
     }
   }
   clear() {
