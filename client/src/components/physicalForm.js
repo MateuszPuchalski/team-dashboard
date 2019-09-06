@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Logo from "./logo";
-
+import GoalsPerMatch from "./goalsPerMatch";
 class PhysicalForm extends Component {
   constructor(props) {
     super(props);
@@ -30,10 +30,8 @@ class PhysicalForm extends Component {
     const { isLoading, matches, error } = this.state;
     return (
       <>
-        <div className="physicalFormHeader">
-          <h3>PHYSICAL FORM</h3>
-          <p>Average Rating: 8.5</p>
-        </div>
+        <GoalsPerMatch id={this.props.match.params.id} />
+
         <div className="physicalForm">
           {error ? <p>{error.message}</p> : null}
 
