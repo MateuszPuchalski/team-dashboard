@@ -8,10 +8,14 @@ class Logo extends Component {
   render() {
     const { against, date } = this.props.match;
     return (
-      <div className="logo">
-        <img src={process.env.PUBLIC_URL + `/logo/${against}.png`} alt="LOGO" />
-        <p>{date.substring(5)}</p>
-      </div>
+      <>
+        <img
+          className="logo"
+          src={process.env.PUBLIC_URL + `/logo/${against}.png`}
+          alt="LOGO"
+        />
+        {/* <p>{date.substring(5)}</p> */}
+      </>
     );
   }
 }
