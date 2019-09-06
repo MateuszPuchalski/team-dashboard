@@ -29,7 +29,7 @@ class PhysicalForm extends Component {
   render() {
     const { isLoading, matches, error } = this.state;
     return (
-      <div className="physicalFormWrapper">
+      <>
         <div className="physicalFormHeader">
           <h3>PHYSICAL FORM</h3>
           <p>Average Rating: 8.5</p>
@@ -49,7 +49,7 @@ class PhysicalForm extends Component {
             <h3>Loading...</h3>
           )}
         </div>
-      </div>
+      </>
     );
   }
 }
