@@ -3,6 +3,7 @@ body {
   width: auto;
   height: 1000px;
   background-image: url("./images/backgroundmat.jpg");
+  // background: #841919;
   background-size: 100% 100%;
 }
 #root {
@@ -18,23 +19,52 @@ body {
   width: 90%;
   height: 90%;
   grid-template-columns: 120px 1fr 1fr 1fr;
-  grid-template-rows: 10% 15% 25% 25% 25%;
+  grid-template-rows: 8% 15% 37% 20% 20%;
   grid-template-areas:
-    "s . . . "
-    "s m . ."
+    "s h h h "
+    "s m . c"
     "s m sS court "
-    "s m pF pF "
-    "s m c c ";
+    "s m pFWC pFWC "
+    "s m pFWC pFWC ";
   box-shadow: 3px 3px 10px;
-  background: rgb(151, 151, 151);
+  border-radius: 10px;
+  background: linear-gradient(#201328, #191319);
+  .header {
+    grid-area: h;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    background: #110816;
+    border-top-right-radius: 10px;
+
+    div {
+      flex-grow: 1;
+      text-align: center;
+      padding: 27px 0;
+      border-bottom: 2px solid #2d1b34;
+    }
+    div:hover {
+      background: #201328;
+      border-bottom: 0px solid #201328;
+    }
+  }
+  .comparison {
+    grid-area: c;
+    color: #0f94c5;
+    padding: 0 40px 0 0;
+    text-align: right;
+  }
   .sidebar {
     grid-area: s;
     display: grid;
     grid-template-rows: 3fr repeat(6, 2fr) 2fr;
     height: 100%;
     // width: 6.5vw;
-    background: rgba(128, 128, 128, 0.815);
-    border-right: 2px solid rgb(121, 121, 121);
+    background: #110816;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-right: 2px solid #2d1b34;
     // background: #00111f;
     // align-items: center;
     // justify-items: center;
@@ -63,6 +93,12 @@ body {
       align-self: center;
       justify-self: center;
     }
+    #arrow {
+      max-height: 25px;
+      max-width: 30px;
+      align-self: center;
+      justify-self: center;
+    }
   }
   .playerInfo {
     grid-area: m;
@@ -76,9 +112,18 @@ body {
     color: white;
     .info {
       grid-area: info;
+      h1 {
+        display: inline-block;
+      }
       h1,
       p {
         margin-left: 3rem;
+      }
+      .flag {
+        width: 25px;
+        height: 12.5px;
+        padding: 0 0 0 20px;
+        display: inline-block;
       }
     }
     .statue {
@@ -103,6 +148,7 @@ body {
       flex-flow: row;
       align-items: center;
       text-align: center;
+      padding: 0 0 20px 0;
       div {
         flex-grow: 1;
         h1 {
@@ -113,50 +159,76 @@ body {
   }
   .seasonStats {
     grid-area: sS;
+    padding: 0 0 0 25px;
+    p {
+      color: rgba(255, 255, 255, 0.7);
+    }
     p span {
+      color: rgba(255, 255, 255, 1);
       font-weight: bold;
     }
   }
-  .physicalFormWrapper {
-    grid-area: pF;
+  .physicalFormWithChart {
+    grid-area: pFWC;
+    display: grid;
+    grid-template-rows: 12.5% 37.5% 50%;
+    grid-template-columns: 100%;
+    grid-template-areas:
+      "h"
+      "pF"
+      "c";
+
     .physicalFormHeader {
+      grid-area: h;
       display: flex;
       h3 {
         flex: 1;
+        padding-left: 25px;
       }
       p {
         flex: 1;
         text-align: right;
+        padding-right: 40px;
       }
     }
     .physicalForm {
+      grid-area: pF;
       display: flex;
       flex-flow: row;
+      justify-content: space-between;
+      padding: 0 40px 0 25px;
       .logo {
         flex-grow: 1;
         text-align: center;
         height: auto;
         width: auto;
-        align-self: flex-end;
-        img {
-          max-width: 100px;
-          max-height: 100px;
-        }
+        align-self: center;
+        max-width: 75px;
+        max-height: 75px;
+        min-height: 50px;
+        min-width: 50px;
+        // img {
+        //   max-width: 75px;
+        //   max-height: 75px;
+        //   min-height: 50px;
+        //   min-width: 50px;
+        // }
       }
     }
-  }
-  .chart {
-    grid-area: c;
-    margin: 0 2vw;
-    #canvasLine {
-      width: 100%;
-      height: 100%;
+
+    .chart {
+      grid-area: c;
+      #canvasLine {
+        width: 100%;
+        height: 100%;
+      }
     }
   }
   .court {
     grid-area: court;
+    padding: 0 40px 40px 40px;
     #court {
-      width: 80%;
+      width: 100%;
       height: 80%;
     }
   }
