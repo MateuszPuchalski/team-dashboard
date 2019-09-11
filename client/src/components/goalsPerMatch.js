@@ -9,7 +9,6 @@ export default function GoalsPerMatch(props) {
   const fetchData = async id => {
     const data = await fetch(`/players/${id}/goals`);
     const items = await data.json();
-
     items.sort((a, b) => new Date(a.date) - new Date(b.date));
 
     let goals = [];
@@ -17,13 +16,14 @@ export default function GoalsPerMatch(props) {
     items.forEach(element => {
       goals.push(element.goals);
     });
-
     const averageGoals =
       goals.reduce((a, b) => {
         return a + b;
-      }) / goals.length;
+      }, 0) / goals.length;
+
     const color =
       averageGoals < 2 ? "#E43025" : averageGoals < 6 ? "#DF7604" : "#01C23C";
+
     setAverageGoals({ average: averageGoals, color: color });
     setGoals(goals);
   };
@@ -32,7 +32,6 @@ export default function GoalsPerMatch(props) {
     fetchData(props.id);
   }, [props.id]);
 
-  console.log(averageGoals);
   return (
     <div className="physicalFormHeader">
       <h3>PHYSCIAL FORM</h3>
