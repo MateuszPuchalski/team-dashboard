@@ -39,7 +39,7 @@ export default function Chart(props) {
       layout: {
         padding: {
           left: 50,
-          right: 50,
+          right: 70,
           top: 30,
           bottom: 20
         }
