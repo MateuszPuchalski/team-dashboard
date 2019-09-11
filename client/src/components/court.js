@@ -77,7 +77,7 @@ class Court extends Component {
       "Prawe Skrzydło": [290, 140],
       "Prawe Rozegranie": [230, 130],
       "Lewe Rozegranie": [230, 20],
-      "Środkowy Rozgrywający": [200, 74],
+      "Środkowe Rozegranie": [200, 74],
       Obrotowy: [242, 75]
     };
 
