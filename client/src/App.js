@@ -6,6 +6,7 @@ import PhysicalForm from "./components/physicalForm";
 import Chart from "./components/chart";
 import Court from "./components/court";
 import Header from "./components/header";
+import Match from "./components/match";
 import Comparison from "./components/comparison";
 import { Switch, Route } from "react-router-dom";
 import "./normalize.css";
@@ -18,6 +19,7 @@ export default class App extends Component {
         <Sidebar />
         <Header />
         <Comparison />
+        <Route path="/match/:id" component={Match} />
         <Route path="/players/:id" component={PlayerInfo} />
         <Route path="/players/:id" component={SeasonStats} />
         <Route path="/players/:id" component={Court} />
