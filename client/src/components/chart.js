@@ -119,11 +119,11 @@ export default function Chart(props) {
   const fetchData = async id => {
     const data = await fetch(`/players/${id}/goals`);
     const items = await data.json();
-
+    await console.log(items);
     items.sort((a, b) => new Date(a.date) - new Date(b.date));
     let goals = [];
     let clubNames = [];
-    items.forEach(element => {
+    items.slice(-5).forEach(element => {
       goals.push(element.goals);
       clubNames.push(element.against.substring(0, 3));
     });
