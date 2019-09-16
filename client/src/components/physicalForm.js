@@ -17,7 +17,7 @@ class PhysicalForm extends Component {
       .then(data => {
         data.sort((a, b) => new Date(a.date) - new Date(b.date));
         this.setState({
-          matches: data,
+          matches: data.slice(-5),
           isLoading: false
         });
       });
@@ -42,6 +42,7 @@ class PhysicalForm extends Component {
               <Logo match={matches[2]} />
               <Logo match={matches[3]} />
               <Logo match={matches[4]} />
+              {/* <Logo match={matches[5]} /> */}
             </>
           ) : (
             <h3>Loading...</h3>
