@@ -26,12 +26,10 @@ export default function Avatar({ id }) {
   // }
   return (
     <div className={"sidebar__item"}>
-      <Link to={`/players/${id}`}>
-        <img
-          src={process.env.PUBLIC_URL + `/avatars/${name}${surname}.png`}
-          alt={`${name} ${surname}`}
-        />
-      </Link>
+      <img
+        src={process.env.PUBLIC_URL + `/avatars/${name}${surname}.png`}
+        alt={`${name} ${surname}`}
+      />
     </div>
   );
 }
