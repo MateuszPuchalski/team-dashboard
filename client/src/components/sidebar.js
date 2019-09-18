@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import Avatar from "./avatar";
 import "../main.css";
+import { Link } from "react-router-dom";
 
 export default function Sidebar(props) {
   const [id, setId] = useState(1);
 
   function renderAvatar(id) {
-    return <Avatar id={id} />;
+    return (
+      <Link to={`/players/${id}`}>
+        <Avatar id={id} />
+      </Link>
+    );
   }
 
   return (
