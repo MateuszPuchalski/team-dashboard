@@ -10,4 +10,14 @@ router.get("/", function(req, res, next) {
   });
 });
 
+router.get("/:matchId", function(req, res, next) {
+  db.query(
+    `SELECT * FROM match_log WHERE match_id = ${req.params.matchId}`,
+    (err, result) => {
+      if (err) throw err;
+      res.send(result);
+    }
+  );
+});
+
 module.exports = router;
