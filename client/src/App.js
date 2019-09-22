@@ -19,7 +19,7 @@ export default class App extends Component {
         <Sidebar />
         <Header />
         <Comparison />
-        <Route path="/match/:id" component={Match} />
+        <Route path="/matches/:id" component={Match} />
         <Route path="/players/:id" component={PlayerInfo} />
         <Route path="/players/:id" component={SeasonStats} />
         <Route path="/players/:id" component={Court} />
