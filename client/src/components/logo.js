@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 class Logo extends Component {
   constructor(props) {
@@ -6,14 +7,25 @@ class Logo extends Component {
     this.state = {};
   }
   render() {
-    const { against, date } = this.props.match;
+    const { against, date, id, youtube_id } = this.props.match;
     return (
       <>
-        <img
-          className="logo"
-          src={process.env.PUBLIC_URL + `/logo/${against}.png`}
-          alt="LOGO"
-        />
+        {youtube_id === "" ? (
+          <img
+            className="logo"
+            src={process.env.PUBLIC_URL + `/logo/${against}.png`}
+            alt="LOGO"
+          />
+        ) : (
+          <Link to={`/matches/${id}`}>
+            <img
+              className="logo"
+              src={process.env.PUBLIC_URL + `/logo/${against}.png`}
+              alt="LOGO"
+            />
+          </Link>
+        )}
+
         {/* <p>{date.substring(5)}</p> */}
       </>
     );
