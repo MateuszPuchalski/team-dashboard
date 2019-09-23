@@ -1,8 +1,11 @@
 import React from "react";
+import { useEffect, useState } from "react";
 import YouTube from "react-youtube";
 import Avatar from "./avatar";
 
-export default function Match() {
+export default function Match(props) {
+  const [logs, setLogs] = useState([]);
+
   const opts = {
     height: "390",
     width: "640",
@@ -18,30 +21,42 @@ export default function Match() {
     event.target.seekTo(367, true);
     event.target.playVideo();
 
-    let playButton = document.getElementById("przycisk");
-    playButton.addEventListener("click", function() {
-      event.target.seekTo(367, true);
-      event.target.playVideo();
-    });
-    let playButton2 = document.getElementById("przycisk2");
-    playButton2.addEventListener("click", function() {
-      event.target.seekTo(405, true);
-      event.target.playVideo();
+    logs.forEach(element => {
+      let button = document.getElementById(`logButton${element.id}`);
+      button.addEventListener("click", function() {
+        event.target.seekTo(element.timestamp, true);
+        event.target.playVideo();
+      });
     });
   }
+  const fetchData = async () => {
+    const data = await fetch(`/matches/${props.match.params.id}`);
+    const items = await data.json();
+    setLogs(items);
+  };
 
-  function boom() {
-    document.getElementById("matchYt");
-    console.log("boom");
-  }
+  const renderButton = logs => {
+    const buttons = logs.map(element => {
+      return (
+        <div className="logButton" id={`logButton${element.id}`}>
+          <Avatar id={element.player_id} />
+          <p>{element.log}</p>
+        </div>
+      );
+    });
+
+    return buttons;
+  };
+
+  // fetchData();
   //player.seekTo(seconds:367, allowSeekAhead:true)
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <div className="match">
-      <h1 id="przycisk">Match Start</h1>
-      <div id="przycisk2">
-        <Avatar id={1} />
-      </div>
+      {renderButton(logs)}
 
       <YouTube
         id="matchYt"
