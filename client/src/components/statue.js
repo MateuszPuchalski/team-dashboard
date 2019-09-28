@@ -1,24 +1,24 @@
-import React, { Component } from "react";
+import { useSpring, animated } from "react-spring";
+import React, { useState, useEffect } from "react";
 
-class Statue extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-  render() {
-    return (
-      <div className="statue">
-        <h1>{this.props.nr}</h1>
-        <img
-          src={
-            process.env.PUBLIC_URL +
-            `/statues/${this.props.name}${this.props.surname}Statue-edit2.png`
-          }
-          alt=""
-        />
-      </div>
-    );
-  }
+export default function Statue(props) {
+  const [nr, setNr] = useState(props.nr);
+  const opacity = useSpring({ opacity: 1, from: { opacity: 0 } });
+  const number = useSpring({
+    number: props.nr,
+    config: { precision: 0.1 },
+    from: { number: nr }
+  });
+  return (
+    <div className="statue">
+      <animated.h1 style={opacity}>{number.number}</animated.h1>
+      <img
+        src={
+          process.env.PUBLIC_URL +
+          `/statues/${props.name}${props.surname}Statue-edit2.png`
+        }
+        alt=""
+      />
+    </div>
+  );
 }
-
-export default Statue;
