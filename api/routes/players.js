@@ -15,7 +15,7 @@ router.get("/:playerId", function(req, res, next) {
 
 router.get("/:playerId/goals", function(req, res, next) {
   db.query(
-    `SELECT * FROM stats JOIN matches on stats.match_id=matches.id WHERE player_id = ${req.params.playerId}`,
+    `SELECT match_id, player_id, goals, date, home, away, against, youtube_id FROM stats LEFT JOIN matches ON match_id=matches.id WHERE player_id = ${req.params.playerId}`,
     (err, result) => {
       if (err) throw err;
       res.send(result);
