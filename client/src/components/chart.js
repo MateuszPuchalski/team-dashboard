@@ -119,7 +119,7 @@ export default function Chart(props) {
   const fetchData = async id => {
     const data = await fetch(`/players/${id}/goals`);
     const items = await data.json();
-    await console.log(items);
+    console.log(items);
     items.sort((a, b) => new Date(a.date) - new Date(b.date));
     let goals = [];
     let clubNames = [];
