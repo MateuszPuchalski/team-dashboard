@@ -16,10 +16,11 @@ export default function GoalsPerMatch(props) {
     items.forEach(element => {
       goals.push(element.goals);
     });
-    const averageGoals =
+    const averageGoals = (
       goals.reduce((a, b) => {
         return a + b;
-      }, 0) / goals.length;
+      }, 0) / goals.length
+    ).toFixed(2);
 
     const color =
       averageGoals < 2 ? "#E43025" : averageGoals < 6 ? "#DF7604" : "#01C23C";
