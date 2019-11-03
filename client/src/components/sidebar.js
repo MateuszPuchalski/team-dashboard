@@ -16,7 +16,7 @@ export default function Sidebar(props) {
 
   return (
     <div className="sidebar">
-      <img src={process.env.PUBLIC_URL + `/herb.png`} id="herb" alt="herb" />
+      <img src={process.env.PUBLIC_URL + `/herb.webp`} id="herb" alt="herb" />
       <div className="avatars">
         {renderAvatar(id)}
         {renderAvatar(id + 1)}
@@ -37,7 +37,6 @@ export default function Sidebar(props) {
         {renderAvatar(id + 16)}
         {renderAvatar(id + 17)}
         {renderAvatar(id + 18)}
-        {renderAvatar(id + 19)}
       </div>
 
       <img src={process.env.PUBLIC_URL + `/arrow.png`} id="arrow" alt="arrow" />

@@ -15,7 +15,7 @@ export default function Statue(props) {
       <img
         src={
           process.env.PUBLIC_URL +
-          `/statues/${props.name}${props.surname}Statue-edit2.png`
+          `/statues/${props.name}${props.surname}Statue-edit2.webp`
         }
         alt=""
       />

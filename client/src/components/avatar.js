@@ -27,7 +27,7 @@ export default function Avatar({ id }) {
   return (
     <div className={"sidebar__item"}>
       <img
-        src={process.env.PUBLIC_URL + `/avatars/${name}${surname}.png`}
+        src={process.env.PUBLIC_URL + `/avatars/${name}${surname}.webp`}
         alt={`${name} ${surname}`}
       />
     </div>

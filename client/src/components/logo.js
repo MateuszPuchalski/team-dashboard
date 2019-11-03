@@ -7,20 +7,20 @@ class Logo extends Component {
     this.state = {};
   }
   render() {
-    const { against, date, id, youtube_id } = this.props.match;
+    const { against, date, match_id, youtube_id } = this.props.match;
     return (
       <>
         {youtube_id === "" ? (
           <img
             className="logo"
-            src={process.env.PUBLIC_URL + `/logo/${against}.png`}
+            src={process.env.PUBLIC_URL + `/logo/${against}.webp`}
             alt="LOGO"
           />
         ) : (
-          <Link to={`/matches/${id}`}>
+          <Link to={`/matches/${match_id}`}>
             <img
               className="logo"
-              src={process.env.PUBLIC_URL + `/logo/${against}.png`}
+              src={process.env.PUBLIC_URL + `/logo/${against}.webp`}
               alt="LOGO"
             />
           </Link>
