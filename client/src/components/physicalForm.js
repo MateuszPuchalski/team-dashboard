@@ -17,7 +17,6 @@ export default function PhysicalForm(props) {
 
   useEffect(() => {
     fetchMatches();
-    console.log(matches);
   }, [props.match.params.id]);
 
   return (
