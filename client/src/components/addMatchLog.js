@@ -1,14 +1,29 @@
 import React from "react";
 
 export default function AddMatchLog(props) {
-  function handleSubmit(event) {
+  const youtubeControler = props.youtubeControler;
+  function seek() {
+    const controler = youtubeControler.internalPlayer;
+
+    controler.getCurrentTime().then(data => {
+      console.log(data);
+    });
+
+    // youtube.internalPlayer.seekTo(1200);
+  }
+  async function handleSubmit(event) {
     event.preventDefault();
+
     const data = {
       player_id: event.target.player.value,
       match_id: props.match,
       log: event.target.log.value,
-      timeStamp: event.target.timeStamp.value
+      timeStamp: Math.floor(
+        await youtubeControler.internalPlayer.getCurrentTime()
+      )
     };
+
+    console.log(data);
     fetch("/matches/matchLog/add", {
       method: "POST",
       headers: {
@@ -16,11 +31,7 @@ export default function AddMatchLog(props) {
       },
       body: JSON.stringify(data)
     });
-    console.log(event.target.player.value);
-    console.log(event.target.log.value);
-    console.log(event.target.timeStamp.value);
   }
-  console.log(props);
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -29,6 +40,7 @@ export default function AddMatchLog(props) {
           <option value="2">Przemek Kalinowski</option>
           <option value="3">Damian Kowalczuk</option>
           <option value="4">Wojciech Stec</option>
+          <option value="7">Szymon Jadczak</option>
           <option value="8">Łukasz Płoński</option>
           <option value="16">Adam Gawza</option>
           <option value="17">Szymon Jabłoński</option>
@@ -43,6 +55,7 @@ export default function AddMatchLog(props) {
         </label>
         <input type="submit" value="submit" />
       </form>
+      <button onClick={seek}>SEEK</button>
     </div>
   );
 }

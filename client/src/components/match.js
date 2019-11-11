@@ -1,17 +1,19 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import YouTube from "react-youtube";
 import Avatar from "./avatar";
 import AddMatchLog from "./addMatchLog";
+import SearchLog from "./searchLog";
 import MatchTimeline from "./matchTimeline";
-
+import SketchBoard from "./sketchBoard";
 export default function Match(props) {
   const [logs, setLogs] = useState([]);
   const [youtubeId, setYoutubeId] = useState("");
   const [time, setTime] = useState(0);
+  const youtubeRef = useRef();
   const opts = {
-    height: "490",
-    width: "740",
+    height: "826",
+    width: "1250",
     playerVars: {
       // https://developers.google.com/youtube/player_parameters
       autoplay: 1
@@ -28,20 +30,17 @@ export default function Match(props) {
     event.target.seekTo(367, true);
     event.target.playVideo();
 
-    let testThis = document.getElementById("testThis");
-    testThis.addEventListener("click", function() {
-      setInterval(function() {
-        console.log(time);
-        setTime(event.target.getCurrentTime());
-      }, 1000);
+    // let testThis = document.getElementById("testThis");
+    // testThis.addEventListener("click", function() {
+    //   setInterval(function() {
+    //     console.log(time);
+    //     setTime(event.target.getCurrentTime());
+    //   }, 1000);
 
-      // console.log(event.target.getCurrentTime());
-      // setTime(event.target.getCurrentTime());
-    });
+    //   // console.log(event.target.getCurrentTime());
+    //   // setTime(event.target.getCurrentTime());
+    // });
 
-    console.log(testThis);
-    console.log(this);
-    console.log(event);
     logs.forEach(element => {
       let button = document.getElementById(`logButton${element.id}`);
       button.addEventListener("click", function() {
@@ -94,7 +93,7 @@ export default function Match(props) {
       })();
 
       return (
-        <div className="logButton" id={`logButton${element.id}`}>
+        <button className="logButton" id={`logButton${element.id}`}>
           <Avatar id={element.player_id} />
           <div className="timeStamp">{timeString}</div>
           <div className="ball">
@@ -104,7 +103,7 @@ export default function Match(props) {
               alt="ball"
             />
           </div>
-        </div>
+        </button>
       );
     });
 
@@ -116,22 +115,34 @@ export default function Match(props) {
   useEffect(() => {
     fetchData();
     fetchYoutubeId();
+    console.log(youtubeRef.current);
   }, []);
 
   return (
     <>
       <div className="match">
         <YouTube
+          ref={youtubeRef}
           id="matchYt"
           videoId={youtubeId}
           opts={opts}
           onReady={_onReady}
         />
-        <AddMatchLog match={props.match.params.id} />
+
+        {/* <SketchBoard width={1250} height={703} /> */}
       </div>
-      <div className="log">{renderButton(logs)}</div>
-      <h1 id="testThis">{time}</h1>
-      <MatchTimeline />
+      <div className="log">
+        <SearchLog />
+        {renderButton(logs)}
+        {!youtubeRef.current ? (
+          "Loading..."
+        ) : (
+          <AddMatchLog
+            youtubeControler={youtubeRef.current}
+            match={props.match.params.id}
+          />
+        )}
+      </div>
     </>
   );
 }

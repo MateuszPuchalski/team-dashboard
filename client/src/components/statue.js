@@ -11,7 +11,7 @@ export default function Statue(props) {
   });
   return (
     <div className="statue">
-      <animated.h1 style={opacity}>{number.number}</animated.h1>
+      <animated.h1 style={opacity}>{props.nr}</animated.h1>
       <img
         src={
           process.env.PUBLIC_URL +

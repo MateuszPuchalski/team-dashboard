@@ -8,9 +8,11 @@ import Court from "./components/court";
 import Header from "./components/header";
 import Match from "./components/match";
 import Comparison from "./components/comparison";
+
 import { Switch, Route } from "react-router-dom";
 import "./normalize.css";
 import "./main.css";
+import "./finalcss.css";
 
 export default class App extends Component {
   render() {
@@ -18,15 +20,18 @@ export default class App extends Component {
       <div className="dashboard">
         <Sidebar />
         <Header />
-        <Comparison />
+
+        <Route path="/players/:id" component={Comparison} />
         <Route path="/matches/:id" component={Match} />
         <Route path="/players/:id" component={PlayerInfo} />
         <Route path="/players/:id" component={SeasonStats} />
         <Route path="/players/:id" component={Court} />
-        <div className="physicalFormWithChart">
-          <Route path="/players/:id" component={PhysicalForm} />
-          <Route path="/players/:id" component={Chart} />
-        </div>
+        <Route path="/players/:id">
+          <div className="physicalFormWithChart">
+            <Route path="/players/:id" component={PhysicalForm} />
+            <Route path="/players/:id" component={Chart} />
+          </div>
+        </Route>
       </div>
     );
   }

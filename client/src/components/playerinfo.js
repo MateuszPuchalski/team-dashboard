@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Metrics from "./metrics";
 import Statue from "./statue";
-
+import Flag from "./flag";
 class PlayerInfo extends Component {
   constructor(props) {
     super(props);
@@ -57,6 +57,7 @@ class PlayerInfo extends Component {
                 {this.state.name.toUpperCase()}{" "}
                 {this.state.surname.toUpperCase()}
               </h1>
+
               <p>{this.state.position}</p>
             </div>
 
