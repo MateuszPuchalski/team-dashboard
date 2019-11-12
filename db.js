@@ -9,9 +9,9 @@ const mysql = require("mysql");
 // });
 // database: "pqrr08fhcy6z1zhv"
 if (process.env.JAWSDB_URL) {
-  const db = mysql.createConnection(process.env.JAWSDB_URL);
+  var db = mysql.createConnection(process.env.JAWSDB_URL);
 } else {
-  const db = mysql.createConnection({
+  var db = mysql.createConnection({
     host: "localhost",
     user: "root",
     charset: "utf8",
