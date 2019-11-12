@@ -24,7 +24,13 @@ class PlayerInfo extends Component {
   // this.setState({ idUrl: this.props.match.params.id });
   // const data = await fetch(`/players/${this.props.match.params.id}`);
   fetchData() {
-    fetch(`/players/${this.props.match.params.id}`)
+    fetch(`/players/${this.props.match.params.id}`, {
+      headers : { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+       }
+
+    })
       .then(response => response.json())
       .then(data =>
         this.setState({
@@ -34,6 +40,10 @@ class PlayerInfo extends Component {
         })
       );
   }
+
+
+  
+
   componentDidMount() {
     this.fetchData();
   }
