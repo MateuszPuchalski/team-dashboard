@@ -28,9 +28,9 @@ yarn-error.log*
 /public/statues
 /src/images
 
-#css
-/src/index.css
-/src/main.css
-/src/main.min.css
-/src/normalize.css
+# #css
+# /src/index.css
+# /src/main.css
+# /src/main.min.css
+# /src/normalize.css
 
