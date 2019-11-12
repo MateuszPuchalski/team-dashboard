@@ -8,7 +8,8 @@ router.get("/:playerId", function(req, res, next) {
     `SELECT * FROM players WHERE id = ${req.params.playerId}`,
     (err, result) => {
       if (err) throw err;
-      res.send(result);
+      res.json(result);
+      // res.send(result);
     }
   );
 });
