@@ -55,7 +55,12 @@ export default function Match(props) {
     if (props.match.params.id == "undefined") {
       console.log("WTF!?");
     } else {
-      const data = await fetch(`/matches/${props.match.params.id}`);
+      const data = await fetch(`/matches/${props.match.params.id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        }
+      });
       const items = await data.json();
       console.log({ matches: items });
       setLogs(items);
