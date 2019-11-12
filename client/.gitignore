@@ -22,11 +22,11 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# photos
-/public/avatars
-/public/logo
-/public/statues
-/src/images
+# # photos
+# /public/avatars
+# /public/logo
+# /public/statues
+# /src/images
 
 # #css
 # /src/index.css
