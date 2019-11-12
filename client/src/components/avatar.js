@@ -7,14 +7,10 @@ export default function Avatar({ id }) {
   const [surname, setSurname] = useState("");
 
   const fetchData = async id => {
-    const data = await fetch(`/players/${id}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      }
-    });
+    const data = await fetch(`/players/${id}`);
     console.log(data);
-    const items = await data.json();
+    // const items = await data.json();
+    const items = await data.text();
     console.log({ avatar: items });
     setName(items[0].name);
     setSurname(items[0].surname);
