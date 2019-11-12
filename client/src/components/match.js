@@ -57,6 +57,7 @@ export default function Match(props) {
     } else {
       const data = await fetch(`/matches/${props.match.params.id}`);
       const items = await data.json();
+      console.log({ matches: items });
       setLogs(items);
     }
   };

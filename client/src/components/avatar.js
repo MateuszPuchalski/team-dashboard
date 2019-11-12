@@ -9,6 +9,7 @@ export default function Avatar({ id }) {
   const fetchData = async id => {
     const data = await fetch(`/players/${id}`);
     const items = await data.json();
+    console.log({ avatar: items });
     setName(items[0].name);
     setSurname(items[0].surname);
   };
