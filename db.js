@@ -7,7 +7,7 @@ const db = mysql.createConnection({
   charset: "utf8",
   database: "pqrr08fhcy6z1zhv"
 });
-
+// database: "pqrr08fhcy6z1zhv"
 // const db = mysql.createConnection({
 //   host: "localhost",
 //   user: "root",
