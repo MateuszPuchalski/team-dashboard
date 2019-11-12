@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "../main.css";
-import { Link } from "react-router-dom";
 
 export default function Avatar({ id }) {
   const [name, setName] = useState("");
@@ -9,8 +8,8 @@ export default function Avatar({ id }) {
   const fetchData = async id => {
     const data = await fetch(`/players/${id}`);
     console.log(data);
-    // const items = await data.json();
-    const items = await data.text();
+
+    const items = await data.json();
     console.log({ avatar: items });
     setName(items[0].name);
     setSurname(items[0].surname);
