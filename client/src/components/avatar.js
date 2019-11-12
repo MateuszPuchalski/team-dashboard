@@ -13,6 +13,7 @@ export default function Avatar({ id }) {
         Accept: "application/json"
       }
     });
+    console.log(data);
     const items = await data.json();
     console.log({ avatar: items });
     setName(items[0].name);
