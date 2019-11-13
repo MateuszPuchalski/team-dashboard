@@ -24,7 +24,11 @@ export default function SearchLog() {
 
   return (
     <form id="searchLog">
-      <input type="text" placeholder="Search Player" />
+      <input
+        type="text"
+        classname="searchLogText"
+        placeholder="Search Player"
+      />
     </form>
   );
 }

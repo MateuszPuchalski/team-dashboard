@@ -145,14 +145,14 @@ export default function Match(props) {
       <div className="log">
         <SearchLog />
         {renderButton(logs)}
-        {!youtubeRef.current ? (
+        {/* {!youtubeRef.current ? (
           "Loading..."
         ) : (
           <AddMatchLog
             youtubeControler={youtubeRef.current}
             match={props.match.params.id}
           />
-        )}
+        )} */}
       </div>
     </>
   );
