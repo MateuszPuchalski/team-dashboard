@@ -22,7 +22,7 @@ export default function Sidebar(props) {
         {renderAvatar(id + 1)}
         {renderAvatar(id + 2)}
         {renderAvatar(id + 3)}
-        {renderAvatar(id + 4)}
+
         {renderAvatar(id + 5)}
         {renderAvatar(id + 6)}
         {renderAvatar(id + 7)}
