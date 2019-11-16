@@ -36,7 +36,6 @@ export default function Sidebar(props) {
         {renderAvatar(id + 15)}
         {renderAvatar(id + 16)}
         {renderAvatar(id + 17)}
-        {renderAvatar(id + 18)}
       </div>
 
       <img src={process.env.PUBLIC_URL + `/arrow.png`} id="arrow" alt="arrow" />
