@@ -4,6 +4,14 @@ var db = require("../db.js");
 // SELECT * FROM players JOIN (stats JOIN matches ON stats.match_id=matches.id) ON players.id=stats.player_id
 /* GET users listing. */
 router.get("/:playerId", function(req, res, next) {
+  db.query(`SELECT * FROM players`, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+    // res.send(result);
+  });
+});
+
+router.get("/:playerId", function(req, res, next) {
   db.query(
     `SELECT * FROM players WHERE id = ${req.params.playerId}`,
     (err, result) => {
