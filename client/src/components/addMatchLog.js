@@ -1,7 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function AddMatchLog(props) {
   const youtubeControler = props.youtubeControler;
+
+  const [players, setPlayers] = useState([]);
+
+  const getAllPlayers = async () => {
+    const data = await fetch("/players");
+    const items = await data.json();
+    console.log(items);
+    setPlayers(items);
+  };
+
   function seek() {
     const controler = youtubeControler.internalPlayer;
 
@@ -11,6 +21,7 @@ export default function AddMatchLog(props) {
 
     // youtube.internalPlayer.seekTo(1200);
   }
+
   async function handleSubmit(event) {
     event.preventDefault();
 
@@ -32,18 +43,27 @@ export default function AddMatchLog(props) {
       body: JSON.stringify(data)
     });
   }
+
+  const renderOptions = players => {
+    const options = players.map(player => {
+      return (
+        <option
+          value={`${player.id}`}
+        >{`${player.name} ${player.surname}`}</option>
+      );
+    });
+    return options;
+  };
+
+  useEffect(() => {
+    getAllPlayers();
+  }, []);
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <select name="player" id="">
-          <option value="1">Mateusz Puchalski</option>
-          <option value="2">Przemek Kalinowski</option>
-          <option value="3">Damian Kowalczuk</option>
-          <option value="4">Wojciech Stec</option>
-          <option value="7">Szymon Jadczak</option>
-          <option value="8">Łukasz Płoński</option>
-          <option value="16">Adam Gawza</option>
-          <option value="17">Szymon Jabłoński</option>
+          {players[0] ? renderOptions(players) : <h3>LOADING...</h3>}
         </select>
         <br />
         <input type="radio" name="log" value="bramka" />
