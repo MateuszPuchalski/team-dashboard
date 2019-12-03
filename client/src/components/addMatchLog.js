@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
-
+import GoalPost from "./goalPost";
 export default function AddMatchLog(props) {
   const youtubeControler = props.youtubeControler;
 
   const [players, setPlayers] = useState([]);
-
+  const [logType, setLogType] = useState("throw");
+  const [logData, setLogData] = useState({});
+  const [communicationTest, setCommunicationTest] = useState("boom");
   const getAllPlayers = async () => {
     const data = await fetch("/players");
     const items = await data.json();
-    console.log(items);
+
     setPlayers(items);
   };
-
+  useEffect(() => {
+    console.log(communicationTest);
+  }, [communicationTest.accurate]);
   function seek() {
     const controler = youtubeControler.internalPlayer;
 
@@ -43,6 +47,9 @@ export default function AddMatchLog(props) {
       body: JSON.stringify(data)
     });
   }
+  const logTypeChange = event => {
+    setLogType(event.target.value);
+  };
 
   const renderOptions = players => {
     const options = players.map(player => {
@@ -66,16 +73,29 @@ export default function AddMatchLog(props) {
           {players[0] ? renderOptions(players) : <h3>LOADING...</h3>}
         </select>
         <br />
-        <input type="radio" name="log" value="bramka" />
-        bramka
+        <select onChange={logTypeChange} type="radio" name="log">
+          <option value="throw">Throw</option>
+          <option value="2min">2min</option>
+          <option value="defCharge">DefCharge</option>
+          <option value="offCharge">OffCharge</option>
+        </select>
+        {/* add type of throw */}
+        {logType == "throw" ? (
+          <select name="throwType">
+            <option value="running">Z biegu</option>
+            <option value="jumpShoot">Z wyskoku</option>
+            <option value="spin">Wkrętka</option>
+            <option value="penalty">Karny</option>
+          </select>
+        ) : null}
+        {logType == "throw" ? <GoalPost test={setCommunicationTest} /> : null}
+
         <br />
-        <label htmlFor="">
-          Timestamp: <br />
-          <input name="timeStamp" />
-        </label>
+
         <input type="submit" value="submit" />
       </form>
       <button onClick={seek}>SEEK</button>
+      <h1>{communicationTest.accurate ? "GOAL" : "MISS"}</h1>
     </div>
   );
 }
