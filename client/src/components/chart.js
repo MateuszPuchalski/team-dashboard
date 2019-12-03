@@ -71,7 +71,7 @@ export default function Chart(props) {
               beginAtZero: true,
               stepSize: 2,
               suggestedMin: 0,
-              suggestedMax: 12
+              suggestedMax: 14
             },
             gridLines: {
               display: false,
