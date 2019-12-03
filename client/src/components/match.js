@@ -6,6 +6,8 @@ import AddMatchLog from "./addMatchLog";
 import SearchLog from "./searchLog";
 import MatchTimeline from "./matchTimeline";
 import SketchBoard from "./sketchBoard";
+import GoalPost from "./goalPost";
+
 export default function Match(props) {
   const [logs, setLogs] = useState([]);
   const [youtubeId, setYoutubeId] = useState("");
@@ -107,12 +109,23 @@ export default function Match(props) {
         <button className="logButton" id={`logButton${element.id}`}>
           <Avatar id={element.player_id} />
           <div className="timeStamp">{timeString}</div>
-          <div className="ball">
-            <img
-              src={process.env.PUBLIC_URL + `/ball.png`}
-              id="ball"
-              alt="ball"
-            />
+
+          <div>
+            {element.log == "throw" ? (
+              element.throw_acc == "true" ? (
+                <div className="ball">
+                  <img
+                    src={process.env.PUBLIC_URL + `/ball.png`}
+                    id="ball"
+                    alt="ball"
+                  />
+                </div>
+              ) : (
+                "X"
+              )
+            ) : (
+              element.log
+            )}
           </div>
         </button>
       );
@@ -145,14 +158,15 @@ export default function Match(props) {
       <div className="log">
         <SearchLog />
         {renderButton(logs)}
-        {/* {!youtubeRef.current ? (
+
+        {!youtubeRef.current ? (
           "Loading..."
         ) : (
           <AddMatchLog
             youtubeControler={youtubeRef.current}
             match={props.match.params.id}
           />
-        )} */}
+        )}
       </div>
     </>
   );
