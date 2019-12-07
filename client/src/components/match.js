@@ -112,7 +112,7 @@ export default function Match(props) {
 
           <div>
             {element.log == "throw" ? (
-              element.throw_acc == "true" ? (
+              element.throw_acc == "true" || element.throw_acc == 1 ? (
                 <div className="ball">
                   <img
                     src={process.env.PUBLIC_URL + `/ball.png`}

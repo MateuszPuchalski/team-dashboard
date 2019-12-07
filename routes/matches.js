@@ -23,9 +23,21 @@ router.get("/:matchId", function(req, res, next) {
 router.post("/matchLog/add", function(req, res, next) {
   const data = req.body;
   console.log(data);
-  console.log("boom");
+
+  const values = [];
+  Object.values(data).forEach(element => {
+    if (typeof element == typeof "") {
+      values.push(`'${element}'`);
+    } else {
+      values.push(element);
+    }
+  });
+  console.log(values);
+
   db.query(
-    `INSERT INTO match_log(match_id, player_id, log, timestamp) VALUES ('${data.match_id}','${data.player_id}','${data.log}','${data.timeStamp}')`,
+    `INSERT INTO match_log(${Object.keys(
+      data
+    ).join()}) VALUES (${values.join()})`,
     (err, result) => {
       if (err) throw err;
       res.send(result);

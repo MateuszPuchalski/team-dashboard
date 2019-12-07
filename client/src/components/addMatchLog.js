@@ -1,43 +1,65 @@
 import React, { useEffect, useState } from "react";
 import GoalPost from "./goalPost";
+import Field from "./field";
 export default function AddMatchLog(props) {
   const youtubeControler = props.youtubeControler;
 
   const [players, setPlayers] = useState([]);
   const [logType, setLogType] = useState("throw");
-  const [logData, setLogData] = useState({});
-  const [communicationTest, setCommunicationTest] = useState("boom");
+  const [shotCords, setShotCords] = useState({ shotx: 0, shoty: 0 });
+  const [goalDescription, setGoalDescription] = useState({
+    accurate: false,
+    cords: { goalx: 0, goaly: 0 }
+  });
+
   const getAllPlayers = async () => {
     const data = await fetch("/players");
     const items = await data.json();
 
     setPlayers(items);
   };
-  useEffect(() => {
-    console.log(communicationTest);
-  }, [communicationTest.accurate]);
-  function seek() {
-    const controler = youtubeControler.internalPlayer;
-
-    controler.getCurrentTime().then(data => {
-      console.log(data);
-    });
-
-    // youtube.internalPlayer.seekTo(1200);
-  }
 
   async function handleSubmit(event) {
     event.preventDefault();
+    let playerId, matchId, log;
+    let logType = "NULL",
+      throwAcc = "NULL",
+      shotx = "NULL",
+      shoty = "NULL",
+      goalx = "NULL",
+      goaly = "NULL";
+    playerId = event.target.player.value;
+    matchId = props.match;
+    log = event.target.log.value;
+    if (log == "throw") {
+      logType = event.target.throwType.value;
+      throwAcc = goalDescription.accurate;
+      shotx = shotCords.shotx;
+      shoty = shotCords.shoty;
+      goalx = goalDescription.cords.goalx;
+      goaly = goalDescription.cords.goaly;
+    }
 
     const data = {
-      player_id: event.target.player.value,
-      match_id: props.match,
-      log: event.target.log.value,
-      timeStamp: Math.floor(
+      player_id: playerId,
+      match_id: matchId,
+      log: log,
+      log_type: logType,
+      throw_acc: throwAcc,
+      shot_x: shotx,
+      shot_y: shoty,
+      goal_x: goalx,
+      goal_y: goaly,
+      timestamp: Math.floor(
         await youtubeControler.internalPlayer.getCurrentTime()
       )
     };
-
+    console.log(data);
+    for (const key in data) {
+      if (data[key] == "NULL") {
+        delete data[key];
+      }
+    }
     console.log(data);
     fetch("/matches/matchLog/add", {
       method: "POST",
@@ -82,20 +104,21 @@ export default function AddMatchLog(props) {
         {/* add type of throw */}
         {logType == "throw" ? (
           <select name="throwType">
-            <option value="running">Z biegu</option>
+            <option value="overarmShot">Z biegu</option>
+            <option value="underarmShot">Biodro</option>
             <option value="jumpShoot">Z wyskoku</option>
-            <option value="spin">Wkrętka</option>
+            <option value="spinShoot">Wkrętka</option>
             <option value="penalty">Karny</option>
           </select>
         ) : null}
-        {logType == "throw" ? <GoalPost test={setCommunicationTest} /> : null}
-
+        {logType == "throw" ? <GoalPost goal={setGoalDescription} /> : null}
+        {logType == "throw" ? <Field shot={setShotCords} /> : null}
         <br />
 
         <input type="submit" value="submit" />
       </form>
-      <button onClick={seek}>SEEK</button>
-      <h1>{communicationTest.accurate ? "GOAL" : "MISS"}</h1>
+      <h1>X:{shotCords.x}</h1>
+      <h1>Y:{shotCords.y}</h1>
     </div>
   );
 }
