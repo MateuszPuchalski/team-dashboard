@@ -46,16 +46,6 @@ export default function Field(props) {
     }
   );
 
-  const innerRect = new fabric.Rect({
-    left: 46,
-    top: 50,
-    fill: "grey",
-    width: 150,
-    height: 100,
-
-    selectable: false,
-    hoverCursor: "arrow"
-  });
   useEffect(() => {
     if (!canvasRef.current) {
       return;
