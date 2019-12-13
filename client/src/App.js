@@ -7,6 +7,7 @@ import Chart from "./components/chart";
 import Court from "./components/court";
 import Header from "./components/header";
 import Match from "./components/match";
+import Stats from "./components/stats";
 import Comparison from "./components/comparison";
 
 import { Switch, Route } from "react-router-dom";
@@ -19,9 +20,9 @@ export default class App extends Component {
     return (
       <div className="dashboard">
         <Sidebar />
-        <Header />
-
+        <Route path="/" component={Header} />
         <Route path="/players/:id" component={Comparison} />
+
         <Route path="/matches/:id" component={Match} />
         <Route path="/players/:id" component={PlayerInfo} />
         <Route path="/players/:id" component={SeasonStats} />
@@ -32,6 +33,7 @@ export default class App extends Component {
             <Route path="/players/:id" component={Chart} />
           </div>
         </Route>
+        <Route path="/stats/:id" component={Stats} />
       </div>
     );
   }
