@@ -20,6 +20,16 @@ router.get("/:matchId", function(req, res, next) {
   );
 });
 
+router.get("/matchLog/:matchId/:playerId", function(req, res, next) {
+  db.query(
+    `SELECT * FROM match_log WHERE match_id = ${req.params.matchId} AND (player_id = ${req.params.playerId} OR assist_id = ${req.params.playerId})`,
+    (err, result) => {
+      if (err) throw err;
+      res.send(result);
+    }
+  );
+});
+
 router.post("/matchLog/add", function(req, res, next) {
   const data = req.body;
   console.log(data);
