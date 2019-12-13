@@ -111,6 +111,7 @@ export default function AddMatchLog(props) {
         <select onChange={logTypeChange} name="log">
           <option value="throw">Rzut</option>
           <option value="turnover">Strata</option>
+          <option value="R7">Wywalczony karny</option>
           <option value="blockedShoot">Rzut w blok</option>
           <option value="defenceBlock">Zblokowany rzut</option>
           <option value="2min">2min</option>
