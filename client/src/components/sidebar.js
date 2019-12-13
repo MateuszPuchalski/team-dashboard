@@ -9,7 +9,7 @@ export default function Sidebar(props) {
   const getAllPlayers = async () => {
     const data = await fetch("/players");
     const items = await data.json();
-    console.log(items);
+
     setPlayers(items);
   };
 
@@ -27,7 +27,6 @@ export default function Sidebar(props) {
 
   useEffect(() => {
     getAllPlayers();
-    console.log(players);
   }, []);
 
   return (
