@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Metrics from "./metrics";
 import Statue from "./statue";
-import Flag from "./flag";
+
 class PlayerInfo extends Component {
   constructor(props) {
     super(props);
@@ -25,11 +25,10 @@ class PlayerInfo extends Component {
   // const data = await fetch(`/players/${this.props.match.params.id}`);
   fetchData() {
     fetch(`/players/${this.props.match.params.id}`, {
-      headers : { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-       }
-
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      }
     })
       .then(response => response.json())
       .then(data =>
@@ -40,9 +39,6 @@ class PlayerInfo extends Component {
         })
       );
   }
-
-
-  
 
   componentDidMount() {
     this.fetchData();
