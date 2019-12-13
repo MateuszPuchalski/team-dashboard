@@ -108,6 +108,7 @@ export default function Match(props) {
       return (
         <button className="logButton" id={`logButton${element.id}`}>
           <Avatar id={element.player_id} />
+          {element.assist_id > 0 ? <Avatar id={element.assist_id} /> : null}
           <div className="timeStamp">{timeString}</div>
 
           <div>
@@ -159,14 +160,14 @@ export default function Match(props) {
         <SearchLog />
         {renderButton(logs)}
 
-        {/* {!youtubeRef.current ? (
+        {!youtubeRef.current ? (
           "Loading..."
         ) : (
           <AddMatchLog
             youtubeControler={youtubeRef.current}
             match={props.match.params.id}
           />
-        )} */}
+        )}
       </div>
     </>
   );
