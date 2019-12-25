@@ -10,14 +10,16 @@ import Match from "./components/match";
 import Stats from "./components/stats";
 import Comparison from "./components/comparison";
 
+import { UserContext } from "./UserContext";
+
 import { Switch, Route } from "react-router-dom";
 import "./normalize.css";
 import "./main.css";
 import "./finalcss.css";
 
-export default class App extends Component {
-  render() {
-    return (
+export default function App() {
+  return (
+    <UserContext.Provider value={"BOOOM!!!!!"}>
       <div className="dashboard">
         <Sidebar />
         <Route path="/" component={Header} />
@@ -35,6 +37,6 @@ export default class App extends Component {
         </Route>
         <Route path="/stats/:id" component={Stats} />
       </div>
-    );
-  }
+    </UserContext.Provider>
+  );
 }
