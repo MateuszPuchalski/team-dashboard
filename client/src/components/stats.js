@@ -1,94 +1,187 @@
 import React from "react";
 import { Chart } from "chart.js";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
+import countBy from "lodash/countBy";
+
+import { UserContext } from "../UserContext";
+
 Chart.defaults.global.defaultFontColor = "White";
+
 export default function Stats(props) {
-  const [playerLogs, setPlayerLogs] = useState([]);
-  const [throws, setThrows] = useState(0);
-  const [turnovers, setTurnovers] = useState(0);
-  const [twoMin, setTwoMin] = useState(0);
-  const [positiveDefenseActions, setPositiveDefenseActions] = useState(0);
-  const [accurateThrows, setAccurateThrows] = useState(0);
-  const [jumpShoots, setJumpShoots] = useState(0);
-  const [overarmShoots, setOverarmShoots] = useState(0);
-  const [underarmShoots, setUnderarmShoots] = useState(0);
-  const [panaltys, setPenaltys] = useState(0);
-  const getMatchLogsForPlayer = async player => {
-    const data = await fetch("/matches/16");
-    const items = await data.json();
-    console.log(items);
-    setPlayerLogs(items);
-  };
+  const [testData, setTestData] = useState([2, 3, 4, 5]);
+  const [fetchedData, setFetchedData] = useState();
+  const [players, setPlayers] = useState();
 
-  const playerStats = logs => {
-    const throws = logs.filter(log => log.log == "throw");
-    setThrows(throws.length);
+  const user = useContext(UserContext);
 
-    const turnovers = logs.filter(log => log.log == "turnover");
-    setTurnovers(turnovers.length);
-
-    const twoMin = logs.filter(log => log.log == "2min");
-    setTwoMin(twoMin.length);
-
-    const positiveDefenseActions = logs.filter(
-      log => log.log == "attackInterruption" || log.log == "defCharge"
-    );
-    setPositiveDefenseActions(positiveDefenseActions.length);
-
-    const jumpShoots = throws.filter(shoot => shoot.log_type == "jumpShoot");
-    const overarmShoots = throws.filter(
-      shoot => shoot.log_type == "overarmShot"
-    );
-    const underarmShoots = throws.filter(
-      shoot => shoot.log_type == "underarmShot"
-    );
-    const penaltys = throws.filter(shoot => shoot.log_type == "penalty");
-    console.log({
-      throws: throws,
-      jumpShoots: jumpShoots,
-      turnovers: turnovers,
-      twoMin: twoMin
-    });
-    setJumpShoots(jumpShoots.length);
-    setOverarmShoots(overarmShoots.length);
-    setUnderarmShoots(underarmShoots.length);
-    setPenaltys(penaltys.length);
-  };
+  const canvasRef = useRef();
+  const pieCanvasRef = useRef();
+  useEffect(() => {
+    console.log({ fetchedData: fetchedData, players: players });
+    if (players) {
+      console.log(players.id);
+    }
+  }, [fetchedData, players]);
 
   useEffect(() => {
-    getMatchLogsForPlayer();
+    const fetchData = async () => {
+      const data = await fetch("/players").then(res => res.json());
+      setPlayers(data);
+    };
+    fetchData();
   }, []);
 
   useEffect(() => {
-    if (playerLogs.length < 1) {
-      return;
+    const fetchData = async () => {
+      const data = await fetch("/matches/16").then(res => res.json());
+      setFetchedData(data);
+    };
+    fetchData();
+  }, []);
+
+  // Pie chart with throws
+  useEffect(() => {
+    let madeThrows, missThrows;
+    if (fetchedData) {
+      madeThrows = fetchedData.filter(
+        log => log.log == "throw" && log.throw_acc == 1
+      ).length;
+      missThrows = fetchedData.filter(
+        log => log.log == "throw" && log.throw_acc == 0
+      ).length;
     }
-    playerStats(playerLogs);
-  }, [playerLogs]);
-
-  useEffect(() => {
-    console.log(playerLogs);
-  }, [playerLogs]);
-
-  useEffect(() => {
-    let ctx = document.getElementById("yourChart").getContext("2d");
-
-    const chart = new Chart(ctx, {
-      type: "bar",
-
+    let myPieChart = new Chart(pieCanvasRef.current, {
+      type: "pie",
       data: {
-        labels: ["throws", "turnovers", "2min", "defence"],
+        labels: ["made", "miss"],
         datasets: [
-          { data: [throws, turnovers, twoMin, positiveDefenseActions] }
+          {
+            borderColor: ["red", "green"],
+            hoverBackgroundColor: ["red", "green"],
+            data: [missThrows, madeThrows]
+          }
         ]
+      },
+      options: {
+        title: { display: true, position: "top", text: "Throws" },
+        tooltips: {
+          callbacks: {
+            label: function(tooltipItem) {
+              let throws, made, miss;
+              if (fetchedData && players) {
+                throws = fetchedData.filter(log => log.log == "throw");
+                made = throws.filter(log => log.throw_acc == 1);
+                miss = throws.filter(log => log.throw_acc == 0);
+              } else {
+                return "Loading...";
+              }
+
+              if (tooltipItem.index == 0) {
+                let counted = countBy(miss, miss => {
+                  return miss.player_id;
+                });
+
+                console.log(counted);
+
+                let countedStrings = Object.keys(counted).map(key => {
+                  let name = players.find(x => x.id == key).name;
+                  let surname = players.find(x => x.id == key).surname;
+                  return `${name} ${surname}: ${counted[key]}`;
+                });
+
+                console.log(countedStrings);
+                countedStrings.sort((a, b) => {
+                  return b[b.length - 1] - a[a.length - 1];
+                });
+
+                return countedStrings;
+              } else {
+                let counted = countBy(made, made => {
+                  return made.player_id;
+                });
+                console.log({ counted: counted });
+                let countedStrings = Object.keys(counted).map(key => {
+                  let name = players.find(x => x.id == key).name;
+                  let surname = players.find(x => x.id == key).surname;
+                  return `${name} ${surname}: ${counted[key]}`;
+                });
+                countedStrings.sort((a, b) => {
+                  return b[b.length - 1] - a[a.length - 1];
+                });
+                console.log(countedStrings);
+
+                return countedStrings;
+              }
+            }
+          }
+        },
+        legend: {
+          position: "bottom"
+        }
       }
     });
-  }, [throws, turnovers, twoMin, positiveDefenseActions]);
+  }, [fetchedData]);
+
+  useEffect(() => {
+    if (!canvasRef.current) {
+      return;
+    }
+    let myBarChart = new Chart(canvasRef.current, {
+      type: "bar",
+      data: {
+        labels: ["zing", "zong", "zang", "zeng"],
+
+        datasets: [
+          {
+            label: "Test",
+            borderWidth: 2,
+            borderColor: ["brown", "red", "blue", "green"],
+            hoverBackgroundColor: ["brown", "red", "blue", "green"],
+            barPercentage: 0.5,
+            barThickness: 6,
+            maxBarThickness: 8,
+            minBarLength: 2,
+            data: testData
+          }
+        ]
+      },
+      options: {
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+                stepSize: 1
+              }
+            }
+          ]
+        }
+      }
+    });
+
+    //  |  This gonna be helpfull click to expand stat
+    // \|/ to be more detaild
+    canvasRef.current.onclick = function(evt) {
+      console.log(myBarChart.getElementAtEvent(evt));
+    };
+
+    return () => {
+      myBarChart.destroy();
+    };
+  }, [testData]);
+
+  const fetchMatch = () => {
+    setTestData([5, 4, 3, 2]);
+  };
+
   return (
     <>
       <div>
-        <canvas id="yourChart"> </canvas>
+        <canvas ref={canvasRef}></canvas>
+        <button onClick={fetchMatch}>DATA</button>
+        <canvas ref={pieCanvasRef}></canvas>
       </div>
+      <h1>User: {user}</h1>
     </>
   );
 }
