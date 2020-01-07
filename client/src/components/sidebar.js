@@ -1,7 +1,30 @@
 import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 import Avatar from "./avatar";
-import "../main.css";
 import { Link } from "react-router-dom";
+
+const Wrapper = styled.div`
+  grid-row: 1 / span 12;
+  display: grid;
+  grid-template-rows: auto, repeat(9, 8.33%);
+`;
+
+const Herb = styled.img`
+  grid-row: 1/ 2;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+`;
+
+const Avatars = styled.div`
+  object-fit: cover;
+  overflow: scroll;
+  overflow-x: hidden;
+  grid-row-start: 3;
+  grid-row-end: 10;
+
+  display: grid;
+`;
 
 export default function Sidebar(props) {
   const [id, setId] = useState(1);
@@ -30,13 +53,11 @@ export default function Sidebar(props) {
   }, []);
 
   return (
-    <div className="sidebar">
-      <img src={process.env.PUBLIC_URL + `/herb.webp`} id="herb" alt="herb" />
-      <div className="avatars">
+    <Wrapper>
+      <Herb src={process.env.PUBLIC_URL + `/herb.webp`} id="herb" alt="herb" />
+      <Avatars>
         {players[0] ? renderAvatar(players) : <h3>LOADING...</h3>}
-      </div>
-
-      <img src={process.env.PUBLIC_URL + `/arrow.png`} id="arrow" alt="arrow" />
-    </div>
+      </Avatars>
+    </Wrapper>
   );
 }

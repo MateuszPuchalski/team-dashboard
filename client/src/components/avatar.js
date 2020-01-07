@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
-import "../main.css";
+import styled from "styled-components";
 
+const AvatarStyle = styled.img`
+  width: 100%;
+  height: auto;
+  object-fit: none;
+  &:hover {
+    object-fit: contain;
+  }
+`;
 export default function Avatar({ id }) {
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
@@ -26,11 +34,9 @@ export default function Avatar({ id }) {
   //   classNames += " avatarSelected";
   // }
   return (
-    <div className={"sidebar__item"}>
-      <img
-        src={process.env.PUBLIC_URL + `/avatars/${name}${surname}.webp`}
-        alt={`${name} ${surname}`}
-      />
-    </div>
+    <AvatarStyle
+      src={process.env.PUBLIC_URL + `/avatars/${name}${surname}.webp`}
+      alt={`${name} ${surname}`}
+    />
   );
 }
