@@ -7,11 +7,8 @@ const Wrapper = styled.div`
   grid-row: 1 / 2;
   grid-column: 2 / 13;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
-  &:hover {
-    background: pink;
-  }
 `;
 
 export default function Header() {
@@ -21,9 +18,7 @@ export default function Header() {
       <div>OVERVIEW</div>
 
       <div>TRAINING</div>
-      <div>
-        <Link to={`/stats/1`}>STATS</Link>
-      </div>
+      <div>STATS</div>
 
       <div>TRANSFERS</div>
       <div>REPORTS</div>

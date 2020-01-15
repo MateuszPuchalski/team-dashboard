@@ -4,6 +4,19 @@ import { Line } from "react-chartjs-2";
 import "chartjs-plugin-datalabels";
 import "chartjs-plugin-style";
 
+import styled from "styled-components";
+
+const Wrapper = styled.div`
+  grid-row: 11 / 12;
+  grid-column: 4 / 13;
+  position: absolute;
+  z-index: 10;
+  background: #dd1818;
+  width: 40vw;
+  border-radius: 10px;
+  box-shadow: 1px 1px 20px;
+`;
+
 export default function Chart(props) {
   const [goals, setGoals] = useState([]);
   const [clubNames, setClubNames] = useState([]);
@@ -132,12 +145,12 @@ export default function Chart(props) {
   };
 
   useEffect(() => {
-    fetchData(props.match.params.id);
-  }, [props.match.params.id]);
+    fetchData(props.id);
+  }, [props.id]);
 
   return (
-    <div className="chart">
+    <Wrapper>
       <Line data={getChartData} options={chartData.options} />
-    </div>
+    </Wrapper>
   );
 }

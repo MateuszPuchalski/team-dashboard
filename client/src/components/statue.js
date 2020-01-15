@@ -1,24 +1,43 @@
 import { useSpring, animated } from "react-spring";
 import React, { useState, useEffect } from "react";
+
 import styled from "styled-components";
 
 // zmienic jak bede łączyć w player info
 const Wrapper = styled.div`
-  grid-row: 2 / 13;
-  grid-column: 2 / 6;
+  grid-row: 2 / 12;
+  grid-column: 5 / 9;
   display: grid;
-
-  &:hover {
-    background: pink;
-  }
+  position: relative;
 `;
 
 const Img = styled.img`
-  width: 100%;
-  height: 100%;
+  /* width: 100%; */
+  height: 200%;
   justify-self: center;
-  &:hover {
-    background: pink;
+  z-index: 2;
+`;
+
+const ClubName = styled.img`
+  /* opacity: 0.5; */
+  width: 120%;
+  position: absolute;
+  justify-self: center;
+  align-self: start;
+  margin: 0;
+  margin-top: 5vh;
+  z-index: 1;
+`;
+
+const Number = styled.h1`
+  font-size: 7em;
+  position: absolute;
+  margin-left: 10%;
+  margin-top: 30%;
+  color: rgba(255, 255, 255);
+  z-index: 3;
+  .hash {
+    font-size: 0.3em;
   }
 `;
 
@@ -32,6 +51,15 @@ export default function Statue(props) {
   });
   return (
     <Wrapper>
+      <ClubName
+        src={process.env.PUBLIC_URL + `/fadebestiosnapis.png`}
+        id="herb"
+        alt="herb"
+      />
+      <Number>
+        <span className="hash">#</span>
+        {props.nr}
+      </Number>
       <Img
         src={
           process.env.PUBLIC_URL +

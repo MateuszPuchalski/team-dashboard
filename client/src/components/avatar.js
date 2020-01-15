@@ -2,12 +2,9 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 const AvatarStyle = styled.img`
-  width: 100%;
-  height: auto;
-  object-fit: none;
-  &:hover {
-    object-fit: contain;
-  }
+  width: 90%;
+
+  padding: 0.5rem;
 `;
 export default function Avatar({ id }) {
   const [name, setName] = useState("");
