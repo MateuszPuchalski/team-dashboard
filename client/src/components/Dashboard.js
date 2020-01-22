@@ -4,6 +4,8 @@ import styled from "styled-components";
 import EfficiencyCard from "./EfficiencyCard";
 import MatchesTest from "./MatchesTest";
 import AddClub from "./AddClub";
+import AddPlayer from "./AddPlayer";
+
 import Club from "./Club";
 import Sidebar from "./Sidebar";
 
@@ -51,6 +53,7 @@ export default function Dashboard() {
       <Sidebar />
       <Switch>
         <Route exact path={`/dashboard/club`} component={Club} />
+        <Route exact path={`/dashboard/players`} component={AddPlayer} />
       </Switch>
     </Wrapper>
   );

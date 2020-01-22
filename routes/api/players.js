@@ -10,7 +10,7 @@ router.get("/", (req, res) => {
     .populate(["currentClub", "addBy"])
     .then(players => res.json(players));
 });
-router.post("/add", auth, (req, res) => {
+router.post("/add", (req, res) => {
   const {
     name,
     currentClub,
