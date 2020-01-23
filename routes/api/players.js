@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const auth = require("../../middleware/auth");
+// const auth = require("../../middleware/auth");
 
 //Player Model
 const Player = require("../../models/player.model");
@@ -20,7 +20,7 @@ router.post("/add", (req, res) => {
     jerseyNumber,
     date
   } = req.body;
-  const userId = req.user.id;
+  const userId = req.body.userid;
 
   const newPlayer = new Player({
     name,
@@ -30,7 +30,7 @@ router.post("/add", (req, res) => {
     height,
     jerseyNumber,
     date,
-    addedBy: userId
+    addBy: userId
   });
   newPlayer.save().then(player => res.json(player));
 });

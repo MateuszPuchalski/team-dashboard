@@ -35,7 +35,7 @@ function useProvideAuth() {
   const signup = (username, email, password) => {
     const data = { username: username, email: email, password: password };
 
-    fetch("/api/auth/add", {
+    fetch("/api/users/add", {
       method: "POST",
       headers: {
         "Content-type": "application/json; charset=UTF-8"

@@ -19,7 +19,7 @@ const connection = mongoose.connection;
 connection.once("open", () => {
   console.log("MongoDB Connected");
 });
-const auth = require("./middleware/auth");
+// const auth = require("./middleware/auth");
 const playersRouter = require("./routes/api/players");
 const competitionsRouter = require("./routes/api/competitions");
 const clubsRouter = require("./routes/api/clubs");
@@ -34,7 +34,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/api/players", auth, playersRouter);
+app.use("/api/players", playersRouter);
 app.use("/api/competitions", competitionsRouter);
 app.use("/api/clubs", clubsRouter);
 app.use("/api/matches", matchesRouter);

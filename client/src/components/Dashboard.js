@@ -8,6 +8,7 @@ import AddPlayer from "./AddPlayer";
 
 import Club from "./Club";
 import Sidebar from "./Sidebar";
+import Roster from "./Roster";
 
 import {
   BrowserRouter as Router,
@@ -53,7 +54,16 @@ export default function Dashboard() {
       <Sidebar />
       <Switch>
         <Route exact path={`/dashboard/club`} component={Club} />
-        <Route exact path={`/dashboard/players`} component={AddPlayer} />
+        <Route
+          exact
+          path={`/dashboard/players`}
+          render={props => (
+            <>
+              <AddPlayer />
+              <Roster />
+            </>
+          )}
+        />
       </Switch>
     </Wrapper>
   );
