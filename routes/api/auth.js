@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
+const passport = require("passport");
 //Player Model
 const User = require("../../models/user.model");
 const jwt = require("jsonwebtoken");
@@ -29,6 +30,10 @@ router.post("/", (req, res) => {
       });
     });
   });
+});
+
+router.post("/passport", passport.authenticate("local"), (req, res) => {
+  res.send(req.user);
 });
 
 router.get("/user", auth, (req, res) => {

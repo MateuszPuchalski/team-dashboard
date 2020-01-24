@@ -1,9 +1,10 @@
 var express = require("express");
 var path = require("path");
 var cors = require("cors");
-
+const passport = require("passport");
+const session = require("express-session");
 require("dotenv").config();
-
+require("./config/passport")(passport);
 const mongoose = require("mongoose");
 
 const uri = process.env.ATLAS_URI;
@@ -33,6 +34,11 @@ app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(session({ secret: "cats" }));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/api/players", playersRouter);
 app.use("/api/competitions", competitionsRouter);
