@@ -17,7 +17,6 @@ import Dashboard from "./components/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 
 import { ProviderAuth } from "./useAuth";
-
 const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;

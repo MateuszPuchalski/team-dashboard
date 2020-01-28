@@ -6,6 +6,7 @@ import MatchesTest from "./MatchesTest";
 import AddClub from "./AddClub";
 import AddPlayer from "./AddPlayer";
 
+import { useAuth } from "../useAuth";
 import Club from "./Club";
 import Sidebar from "./Sidebar";
 import Roster from "./Roster";
@@ -44,13 +45,18 @@ const Wrapper = styled.div`
 
 export default function Dashboard() {
   const match = useRouteMatch();
+  const auth = useAuth();
 
   useEffect(() => {
     console.log(match.url);
+    console.log({ typeauth: typeof auth });
+    console.log({ numfloat: typeof 3.14 });
+    console.log({ route: typeof Route });
   }, []);
   return (
     <Wrapper>
       <h1>Dashboard</h1>
+      <h2>Welcome {auth.user.username}</h2>
       <Sidebar />
       <Switch>
         <Route exact path={`/dashboard/club`} component={Club} />

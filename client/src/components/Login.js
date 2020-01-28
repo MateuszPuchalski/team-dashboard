@@ -14,7 +14,7 @@ export default function Login(props) {
     };
 
     auth.signin(data.email, data.password, () => {
-      if (auth.user.user) history.push("/dashboard"); // This is wher heppens 2 click to log in
+      if (auth.user) history.push("/dashboard"); // This is wher heppens 2 click to log in
     });
   };
   useEffect(() => {

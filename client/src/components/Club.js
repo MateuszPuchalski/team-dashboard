@@ -9,7 +9,7 @@ export default function Club() {
   const auth = useAuth();
 
   const getClub = () => {
-    fetch(`/api/clubs/${auth.user.user.id}`)
+    fetch(`/api/clubs/${auth.user._id}`)
       .then(res => res.json())
       .then(data => {
         setClub(data);

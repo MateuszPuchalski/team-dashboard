@@ -27,19 +27,21 @@ const clubsRouter = require("./routes/api/clubs");
 const matchesRouter = require("./routes/api/matches");
 const usersRouter = require("./routes/api/users");
 const authRouter = require("./routes/api/auth");
+const testRouter = require("./routes/api/test");
 
 const app = express();
-
+app.disable("x-powered-by");
 app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(session({ secret: "cats" }));
+app.use(session({ secret: "cats", resave: false, saveUninitialized: false }));
 
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use("/api/test", testRouter);
 app.use("/api/players", playersRouter);
 app.use("/api/competitions", competitionsRouter);
 app.use("/api/clubs", clubsRouter);

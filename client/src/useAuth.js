@@ -1,9 +1,10 @@
-import React, { useState, useContext, createContext } from "react";
+import React, { useState, useEffect, useContext, createContext } from "react";
 
 const authContext = createContext();
 
 export function ProviderAuth({ children }) {
   const auth = useProvideAuth();
+
   return <authContext.Provider value={auth}>{children}</authContext.Provider>;
 }
 
@@ -14,9 +15,24 @@ export const useAuth = () => {
 function useProvideAuth() {
   const [user, setUser] = useState(null);
 
+  const session = () => {
+    fetch("/api/auth", {
+      headers: {
+        "Content-type": "application/json"
+      }
+    })
+      .then(res => res.json())
+      .then(user => setUser(user));
+  };
+
+  useEffect(() => {
+    console.log({ typeses: typeof session });
+    session();
+  }, []);
+
   const signin = (email, password, cb) => {
     const data = { email: email, password: password };
-
+    console.log({ type: typeof data });
     fetch("/api/auth", {
       method: "POST",
       headers: {
@@ -53,5 +69,5 @@ function useProvideAuth() {
     setUser(null);
   };
 
-  return { user, signin, signup, signout };
+  return { session, user, signin, signup, signout };
 }
