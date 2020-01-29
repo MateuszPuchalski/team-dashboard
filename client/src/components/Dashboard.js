@@ -47,12 +47,6 @@ export default function Dashboard() {
   const match = useRouteMatch();
   const auth = useAuth();
 
-  useEffect(() => {
-    console.log(match.url);
-    console.log({ typeauth: typeof auth });
-    console.log({ numfloat: typeof 3.14 });
-    console.log({ route: typeof Route });
-  }, []);
   return (
     <Wrapper>
       <h1>Dashboard</h1>

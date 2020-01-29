@@ -7,7 +7,9 @@ export default function PrivateRoute({ component: Component, ...rest }) {
     <Route
       {...rest}
       render={props => {
-        if (auth.user) {
+        const currentUser = localStorage.getItem("currentUser");
+        console.log({ currentUser: currentUser });
+        if (currentUser) {
           return <Component {...props} />;
         } else {
           return (

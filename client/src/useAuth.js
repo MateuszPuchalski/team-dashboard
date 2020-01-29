@@ -15,25 +15,9 @@ export const useAuth = () => {
 function useProvideAuth() {
   const [user, setUser] = useState(null);
 
-  const session = () => {
-    fetch("/api/auth", {
-      headers: {
-        "Content-type": "application/json"
-      }
-    })
-      .then(res => res.json())
-      .then(user => setUser(user));
-  };
-
-  useEffect(() => {
-    console.log({ typeses: typeof session });
-    session();
-  }, []);
-
-  const signin = (email, password, cb) => {
+  const signin = async (email, password) => {
     const data = { email: email, password: password };
-    console.log({ type: typeof data });
-    fetch("/api/auth", {
+    await fetch("/api/auth", {
       method: "POST",
       headers: {
         "Content-type": "application/json; charset=UTF-8"
@@ -42,8 +26,8 @@ function useProvideAuth() {
     })
       .then(res => res.json())
       .then(data => {
+        localStorage.setItem("currentUser", JSON.stringify(data));
         setUser(data);
-        cb();
       })
       .catch(err => console.error(err));
   };
@@ -69,5 +53,5 @@ function useProvideAuth() {
     setUser(null);
   };
 
-  return { session, user, signin, signup, signout };
+  return { setUser, user, signin, signup, signout };
 }

@@ -16,7 +16,7 @@ import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 
-import { ProviderAuth } from "./useAuth";
+import { ProviderAuth, useAuth } from "./useAuth";
 const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
@@ -33,7 +33,7 @@ export default function App2(props) {
         <Router>
           <Route exact path="/" component={Login} />
           <Route exact path="/register" component={Register} />
-          <Route path={"/dashboard"} component={Dashboard} />
+          <PrivateRoute path={"/dashboard"} component={Dashboard} />
         </Router>
       </ProviderAuth>
     </Wrapper>

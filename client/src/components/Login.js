@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect } from "react";
 import { useAuth } from "../useAuth";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 export default function Login(props) {
   const auth = useAuth();
@@ -13,13 +13,10 @@ export default function Login(props) {
       password: e.target.password.value
     };
 
-    auth.signin(data.email, data.password, () => {
-      if (auth.user) history.push("/dashboard"); // This is wher heppens 2 click to log in
-    });
+    auth.signin(data.email, data.password);
+    if (auth.user) history.push("/dashboard");
   };
-  useEffect(() => {
-    console.log({ User: auth.user });
-  }, [auth.user]);
+
   return (
     <>
       <h1>Login</h1>
