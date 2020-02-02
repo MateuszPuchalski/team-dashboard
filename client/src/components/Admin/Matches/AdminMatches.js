@@ -34,10 +34,8 @@ const Form = styled.form`
     }
   }
 `;
-export default function AdminShowPlayers() {
-  const [players, setPlayers] = useState();
+export default function AdminMatches() {
   const [clubs, setClubs] = useState();
-  const [selectedClub, setSelectedClub] = useState();
 
   const getClubs = () => {
     fetch("/api/clubs", {
@@ -50,11 +48,9 @@ export default function AdminShowPlayers() {
       .catch(err => console.error(err));
   };
 
-  const getPlayers = clubId => {
-    fetch(`/api/players/club/${clubId}`)
-      .then(res => res.json())
-      .then(players => setPlayers(players));
-  };
+  useEffect(() => {
+    getClubs();
+  }, []);
 
   const renderClubs = clubs => {
     const arr = clubs.map((club, i) => {
@@ -67,46 +63,21 @@ export default function AdminShowPlayers() {
     return arr;
   };
 
-  const selectClubId = e => {
-    setSelectedClub(e.target.value);
-  };
-
-  useEffect(() => {
-    console.log(selectedClub);
-  }, [selectedClub]);
-
-  useEffect(() => {
-    getPlayers(selectedClub);
-  }, [selectedClub]);
-
-  useEffect(() => {
-    getPlayers();
-    getClubs();
-  }, []);
-
   return (
     <Wrapper>
-      <h3>Players</h3>
+      <h3>Add Match</h3>
       <Form>
         <label>
-          Club:
-          <select onChange={selectClubId} name="club">
+          Home Team:
+          <select name="homeTeam">{clubs ? renderClubs(clubs) : null}</select>
+        </label>
+        <label>
+          Away Team:
+          <select name="currentClub">
             {clubs ? renderClubs(clubs) : null}
           </select>
         </label>
       </Form>
-      <hr />
-      <div>
-        <ul>
-          {players
-            ? players.map(player => (
-                <li key={player.id}>
-                  {player.name} {player.position}
-                </li>
-              ))
-            : null}
-        </ul>
-      </div>
     </Wrapper>
   );
 }

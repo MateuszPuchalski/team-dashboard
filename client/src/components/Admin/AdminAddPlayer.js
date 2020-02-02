@@ -21,7 +21,7 @@ const Form = styled.form`
     padding: 10px;
   }
   label {
-    diplay: flex;
+    display: flex;
     span {
       display: block;
       margin: 10px;

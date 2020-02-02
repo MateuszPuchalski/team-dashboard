@@ -1,7 +1,6 @@
 const mongoose = require("mongoose"); // Erase if already required
 const Schema = mongoose.Schema;
-const Competition = require("./competition.model");
-const Club = require("./club.model");
+
 // Declare the Schema of the Mongo model
 var matchSchema = new Schema({
   competition: {
@@ -28,6 +27,9 @@ var matchSchema = new Schema({
   awayScore: {
     type: Number,
     required: true
+  },
+  ytId: {
+    type: String
   }
 });
 

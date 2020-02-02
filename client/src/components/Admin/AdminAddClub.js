@@ -21,7 +21,7 @@ const Form = styled.form`
     padding: 10px;
   }
   label {
-    diplay: flex;
+    display: flex;
     span {
       display: block;
       margin: 10px;
@@ -116,7 +116,7 @@ export default function AddClub() {
         </label>
 
         <label>
-          <span>Competition:</span>
+          <span>League:</span>
           <select name="competition">
             {competitions ? renderCompetitions(competitions) : null}
           </select>

@@ -10,12 +10,7 @@ router.get("/", (req, res) => {
 
 router.post("/add", (req, res) => {
   const newMatch = new Match({
-    competition: req.body.competition,
-    matchDate: req.body.matchDate,
-    homeTeam: req.body.homeTeam,
-    awayTeam: req.body.awayTeam,
-    homeScore: req.body.homeScore,
-    awayScore: req.body.awayScore
+    ...req.body
   });
   newMatch.save().then(match => res.json(match));
 });
