@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Route,
+  Link,
   Switch,
   useHistory,
   useLocation
@@ -16,7 +17,9 @@ import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 
-import { ProviderAuth, useAuth } from "./useAuth";
+import Admin from "./components/Admin/Admin";
+
+import { useAuth } from "./useAuth";
 const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
@@ -27,15 +30,39 @@ const Wrapper = styled.div`
 `;
 
 export default function App2(props) {
+  const auth = useAuth();
+
+  const checkAuth = () => {
+    fetch("/api/auth")
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        auth.setUser(data);
+      });
+  };
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
   return (
     <Wrapper>
-      <ProviderAuth>
-        <Router>
-          <Route exact path="/" component={Login} />
-          <Route exact path="/register" component={Register} />
-          <PrivateRoute path={"/dashboard"} component={Dashboard} />
-        </Router>
-      </ProviderAuth>
+      <Router>
+        <Route exact path="/">
+          <ul>
+            <li>
+              <Link to="login">Login</Link>
+            </li>
+            <li>
+              <Link to="register">Register</Link>
+            </li>
+          </ul>
+        </Route>
+
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/register" component={Register} />
+        <Route exact path="/admin" component={Admin} />
+        <PrivateRoute path={"/dashboard"} component={Dashboard} />
+      </Router>
     </Wrapper>
   );
 }

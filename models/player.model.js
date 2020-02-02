@@ -10,7 +10,7 @@ const playerSchema = new Schema(
     height: { type: Number },
     jerseyNumber: { type: Number },
     date: { type: Date },
-    addBy: { type: Schema.Types.ObjectId, ref: "User", required: true }
+    addBy: { type: Schema.Types.ObjectId, ref: "User" }
   },
   { timestamps: true }
 );

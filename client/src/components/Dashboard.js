@@ -50,7 +50,7 @@ export default function Dashboard() {
   return (
     <Wrapper>
       <h1>Dashboard</h1>
-      <h2>Welcome {auth.user.username}</h2>
+      <h2>Welcome {auth.user ? auth.user.username : null}</h2>
       <Sidebar />
       <Switch>
         <Route exact path={`/dashboard/club`} component={Club} />

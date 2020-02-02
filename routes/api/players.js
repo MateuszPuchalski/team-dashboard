@@ -6,33 +6,23 @@ const isAuthenticated = require("../../middleware/isAuthenticated");
 //Player Model
 const Player = require("../../models/player.model");
 
-router.get("/", isAuthenticated, (req, res) => {
+router.get("/", (req, res) => {
   Player.find()
     .populate(["currentClub", "addBy"])
     .then(players => res.json(players));
 });
-router.post("/add", (req, res) => {
-  const {
-    name,
-    currentClub,
-    position,
-    weight,
-    height,
-    jerseyNumber,
-    date
-  } = req.body;
-  const userId = req.body.userid;
 
+router.get("/club/:clubId", (req, res) => {
+  console.log({ clubId: req.params.clubId });
+  Player.find({ currentClub: req.params.clubId })
+    .populate(["currentClub", "addBy"])
+    .then(players => res.json(players));
+});
+router.post("/add", (req, res) => {
   const newPlayer = new Player({
-    name,
-    currentClub,
-    position,
-    weight,
-    height,
-    jerseyNumber,
-    date,
-    addBy: userId
+    ...req.body
   });
+  console.log({ newPlayer: newPlayer });
   newPlayer.save().then(player => res.json(player));
 });
 

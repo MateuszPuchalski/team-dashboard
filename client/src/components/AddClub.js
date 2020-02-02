@@ -25,11 +25,10 @@ export default function AddClub() {
   }, [competitions]);
 
   const submit = e => {
-    e.preventDefault();
     const data = {
       name: e.target.name.value,
       competition: e.target.competition.value,
-      userid: auth.user.user.id
+      userid: auth.user._id
     };
     console.log({ data: data });
     fetch("/api/clubs/add", {

@@ -21,7 +21,10 @@ export default function Sidebar() {
           <Link to={`${match.url}/club`}>Club</Link>
         </li>
         <li>
-          <Link to="/dashboard/players">Players</Link>
+          <Link to={`${match.url}/players`}>Players</Link>
+        </li>
+        <li>
+          <Link to={`${match.url}/matches`}>Matches</Link>
         </li>
       </ul>
     </Wrapper>

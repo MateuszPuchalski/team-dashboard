@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../useAuth";
 import { useHistory } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 export default function Login(props) {
   const auth = useAuth();
   let history = useHistory();
-
+  const [user, setUser] = useState("Placholder");
   const submit = e => {
     e.preventDefault();
     const data = {
@@ -15,6 +15,15 @@ export default function Login(props) {
 
     auth.signin(data.email, data.password);
     if (auth.user) history.push("/dashboard");
+  };
+
+  const checkAuth = e => {
+    fetch("/api/auth")
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        setUser(data.username);
+      });
   };
 
   return (
@@ -31,6 +40,7 @@ export default function Login(props) {
         </label>
         <input type="submit" value="Submit" />
       </form>
+      <button onClick={checkAuth}>{user}</button>
       {auth.user ? <h1>{auth.user.msg ? auth.user.msg : null}</h1> : null}
     </>
   );

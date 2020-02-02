@@ -10,7 +10,9 @@ router.get("/", (req, res) => {
       "currentCompetition",
       { path: "createdBy", select: "-password" }
     ])
-    .then(clubs => res.json(clubs));
+    .then(clubs => {
+      res.json(clubs);
+    });
 });
 
 router.get("/:id", (req, res) => {
@@ -19,14 +21,17 @@ router.get("/:id", (req, res) => {
       "currentCompetition",
       { path: "createdBy", select: "-password" }
     ])
-    .then(clubs => res.json(clubs));
+    .then(clubs => {
+      console.log({ clubs: clubs });
+      res.json(clubs);
+    });
 });
 
 router.post("/add", (req, res) => {
   const newClub = new Club({
     name: req.body.name,
     currentCompetition: req.body.competition,
-    createdBy: req.body.userid
+    owner: req.body.userid
   });
   newClub.save().then(club => res.json(club));
 });

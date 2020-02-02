@@ -15,7 +15,7 @@ export default function AddPlayer() {
       height: e.target.height.value,
       jerseyNumber: e.target.jerseyNumber.value,
       date: e.target.date.value,
-      userid: auth.user.user.id
+      addBy: auth.user.user.id
     };
     console.log(data);
     fetch("/api/players/add", {
