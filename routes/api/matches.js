@@ -5,7 +5,9 @@ const router = express.Router();
 const Match = require("../../models/match.model");
 
 router.get("/", (req, res) => {
-  Match.find().then(matches => res.json(matches));
+  Match.find()
+    .populate(["homeTeam", "awayTeam"])
+    .then(matches => res.json(matches));
 });
 
 router.post("/add", (req, res) => {
