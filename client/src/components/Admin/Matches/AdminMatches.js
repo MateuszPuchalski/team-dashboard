@@ -21,9 +21,8 @@ const Form = styled.form`
     padding: 10px;
   }
   label {
-    display: flex;
+    width: auto;
     span {
-      display: block;
       margin: 10px;
       text-align: center;
     }
@@ -36,6 +35,32 @@ const Form = styled.form`
 `;
 export default function AdminMatches() {
   const [clubs, setClubs] = useState();
+
+  const submit = e => {
+    e.preventDefault();
+    const data = {
+      competition: "5e1feda70ec36c0758e36b97",
+      matchDate: e.target.matchDate.value,
+      homeTeam: e.target.homeTeam.value,
+      awayTeam: e.target.awayTeam.value,
+      homeScore: e.target.homeScore.value,
+      awayScore: e.target.awayScore.value,
+      ytId: e.target.ytId.value
+    };
+
+    fetch("/api/matches/add", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8"
+      },
+      body: JSON.stringify(data)
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log({ newMatch: data });
+      })
+      .catch(err => console.error(err));
+  };
 
   const getClubs = () => {
     fetch("/api/clubs", {
@@ -66,17 +91,31 @@ export default function AdminMatches() {
   return (
     <Wrapper>
       <h3>Add Match</h3>
-      <Form>
+      <Form onSubmit={submit}>
         <label>
           Home Team:
           <select name="homeTeam">{clubs ? renderClubs(clubs) : null}</select>
         </label>
         <label>
-          Away Team:
-          <select name="currentClub">
-            {clubs ? renderClubs(clubs) : null}
-          </select>
+          Home Score:
+          <input type="number" name="homeScore" />
         </label>
+        <label>
+          Away Score: <input type="number" name="awayScore" />
+        </label>
+        <label>
+          Away Team:
+          <select name="awayTeam">{clubs ? renderClubs(clubs) : null}</select>
+        </label>
+        <label>
+          Date:
+          <input type="date" name="matchDate" />
+        </label>
+        <label>
+          Youtube Id: <input type="text" name="ytId" />
+        </label>
+
+        <input type="submit" value="Add" />
       </Form>
     </Wrapper>
   );
