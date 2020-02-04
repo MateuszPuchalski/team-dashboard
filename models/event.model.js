@@ -7,6 +7,11 @@ var eventSchema = new Schema({
     type: Number,
     required: true
   },
+  matchId: {
+    type: Schema.Types.ObjectId,
+    ref: "Match",
+    required: true
+  },
   period: {
     type: Number,
     required: true

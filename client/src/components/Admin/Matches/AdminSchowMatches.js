@@ -10,6 +10,9 @@ const Wrapper = styled.div`
   h3 {
     text-align: center;
   }
+  li {
+    margin: 10px;
+  }
 `;
 
 const Form = styled.form`
@@ -50,10 +53,12 @@ export default function AdminSchowMatches() {
     <Wrapper>
       <ul>
         {matches
-          ? matches.map(
-              match =>
-                `${match.homeTeam.name} ${match.homeScore} : ${match.awayScore} ${match.awayTeam.name}`
-            )
+          ? matches.map(match => (
+              <li>
+                {match.homeTeam.name} {match.homeScore} : {match.awayScore}{" "}
+                {match.awayTeam.name}
+              </li>
+            ))
           : null}
       </ul>
     </Wrapper>

@@ -23,10 +23,6 @@ export default function Match(props) {
     startSeconds: 3600
   };
 
-  function boom() {
-    console.log("boom");
-  }
-
   function _onReady(event) {
     // access to player in all event handlers via event.target
     event.target.seekTo(367, true);
@@ -64,7 +60,7 @@ export default function Match(props) {
         }
       });
       const items = await data.json();
-      console.log({ matches: items });
+
       setLogs(items);
     }
   };
