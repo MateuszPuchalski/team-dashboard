@@ -9,7 +9,8 @@ import {
   CartesianGrid,
   Tooltip,
   XAxis,
-  YAxis
+  YAxis,
+  Curve
 } from "recharts";
 
 import styled from "styled-components";
@@ -21,13 +22,14 @@ const Court = styled.div`
 `;
 
 export default function AdminCourtChart({ scale }) {
-  const [throwCords, setThrowCords] = useState([{ x: 15, y: 5 }]);
+  const [throwCords, setThrowCords] = useState([]);
 
   useEffect(() => {
     console.log({ throwCords: throwCords });
   }, [throwCords]);
 
   const getCords = e => {
+    console.log(e);
     setThrowCords([
       ...throwCords,
       {
@@ -50,6 +52,16 @@ export default function AdminCourtChart({ scale }) {
           left: 0
         }}
       >
+        <ReferenceArea
+          //   court outline
+          x1={0}
+          x2={40}
+          y1={0}
+          y2={20}
+          fillOpacity={1}
+          fill="#dfbb85"
+          stroke="black"
+        />
         {/* LEFt SIDE  */}
         <ReferenceDot
           // 9 meter line
@@ -57,8 +69,8 @@ export default function AdminCourtChart({ scale }) {
           y={8.5}
           r={9 * scale}
           fillOpacity={1}
-          fill="white"
-          stroke="white"
+          fill="#981717"
+          stroke="#981717"
         />
         <ReferenceDot
           // 9 meter line
@@ -66,8 +78,8 @@ export default function AdminCourtChart({ scale }) {
           y={11.5}
           r={9 * scale}
           fillOpacity={1}
-          fill="white"
-          stroke="white"
+          fill="#981717"
+          stroke="#981717"
         />
         <ReferenceArea
           // 9 meter fill up
@@ -75,9 +87,9 @@ export default function AdminCourtChart({ scale }) {
           x2={9}
           y1={8.5}
           y2={20 - 8.5}
-          fill="white"
+          fill="#981717"
           fillOpacity={1}
-          stroke="white"
+          stroke="#981717"
         />
         <ReferenceDot
           // 6 mater line
@@ -85,8 +97,8 @@ export default function AdminCourtChart({ scale }) {
           y={8.5}
           r={6 * scale}
           fillOpacity={1}
-          fill="black"
-          stroke="black"
+          fill="#f9c852"
+          stroke="#f9c852"
         />
         <ReferenceDot
           // 6 mater line
@@ -94,8 +106,8 @@ export default function AdminCourtChart({ scale }) {
           y={11.5}
           r={6 * scale}
           fillOpacity={1}
-          fill="black"
-          stroke="black"
+          fill="#f9c852"
+          stroke="#f9c852"
         />
         <ReferenceArea
           // 6 line square fill up
@@ -103,9 +115,9 @@ export default function AdminCourtChart({ scale }) {
           x2={6}
           y1={8.5}
           y2={20 - 8.5}
-          fill="black"
+          fill="#f9c852"
           fillOpacity={1}
-          stroke="black"
+          stroke="#f9c852"
         />
 
         {/* Right Side */}
@@ -115,8 +127,8 @@ export default function AdminCourtChart({ scale }) {
           y={8.5}
           r={9 * scale}
           fillOpacity={1}
-          fill="white"
-          stroke="white"
+          fill="#981717"
+          stroke="#981717"
         />
         <ReferenceDot
           // 9 meter line
@@ -124,8 +136,8 @@ export default function AdminCourtChart({ scale }) {
           y={11.5}
           r={9 * scale}
           fillOpacity={1}
-          fill="white"
-          stroke="white"
+          fill="#981717"
+          stroke="#981717"
         />
         <ReferenceArea
           // 9 meter fill up
@@ -133,9 +145,9 @@ export default function AdminCourtChart({ scale }) {
           x2={40 - 9}
           y1={8.5}
           y2={20 - 8.5}
-          fill="white"
+          fill="#981717"
           fillOpacity={1}
-          stroke="white"
+          stroke="#981717"
         />
         <ReferenceDot
           // 6 mater line
@@ -143,8 +155,8 @@ export default function AdminCourtChart({ scale }) {
           y={8.5}
           r={6 * scale}
           fillOpacity={1}
-          fill="black"
-          stroke="black"
+          fill="#f9c852"
+          stroke="#f9c852"
         />
         <ReferenceDot
           // 6 mater line
@@ -152,8 +164,8 @@ export default function AdminCourtChart({ scale }) {
           y={11.5}
           r={6 * scale}
           fillOpacity={1}
-          fill="black"
-          stroke="black"
+          fill="#f9c852"
+          stroke="#f9c852"
         />
         <ReferenceArea
           // 6 line square fill up
@@ -161,34 +173,97 @@ export default function AdminCourtChart({ scale }) {
           x2={40 - 6}
           y1={8.5}
           y2={20 - 8.5}
-          fill="black"
+          fill="#f9c852"
           fillOpacity={1}
-          stroke="black"
+          stroke="#f9c852"
         />
         {/* rest of the lines */}
-        <ReferenceDot
-          // mid point
-          x={20}
-          y={10}
-          r={0.1 * scale}
-          fillOpacity={1}
-          fill="black"
-          stroke="black"
-        />
-        <ReferenceArea
-          //   court outline
-          x1={0}
-          x2={40}
-          y1={0}
-          y2={20}
-          fillOpacity={0}
-          stroke="black"
-        />
 
         <ReferenceLine
           //   mid line
           x={20}
           stroke="black"
+        />
+        <ReferenceArea
+          //4m line left side
+          x1={4}
+          x2={4.1}
+          y1={9.75}
+          y2={10.25}
+          stroke="black"
+          fill="black"
+          strokeOpacity={1}
+        />
+        <ReferenceArea
+          //7m line left side
+          x1={7}
+          x2={7.1}
+          y1={9.5}
+          y2={10.5}
+          stroke="black"
+          fill="black"
+          strokeOpacity={1}
+        />
+        <ReferenceArea
+          //4m line right side
+          x1={40 - 4}
+          x2={40 - 4.1}
+          y1={9.75}
+          y2={10.25}
+          stroke="black"
+          fill="black"
+          strokeOpacity={1}
+        />
+        <ReferenceArea
+          //7m line right side
+          x1={40 - 7}
+          x2={40 - 7.1}
+          y1={9.5}
+          y2={10.5}
+          stroke="black"
+          fill="black"
+          strokeOpacity={1}
+        />
+
+        <ReferenceArea
+          //strefa zmian left sidebar
+          x1={15.5}
+          x2={15.6}
+          y1={0.25}
+          y2={0}
+          stroke="black"
+          fill="black"
+          strokeOpacity={1}
+        />
+        <ReferenceArea
+          //strefa zmian right side
+          x1={40 - 15.5}
+          x2={40 - 15.6}
+          y1={0.25}
+          y2={0}
+          stroke="black"
+          fill="black"
+          strokeOpacity={1}
+        />
+        <ReferenceArea
+          //goal left side
+          x1={0}
+          x2={0.1}
+          y1={8.5}
+          y2={11.5}
+          stroke="black"
+          fill="black"
+          strokeOpacity={1}
+        />
+        <ReferenceArea
+          //goal right side
+          x1={40}
+          x2={40 - 0.1}
+          y1={8.5}
+          y2={11.5}
+          stroke="black"
+          fill="black"
+          strokeOpacity={1}
         />
         <XAxis type="number" dataKey="x" hide domain={[0, 40]} />
         <YAxis type="number" dataKey="y" hide domain={[0, 20]} />
