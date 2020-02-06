@@ -8,6 +8,7 @@ import AdminMatches from "./Matches/AdminMatches";
 import AdminShowMatches from "./Matches/AdminSchowMatches";
 import AdminMatchVideo from "./Matches/AdminMatchVideo";
 import AdminCourtChart from "./Charts/AdminCourtChart";
+import AdminJsonData from "./AdminJsonData";
 
 const Wrapper = styled.div`
   display: flex;
@@ -17,7 +18,8 @@ export default function Admin() {
   return (
     <>
       <Wrapper>
-        <AdminShowMatches />
+        {/* <AdminShowMatches /> */}
+        <AdminJsonData />
         <AdminMatchVideo />
         <AdminCourtChart scale={15} />
       </Wrapper>
