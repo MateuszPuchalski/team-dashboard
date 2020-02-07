@@ -1,14 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 
-import AdminAddClub from "./AdminAddClub";
-import AdminAddPlayer from "./AdminAddPlayer";
-import AdminShowPlayers from "./AdminShowPlayers";
-import AdminMatches from "./Matches/AdminMatches";
-import AdminShowMatches from "./Matches/AdminSchowMatches";
 import AdminMatchVideo from "./Matches/AdminMatchVideo";
 import AdminCourtChart from "./Charts/AdminCourtChart";
 import AdminJsonData from "./AdminJsonData";
+import AdminHalfCourt from "./Charts/AdminHalfCourt";
 
 const Wrapper = styled.div`
   display: flex;
@@ -23,6 +19,7 @@ export default function Admin() {
         <AdminMatchVideo />
         <AdminCourtChart scale={15} />
       </Wrapper>
+      <AdminHalfCourt scale={15} />
     </>
   );
 }

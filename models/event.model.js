@@ -22,7 +22,13 @@ var eventSchema = new Schema({
   },
   type: {
     type: Object,
-    required: true
+    required: true,
+    refPath: "onType"
+  },
+  onType: {
+    type: String,
+    required: true,
+    enum: ["Throw"]
   },
   team: {
     type: Object,
@@ -33,7 +39,7 @@ var eventSchema = new Schema({
     required: true
   },
   location: {
-    type: Array
+    type: Object
   },
   relatedEvents: {
     type: Array

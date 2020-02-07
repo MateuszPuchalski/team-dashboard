@@ -7,7 +7,7 @@ const Data = styled.pre`
   margin: 10px;
   padding: 10px;
   overflow: scroll;
-  height: 800px;
+  height: 500px;
 `;
 export default function AdminJsonData() {
   const [pointer, setPointer] = useState(0);
