@@ -20,22 +20,20 @@ var eventSchema = new Schema({
     type: Number,
     required: true
   },
-  on: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    refPath: "onType"
-  },
-  onType: {
+  type: {
     type: String,
-    required: true,
-    enum: ["Throw"]
+    enum: ["throw"],
+    required: true
   },
+
   team: {
     type: Schema.Types.ObjectId,
+    ref: "Club",
     required: true
   },
   player: {
     type: Schema.Types.ObjectId,
+    ref: "Player",
     required: true
   },
   location: {
@@ -43,6 +41,38 @@ var eventSchema = new Schema({
   },
   relatedEvents: {
     type: Array
+  },
+  throw: {
+    endLocation: {
+      type: Object,
+      required: function() {
+        if (this.type === "throw") return true;
+      }
+    },
+
+    outcome: {
+      // Blocked, goal, post, saved ..
+      type: String,
+      required: function() {
+        if (this.type === "throw") return true;
+      }
+    },
+
+    technique: {
+      //Jump Shot, Overarm, Underarm,
+      type: String,
+      required: function() {
+        if (this.type === "throw") return true;
+      }
+    },
+
+    type: {
+      // Penalty,
+      type: String,
+      required: function() {
+        if (this.type === "throw") return true;
+      }
+    }
   }
 });
 

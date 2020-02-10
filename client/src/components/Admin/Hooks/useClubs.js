@@ -7,7 +7,7 @@ export default function useClubs(id) {
   useEffect(() => {
     setLoading(true);
 
-    fetch(`api/clubs`)
+    fetch(`/api/clubs`)
       .then(res => res.json())
       .then(data => {
         setClubs(data);

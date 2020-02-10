@@ -28,6 +28,7 @@ const matchesRouter = require("./routes/api/matches");
 const usersRouter = require("./routes/api/users");
 const authRouter = require("./routes/api/auth");
 const testRouter = require("./routes/api/test");
+const eventRouter = require("./routes/api/event");
 
 const app = express();
 app.disable("x-powered-by");
@@ -48,6 +49,7 @@ app.use("/api/clubs", clubsRouter);
 app.use("/api/matches", matchesRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/event", eventRouter);
 
 // if (process.env.NODE_ENV === "production") {
 //   // Set static folder

@@ -7,7 +7,7 @@ export default function useCompetitions(id) {
   useEffect(() => {
     setLoading(true);
 
-    fetch(`api/competitions`)
+    fetch(`/api/competitions`)
       .then(res => res.json())
       .then(data => {
         setCompetitions(data);

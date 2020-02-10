@@ -7,7 +7,7 @@ export default function useMatches(id) {
   useEffect(() => {
     setLoading(true);
 
-    fetch(`api/matches`)
+    fetch(`/api/matches`)
       .then(res => res.json())
       .then(data => {
         setMatches(data);
