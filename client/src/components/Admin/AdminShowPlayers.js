@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
+import useClubs from "./Hooks/useClubs";
+
 const Wrapper = styled.div`
   margin: 10px;
   width: 500px;
@@ -36,19 +38,8 @@ const Form = styled.form`
 `;
 export default function AdminShowPlayers() {
   const [players, setPlayers] = useState();
-  const [clubs, setClubs] = useState();
+  const [clubsLoading, clubs] = useClubs();
   const [selectedClub, setSelectedClub] = useState();
-
-  const getClubs = () => {
-    fetch("/api/clubs", {
-      method: "GET"
-    })
-      .then(res => res.json())
-      .then(data => {
-        setClubs(data);
-      })
-      .catch(err => console.error(err));
-  };
 
   const getPlayers = clubId => {
     fetch(`/api/players/club/${clubId}`)
@@ -81,7 +72,6 @@ export default function AdminShowPlayers() {
 
   useEffect(() => {
     getPlayers();
-    getClubs();
   }, []);
 
   return (

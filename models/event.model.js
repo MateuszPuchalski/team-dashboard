@@ -20,8 +20,8 @@ var eventSchema = new Schema({
     type: Number,
     required: true
   },
-  type: {
-    type: Object,
+  on: {
+    type: Schema.Types.ObjectId,
     required: true,
     refPath: "onType"
   },
@@ -31,11 +31,11 @@ var eventSchema = new Schema({
     enum: ["Throw"]
   },
   team: {
-    type: Object,
+    type: Schema.Types.ObjectId,
     required: true
   },
   player: {
-    type: Object,
+    type: Schema.Types.ObjectId,
     required: true
   },
   location: {

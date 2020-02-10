@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
+import useMatches from "../Hooks/useMatches";
+
 const Wrapper = styled.div`
   margin: 10px;
   width: 500px;
@@ -37,17 +39,7 @@ const Form = styled.form`
   }
 `;
 export default function AdminSchowMatches() {
-  const [matches, setMatches] = useState();
-
-  const getMatches = () => {
-    fetch("/api/matches")
-      .then(res => res.json())
-      .then(data => setMatches(data));
-  };
-
-  useEffect(() => {
-    getMatches();
-  }, []);
+  const [matchesLoading, matches] = useMatches();
 
   return (
     <Wrapper>

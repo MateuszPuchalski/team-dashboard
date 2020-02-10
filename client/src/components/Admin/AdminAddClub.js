@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
+import useClubs from "./Hooks/useClubs";
+import useCompetitions from "./Hooks/useCompetitions";
+
 const Wrapper = styled.div`
   margin: 10px;
   width: 500px;
@@ -36,35 +39,8 @@ const Form = styled.form`
 `;
 
 export default function AddClub() {
-  const [competitions, setCompetitions] = useState();
-  const [clubs, setClubs] = useState();
-
-  const getCompetitions = () => {
-    fetch("/api/competitions", {
-      method: "GET"
-    })
-      .then(res => res.json())
-      .then(data => {
-        setCompetitions(data);
-      })
-      .catch(err => console.error(err));
-  };
-
-  const getClubs = () => {
-    fetch("/api/clubs", {
-      method: "GET"
-    })
-      .then(res => res.json())
-      .then(data => {
-        setClubs(data);
-      })
-      .catch(err => console.error(err));
-  };
-
-  useEffect(() => {
-    getCompetitions();
-    getClubs();
-  }, []);
+  const [competitionsLoading, competitions] = useCompetitions();
+  const [clubsLoading, clubs] = useClubs();
 
   const submit = e => {
     e.preventDefault();
@@ -82,11 +58,12 @@ export default function AddClub() {
     })
       .then(res => res.json())
       .then(data => {
-        getClubs();
+        // getClubs();
       })
       .catch(err => console.error(err));
     e.target.name.value = "";
   };
+
   const renderCompetitions = competitions => {
     const arr = competitions.map((comp, i) => {
       if (i === 0) {
@@ -118,7 +95,7 @@ export default function AddClub() {
         <label>
           <span>League:</span>
           <select name="competition">
-            {competitions ? renderCompetitions(competitions) : null}
+            {competitions ? renderCompetitions(competitions) : "Loading..."}
           </select>
         </label>
         <input type="submit" value="Add" />
@@ -126,7 +103,9 @@ export default function AddClub() {
       <hr />
       <div>
         <ul>
-          {clubs ? clubs.map(club => <li key={club.id}>{club.name}</li>) : null}
+          {clubs
+            ? clubs.map(club => <li key={club.id}>{club.name}</li>)
+            : "Loading..."}
         </ul>
       </div>
     </Wrapper>

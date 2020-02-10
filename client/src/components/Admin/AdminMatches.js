@@ -5,6 +5,7 @@ import AdminMatchVideo from "./Matches/AdminMatchVideo";
 import AdminCourtChart from "./Charts/AdminCourtChart";
 import AdminJsonData from "./AdminJsonData";
 import AdminHalfCourt from "./Charts/AdminHalfCourt";
+import AdminGoalChart from "./Charts/AdminGoalChart";
 
 const Wrapper = styled.div`
   display: flex;
@@ -19,7 +20,9 @@ export default function Admin() {
         <AdminMatchVideo />
         <AdminCourtChart scale={15} />
       </Wrapper>
-      <AdminHalfCourt scale={15} />
+      <Wrapper>
+        <AdminGoalChart scale={150} />
+      </Wrapper>
     </>
   );
 }

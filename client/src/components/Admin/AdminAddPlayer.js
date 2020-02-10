@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
+import useClubs from "./Hooks/useClubs";
+
 const Wrapper = styled.div`
   margin: 10px;
   width: 500px;
@@ -36,7 +38,7 @@ const Form = styled.form`
 `;
 
 export default function AdminAddPlayer() {
-  const [clubs, setClubs] = useState();
+  const [clubsLoading, clubs] = useClubs();
 
   const submit = e => {
     e.preventDefault();
@@ -64,17 +66,6 @@ export default function AdminAddPlayer() {
       .catch(err => console.error(err));
   };
 
-  const getClubs = () => {
-    fetch("/api/clubs", {
-      method: "GET"
-    })
-      .then(res => res.json())
-      .then(data => {
-        setClubs(data);
-      })
-      .catch(err => console.error(err));
-  };
-
   const renderClubs = clubs => {
     const arr = clubs.map((club, i) => {
       return (
@@ -85,10 +76,6 @@ export default function AdminAddPlayer() {
     });
     return arr;
   };
-
-  useEffect(() => {
-    getClubs();
-  }, []);
 
   return (
     <Wrapper>
