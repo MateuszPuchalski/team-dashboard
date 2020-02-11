@@ -5,7 +5,9 @@ const router = express.Router();
 const Event = require("../../models/event.model");
 
 router.get("/", (req, res) => {
-  Event.find().then(events => res.json(events));
+  Event.find()
+    .populate(["matchid", "team", "player"])
+    .then(events => res.json(events));
 });
 
 router.post("/add", (req, res) => {

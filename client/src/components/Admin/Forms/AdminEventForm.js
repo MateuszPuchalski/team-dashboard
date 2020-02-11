@@ -3,10 +3,11 @@ import styled from "styled-components";
 
 import useClubs from "../Hooks/useClubs";
 import useMatches from "../Hooks/useMatches";
+import useClubPlayers from "../Hooks/useClubPlayers";
 
 const Wrapper = styled.div`
   margin: 10px;
-  width: 500px;
+  width: auto;
   height: auto;
   padding: 10px;
   background: rgba(255, 255, 255, 0.1);
@@ -40,16 +41,15 @@ const Form = styled.form`
 export default function AdminEventForm() {
   const [clubsLoading, clubs] = useClubs();
   const [matchesLoading, matches] = useMatches();
-
-  useEffect(() => {
-    console.log({ Clubs: clubs });
-  }, [clubs]);
+  const [clubPlayersLoading, clubPlayers] = useClubPlayers(
+    "5e259ca1c60ff01770db40ff"
+  );
 
   const submit = e => {
     e.preventDefault();
     const data = {
       index: 1, //e.target.index.value
-      matchId: "5e3758f1e60e452598df6397",
+      matchId: e.target.match.value,
       period: e.target.period.value,
       timestamp: 100, // e.target.timestamp.value
       type: e.target.type.value,
@@ -89,6 +89,28 @@ export default function AdminEventForm() {
     return arr;
   };
 
+  const renderPlayers = players => {
+    const arr = players.map((player, i) => {
+      return (
+        <option id={player._id} value={player._id}>
+          {player.name}
+        </option>
+      );
+    });
+    return arr;
+  };
+
+  const renderMatches = matches => {
+    const arr = matches.map((match, i) => {
+      return (
+        <option id={match._id} value={match._id}>
+          {match.name}
+        </option>
+      );
+    });
+    return arr;
+  };
+
   return (
     <Wrapper>
       <Form onSubmit={submit}>
@@ -111,10 +133,15 @@ export default function AdminEventForm() {
           <select name="team">{clubs ? renderClubs(clubs) : null}</select>
         </label>
         <label>
-          Player:{" "}
+          Players:{" "}
           <select name="player">
-            <option value="5e3606a51dba6b0ac451eb42">Mateusz Puchalski</option>
-            {/* <option value="2">Second Half</option> */}
+            {clubPlayers ? renderPlayers(clubPlayers) : null}
+          </select>
+        </label>
+        <label>
+          Matches:{" "}
+          <select name="match">
+            {matches ? renderMatches(matches) : null}
           </select>
         </label>
         <input type="submit" value="Add" />

@@ -4,14 +4,7 @@ import YouTube from "react-youtube";
 
 import styled from "styled-components";
 
-const Wrapper = styled.div`
-  margin: 10px;
-  width: auto;
-  height: auto;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.1);
-`;
-export default function AdminMatchVideo() {
+export default function AdminMatchVideo({ width, height, matchId }) {
   const [currTime, setCurrTime] = useState();
   const ytVideo = useRef(null);
 
@@ -24,11 +17,7 @@ export default function AdminMatchVideo() {
   const test = e => {
     console.log(e);
   };
-  return (
-    <Wrapper>
-      <YouTube ref={ytVideo} onReady={test} videoId="sooarZyDMUc" />
-      <button onClick={setTime}>Current Time</button>
-      <p>{currTime}</p>
-    </Wrapper>
-  );
+  const opts = { height: height, width: width };
+
+  return <YouTube ref={ytVideo} opts={opts} onReady={test} videoId={matchId} />;
 }

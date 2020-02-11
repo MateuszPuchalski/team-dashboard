@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
+import { Link, useRouteMatch } from "react-router-dom";
+
 import useMatches from "../Hooks/useMatches";
 
 const Wrapper = styled.div`
@@ -39,18 +41,28 @@ const Form = styled.form`
   }
 `;
 export default function AdminSchowMatches() {
+  const match = useRouteMatch();
   const [matchesLoading, matches] = useMatches();
-
+  console.log(match.url);
   return (
     <Wrapper>
       <ul>
         {matches
-          ? matches.map(match => (
-              <li>
-                {match.homeTeam.name} {match.homeScore} : {match.awayScore}{" "}
-                {match.awayTeam.name}
-              </li>
-            ))
+          ? matches.map(match =>
+              match.ytId ? (
+                <Link to={`/admin/matches/${match.ytId}`}>
+                  <li>
+                    {match.homeTeam.name} {match.homeScore} : {match.awayScore}{" "}
+                    {match.awayTeam.name} |YT|
+                  </li>
+                </Link>
+              ) : (
+                <li>
+                  {match.homeTeam.name} {match.homeScore} : {match.awayScore}{" "}
+                  {match.awayTeam.name}
+                </li>
+              )
+            )
           : null}
       </ul>
     </Wrapper>
