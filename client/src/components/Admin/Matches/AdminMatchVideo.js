@@ -4,7 +4,7 @@ import YouTube from "react-youtube";
 
 import styled from "styled-components";
 
-export default function AdminMatchVideo({ width, height, ytId }) {
+export default function AdminMatchVideo({ ytId }) {
   const [currTime, setCurrTime] = useState();
   const ytVideo = useRef(null);
 
@@ -17,7 +17,13 @@ export default function AdminMatchVideo({ width, height, ytId }) {
   const test = e => {
     console.log(e);
   };
-  const opts = { height: height, width: width };
 
-  return <YouTube ref={ytVideo} opts={opts} onReady={test} videoId={ytId} />;
+  return (
+    <YouTube
+      style={{ width: "100%", height: "100%" }}
+      ref={ytVideo}
+      onReady={test}
+      videoId={ytId}
+    />
+  );
 }

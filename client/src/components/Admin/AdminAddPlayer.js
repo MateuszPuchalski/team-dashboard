@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
-import useClubs from "./Hooks/useClubs";
+import useClubs from "../../Hooks/useClubs";
 
 const Wrapper = styled.div`
   margin: 10px;

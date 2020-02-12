@@ -7,7 +7,7 @@ import AdminCourtChart from "./Charts/AdminCourtChart";
 import AdminGoalChart from "./Charts/AdminGoalChart";
 import AdminEventForm from "./Forms/AdminEventForm";
 
-import useMatches from "./Hooks/useMatches";
+import useMatches from "../../Hooks/useMatches";
 
 const Wrapper = styled.div`
   display: grid;
@@ -19,6 +19,10 @@ const Video = styled.div`
   grid-row: 1 / 4;
   width: 100%;
   height: 100%;
+    :first-child {
+      width: 100%,
+      height: 100%
+    }
 `;
 const AddEvent = styled.div`
   display: flex;
@@ -36,37 +40,22 @@ export default function AdminMatches() {
   const { matchId } = useParams();
   const [matchLoading, match] = useMatches(matchId);
   console.log({ matchytid: match });
-  const videoRef = useRef(null);
-  const [videoDiemsions, setVideoDimensions] = useState({
-    width: 0,
-    height: 0
-  });
 
-  useEffect(() => {
-    if (videoRef) {
-      console.log(videoRef.current.clientHeight);
-      setVideoDimensions({
-        height: videoRef.current.clientHeight,
-        width: videoRef.current.clientWidth
-      });
-    }
-  }, []);
-
-  return (
-    <Wrapper>
-      <Video ref={videoRef}>
-        <AdminMatchVideo
-          width={videoDiemsions.width}
-          height={videoDiemsions.height}
-          ytId={match.ytId}
-        />
-      </Video>
-      <AddEvent></AddEvent>
-      <ShowEvent>
-        <AdminEventForm />
-        <AdminCourtChart scale={9} />
-        <AdminGoalChart scale={120} />
-      </ShowEvent>
-    </Wrapper>
-  );
+  if (match) {
+    return (
+      <Wrapper>
+        <Video>
+          <AdminMatchVideo ytId={match.ytId} />
+        </Video>
+        <AddEvent></AddEvent>
+        <ShowEvent>
+          <AdminEventForm />
+          <AdminCourtChart scale={9} />
+          <AdminGoalChart scale={120} />
+        </ShowEvent>
+      </Wrapper>
+    );
+  } else {
+    return <h3>LOADING...</h3>;
+  }
 }

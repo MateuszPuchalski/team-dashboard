@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
-import useClubs from "../Hooks/useClubs";
-import useMatches from "../Hooks/useMatches";
-import useClubPlayers from "../Hooks/useClubPlayers";
+import useClubs from "../../../Hooks/useClubs";
+import useMatches from "../../../Hooks/useMatches";
+import useClubPlayers from "../../../Hooks/useClubPlayers";
 
 const Wrapper = styled.div`
   margin: 10px;
@@ -78,39 +78,16 @@ export default function AdminEventForm() {
       .catch(err => console.error(err));
   };
 
-  const renderClubs = clubs => {
-    const arr = clubs.map((club, i) => {
+  const renderOptions = items => {
+    const arr = items.map((item, i) => {
       return (
-        <option id={club._id} value={club._id}>
-          {club.name}
+        <option id={item._id} value={item._id}>
+          {item.name}
         </option>
       );
     });
     return arr;
   };
-
-  const renderPlayers = players => {
-    const arr = players.map((player, i) => {
-      return (
-        <option id={player._id} value={player._id}>
-          {player.name}
-        </option>
-      );
-    });
-    return arr;
-  };
-
-  const renderMatches = matches => {
-    const arr = matches.map((match, i) => {
-      return (
-        <option id={match._id} value={match._id}>
-          {match.name}
-        </option>
-      );
-    });
-    return arr;
-  };
-
   return (
     <Wrapper>
       <Form onSubmit={submit}>
@@ -155,18 +132,18 @@ export default function AdminEventForm() {
         </label>
         <label>
           Team:
-          <select name="team">{clubs ? renderClubs(clubs) : null}</select>
+          <select name="team">{clubs ? renderOptions(clubs) : null}</select>
         </label>
         <label>
           Players:{" "}
           <select name="player">
-            {clubPlayers ? renderPlayers(clubPlayers) : null}
+            {clubPlayers ? renderOptions(clubPlayers) : null}
           </select>
         </label>
         <label>
           Matches:{" "}
           <select name="match">
-            {matches ? renderMatches(matches) : null}
+            {matches ? renderOptions(matches) : null}
           </select>
         </label>
         <input type="submit" value="Add" />
