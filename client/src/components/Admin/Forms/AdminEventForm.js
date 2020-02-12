@@ -115,7 +115,7 @@ export default function AdminEventForm() {
     <Wrapper>
       <Form onSubmit={submit}>
         <label>
-          Period:{" "}
+          Period:
           <select name="period">
             <option value="1">First Half</option>
             <option value="2">Second Half</option>
@@ -126,6 +126,31 @@ export default function AdminEventForm() {
           <select name="type">
             <option value="throw">Throw</option>
             <option value="halftStart">Half Start</option>
+          </select>
+        </label>
+        <label>
+          Outcome:
+          <select name="outcome">
+            <option value="goal">Goal</option>
+            <option value="blocked">Blocked</option>
+            <option value="post">Post</option>
+            <option value="saved">Saved</option>
+          </select>
+        </label>
+        <label>
+          Technique:
+          <select name="technique">
+            <option value="jumpShot">Jump Shot</option>
+            <option value="overarm">Overarm</option>
+            <option value="underarm">Underarm</option>
+            <option value="spinShot">Spin Shot</option>
+          </select>
+        </label>
+        <label>
+          Type:
+          <select name="type">
+            <option value="regularPlay">Regular Play</option>
+            <option value="penalty">Penalty</option>
           </select>
         </label>
         <label>

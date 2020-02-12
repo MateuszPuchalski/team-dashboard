@@ -7,6 +7,8 @@ import AdminCourtChart from "./Charts/AdminCourtChart";
 import AdminGoalChart from "./Charts/AdminGoalChart";
 import AdminEventForm from "./Forms/AdminEventForm";
 
+import useMatches from "./Hooks/useMatches";
+
 const Wrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 20vw);
@@ -23,8 +25,17 @@ const AddEvent = styled.div`
   grid-column: 1 / 5;
   grid-row: 4 / 5;
 `;
+const ShowEvent = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  grid-column: 5 / 6;
+  grid-row: 1 / 6;
+`;
 export default function AdminMatches() {
   const { matchId } = useParams();
+  const [matchLoading, match] = useMatches(matchId);
+  console.log({ matchytid: match });
   const videoRef = useRef(null);
   const [videoDiemsions, setVideoDimensions] = useState({
     width: 0,
@@ -47,14 +58,15 @@ export default function AdminMatches() {
         <AdminMatchVideo
           width={videoDiemsions.width}
           height={videoDiemsions.height}
-          matchId={matchId}
+          ytId={match.ytId}
         />
       </Video>
-      <AddEvent>
-        <AdminCourtChart scale={10} />
-        <AdminGoalChart scale={100} />
+      <AddEvent></AddEvent>
+      <ShowEvent>
         <AdminEventForm />
-      </AddEvent>
+        <AdminCourtChart scale={9} />
+        <AdminGoalChart scale={120} />
+      </ShowEvent>
     </Wrapper>
   );
 }
