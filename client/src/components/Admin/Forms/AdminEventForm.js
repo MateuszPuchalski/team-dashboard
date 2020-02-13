@@ -38,29 +38,28 @@ const Form = styled.form`
     }
   }
 `;
-export default function AdminEventForm() {
-  const [clubsLoading, clubs] = useClubs();
+export default function AdminEventForm({ teams, matchId, eventLocation }) {
   const [matchesLoading, matches] = useMatches();
-  const [clubPlayersLoading, clubPlayers] = useClubPlayers(
-    "5e259ca1c60ff01770db40ff"
-  );
+  const [selectedTeam, setSelectedTeam] = useState(teams[0]._id);
+  const [clubPlayersLoading, clubPlayers] = useClubPlayers(selectedTeam);
 
   const submit = e => {
     e.preventDefault();
+    console.log({ target: e.target.team });
     const data = {
       index: 1, //e.target.index.value
-      matchId: e.target.match.value,
+      matchId: matchId,
       period: e.target.period.value,
       timestamp: 100, // e.target.timestamp.value
-      type: e.target.type.value,
+      type: e.target.eventType.value,
       team: e.target.team.value,
       player: e.target.player.value,
-      location: { x: 30, y: 10 }, //e.target.location.value
+      location: eventLocation, //e.target.location.value
       throw: {
-        endLocation: { y: 10, z: 1.2 },
-        outcome: "goal",
-        technique: "jumpShot",
-        type: "regularPlay"
+        endLocation: { x: 20, y: 10, z: 1.2 },
+        outcome: e.target.outcome.value,
+        technique: e.target.technique.value,
+        type: e.target.goalType.value
       }
     };
 
@@ -80,28 +79,39 @@ export default function AdminEventForm() {
 
   const renderOptions = items => {
     const arr = items.map((item, i) => {
-      return (
-        <option id={item._id} value={item._id}>
-          {item.name}
-        </option>
-      );
+      if (item.jerseyNumber) {
+        return (
+          <option id={item._id} value={item._id}>
+            {item.jerseyNumber} {item.name}
+          </option>
+        );
+      } else {
+        return (
+          <option id={item._id} value={item._id}>
+            {item.name}
+          </option>
+        );
+      }
     });
     return arr;
   };
   return (
     <Wrapper>
+      {/* Zrobić warunkowe wyświtlanie formy */}
       <Form onSubmit={submit}>
         <label>
           Period:
           <select name="period">
             <option value="1">First Half</option>
             <option value="2">Second Half</option>
+            <option value="5">Peneltys</option>
           </select>
         </label>
         <label>
           Type:
-          <select name="type">
+          <select name="eventType">
             <option value="throw">Throw</option>
+            <option value="block">Block</option>
             <option value="halftStart">Half Start</option>
           </select>
         </label>
@@ -125,14 +135,22 @@ export default function AdminEventForm() {
         </label>
         <label>
           Type:
-          <select name="type">
+          <select name="tygoalType">
             <option value="regularPlay">Regular Play</option>
+            <option value="counter">Counter</option>
             <option value="penalty">Penalty</option>
           </select>
         </label>
         <label>
           Team:
-          <select name="team">{clubs ? renderOptions(clubs) : null}</select>
+          <select
+            onChange={e => {
+              setSelectedTeam(e.target.value);
+            }}
+            name="team"
+          >
+            {teams ? renderOptions(teams) : null}
+          </select>
         </label>
         <label>
           Players:{" "}
@@ -140,12 +158,7 @@ export default function AdminEventForm() {
             {clubPlayers ? renderOptions(clubPlayers) : null}
           </select>
         </label>
-        <label>
-          Matches:{" "}
-          <select name="match">
-            {matches ? renderOptions(matches) : null}
-          </select>
-        </label>
+
         <input type="submit" value="Add" />
       </Form>
     </Wrapper>

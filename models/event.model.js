@@ -22,7 +22,7 @@ var eventSchema = new Schema({
   },
   type: {
     type: String,
-    enum: ["throw"],
+    enum: ["throw", "defCharge", "offCharge"],
     required: true
   },
 
@@ -43,16 +43,16 @@ var eventSchema = new Schema({
     type: Array
   },
   throw: {
-    endLocation: {
-      type: Object,
+    outcome: {
+      // Blocked, goal, post, saved ..
+      type: String,
       required: function() {
         if (this.type === "throw") return true;
       }
     },
 
-    outcome: {
-      // Blocked, goal, post, saved ..
-      type: String,
+    endLocation: {
+      type: Object,
       required: function() {
         if (this.type === "throw") return true;
       }

@@ -21,17 +21,14 @@ const Court = styled.div`
   background: rgba(255, 255, 255, 0.1);
 `;
 
-export default function AdminCourtChart({ scale }) {
-  const [throwCords, setThrowCords] = useState([]);
-
-  useEffect(() => {
-    console.log({ throwCords: throwCords });
-  }, [throwCords]);
-
+export default function AdminCourtChart({
+  scale,
+  setEventLocation,
+  eventLocation
+}) {
   const getCords = e => {
     console.log(e);
-    setThrowCords([
-      ...throwCords,
+    setEventLocation([
       {
         x: Math.round(e.xValue * 100) / 100,
         y: Math.round(e.yValue * 100) / 100
@@ -268,7 +265,7 @@ export default function AdminCourtChart({ scale }) {
         <XAxis type="number" dataKey="x" hide domain={[0, 40]} />
         <YAxis type="number" dataKey="y" hide domain={[0, 20]} />
         <Tooltip cursor={{ strokeDasharray: "3 3" }} />
-        <Scatter name="thorws" data={throwCords} fill="black" />
+        <Scatter name="thorws" data={eventLocation} fill="black" />
       </ScatterChart>
     </Court>
   );

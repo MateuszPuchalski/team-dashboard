@@ -11,6 +11,7 @@ router.get("/", (req, res) => {
 });
 
 router.post("/add", (req, res) => {
+  console.log({ event: { ...req.body } });
   const newEvent = new Event({
     ...req.body
   });

@@ -19,15 +19,15 @@ const Video = styled.div`
   grid-row: 1 / 4;
   width: 100%;
   height: 100%;
-    :first-child {
-      width: 100%,
-      height: 100%
-    }
+
+  background: rgba(255, 255, 255, 0.1);
 `;
 const AddEvent = styled.div`
   display: flex;
   grid-column: 1 / 5;
   grid-row: 4 / 5;
+  justify-content: center;
+  align-items: center;
 `;
 const ShowEvent = styled.div`
   display: flex;
@@ -39,7 +39,7 @@ const ShowEvent = styled.div`
 export default function AdminMatches() {
   const { matchId } = useParams();
   const [matchLoading, match] = useMatches(matchId);
-  console.log({ matchytid: match });
+  const [eventLocation, setEventLocation] = useState({ x: 0, y: 0 });
 
   if (match) {
     return (
@@ -47,10 +47,26 @@ export default function AdminMatches() {
         <Video>
           <AdminMatchVideo ytId={match.ytId} />
         </Video>
-        <AddEvent></AddEvent>
+        <AddEvent>
+          <h1>
+            {match.homeTeam.name} {match.homeScore} : {match.awayScore}{" "}
+            {match.awayTeam.name}
+          </h1>
+        </AddEvent>
         <ShowEvent>
-          <AdminEventForm />
-          <AdminCourtChart scale={9} />
+          <AdminEventForm
+            eventLocation={eventLocation}
+            matchId={matchId}
+            teams={[
+              { _id: match.homeTeam._id, name: match.homeTeam.name },
+              { _id: match.awayTeam._id, name: match.awayTeam.name }
+            ]}
+          />
+          <AdminCourtChart
+            eventLocation={eventLocation}
+            setEventLocation={setEventLocation}
+            scale={9}
+          />
           <AdminGoalChart scale={120} />
         </ShowEvent>
       </Wrapper>
