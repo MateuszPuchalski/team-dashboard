@@ -38,15 +38,21 @@ const Form = styled.form`
     }
   }
 `;
-export default function AdminEventForm({ teams, matchId, eventLocation }) {
+export default function AdminEventForm({
+  teams,
+  matchId,
+  eventLocation,
+  eventEndLocation
+}) {
   const [matchesLoading, matches] = useMatches();
   const [selectedTeam, setSelectedTeam] = useState(teams[0]._id);
   const [clubPlayersLoading, clubPlayers] = useClubPlayers(selectedTeam);
+  const [eventType, setEventType] = useState("Throw");
 
   const submit = e => {
     e.preventDefault();
     console.log({ target: e.target.team });
-    const data = {
+    let data = {
       index: 1, //e.target.index.value
       matchId: matchId,
       period: e.target.period.value,
@@ -54,14 +60,27 @@ export default function AdminEventForm({ teams, matchId, eventLocation }) {
       type: e.target.eventType.value,
       team: e.target.team.value,
       player: e.target.player.value,
-      location: eventLocation, //e.target.location.value
-      throw: {
-        endLocation: { x: 20, y: 10, z: 1.2 },
-        outcome: e.target.outcome.value,
-        technique: e.target.technique.value,
-        type: e.target.goalType.value
-      }
+      location: eventLocation //e.target.location.value
     };
+
+    switch (eventType) {
+      case "Throw":
+        data = {
+          ...data,
+          throw: {
+            endLocation: eventEndLocation,
+            outcome: e.target.outcome.value,
+            technique: e.target.technique.value,
+            type: e.target.goalType.value
+          }
+        };
+        break;
+      case "Bad Behaviour":
+        data = { ...data, BadBehaviour: e.target.BadBehaviour.value };
+        break;
+      default:
+        break;
+    }
 
     fetch("/api/event/add", {
       method: "POST",
@@ -97,7 +116,7 @@ export default function AdminEventForm({ teams, matchId, eventLocation }) {
   };
   return (
     <Wrapper>
-      {/* Zrobić warunkowe wyświtlanie formy */}
+      {/* get timestamp from video*/}
       <Form onSubmit={submit}>
         <label>
           Period:
@@ -109,38 +128,72 @@ export default function AdminEventForm({ teams, matchId, eventLocation }) {
         </label>
         <label>
           Type:
-          <select name="eventType">
-            <option value="throw">Throw</option>
-            <option value="block">Block</option>
-            <option value="halftStart">Half Start</option>
+          <select
+            onChange={e => {
+              setEventType(e.target.value);
+            }}
+            name="eventType"
+          >
+            <option value="Throw">Throw</option>
+            <option value="Block">Block</option>
+            <option value="Half Start">Half Start</option>
+            <option value="Half End">Half End</option>
+            <option value="Bad Behaviour">Bad Behaviour</option>
           </select>
         </label>
-        <label>
-          Outcome:
-          <select name="outcome">
-            <option value="goal">Goal</option>
-            <option value="blocked">Blocked</option>
-            <option value="post">Post</option>
-            <option value="saved">Saved</option>
-          </select>
-        </label>
-        <label>
-          Technique:
-          <select name="technique">
-            <option value="jumpShot">Jump Shot</option>
-            <option value="overarm">Overarm</option>
-            <option value="underarm">Underarm</option>
-            <option value="spinShot">Spin Shot</option>
-          </select>
-        </label>
-        <label>
-          Type:
-          <select name="tygoalType">
-            <option value="regularPlay">Regular Play</option>
-            <option value="counter">Counter</option>
-            <option value="penalty">Penalty</option>
-          </select>
-        </label>
+        {eventType === "Bad Behaviour" ? (
+          <label>
+            Bad Behaviour:
+            <select name="BadBehaviour">
+              <option value="Yellow Card">Yellow Card</option>
+              <option value="2min">2min</option>
+              <option value="Red Card">Red Card</option>
+              <option value="Blue Card">Blue Card</option>
+            </select>
+          </label>
+        ) : null}
+
+        {eventType === "Bad Behaviour" ? (
+          <label>
+            Bad Behaviour:
+            <select name="looo">
+              <option value="Yellow Card">Yellow Card</option>
+              <option value="2min">2min</option>
+              <option value="Red Card">Red Card</option>
+              <option value="Blue Card">Blue Card</option>
+            </select>
+          </label>
+        ) : null}
+        {eventType === "Throw" ? (
+          <>
+            <label>
+              Outcome:
+              <select name="outcome">
+                <option value="Goal">Goal</option>
+                <option value="Blocked">Blocked</option>
+                <option value="Post">Post</option>
+                <option value="Saved">Saved</option>
+              </select>
+            </label>
+            <label>
+              Technique:
+              <select name="technique">
+                <option value="Jump Shot">Jump Shot</option>
+                <option value="Overarm">Overarm</option>
+                <option value="Underarm">Underarm</option>
+                <option value="Spin Shot">Spin Shot</option>
+              </select>
+            </label>
+            <label>
+              Type:
+              <select name="goalType">
+                <option value="Regular Play">Regular Play</option>
+                <option value="Fast Break">Fast Break</option>
+                <option value="7m">7m</option>
+              </select>
+            </label>
+          </>
+        ) : null}
         <label>
           Team:
           <select

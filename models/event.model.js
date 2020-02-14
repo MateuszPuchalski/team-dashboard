@@ -22,7 +22,7 @@ var eventSchema = new Schema({
   },
   type: {
     type: String,
-    enum: ["throw", "defCharge", "offCharge"],
+    enum: ["Throw", "Half Start", "Half End", "Bad Behaviour"],
     required: true
   },
 
@@ -42,19 +42,26 @@ var eventSchema = new Schema({
   relatedEvents: {
     type: Array
   },
+
+  BadBehaviour: {
+    type: String,
+    required: function() {
+      if (this.type === "Bad Behaviour") return true;
+    }
+  },
   throw: {
     outcome: {
       // Blocked, goal, post, saved ..
       type: String,
       required: function() {
-        if (this.type === "throw") return true;
+        if (this.type === "Throw") return true;
       }
     },
 
     endLocation: {
       type: Object,
       required: function() {
-        if (this.type === "throw") return true;
+        if (this.type === "Throw") return true;
       }
     },
 
@@ -62,7 +69,7 @@ var eventSchema = new Schema({
       //Jump Shot, Overarm, Underarm,
       type: String,
       required: function() {
-        if (this.type === "throw") return true;
+        if (this.type === "Throw") return true;
       }
     },
 
@@ -70,7 +77,7 @@ var eventSchema = new Schema({
       // Penalty,
       type: String,
       required: function() {
-        if (this.type === "throw") return true;
+        if (this.type === "Throw") return true;
       }
     }
   }

@@ -40,6 +40,15 @@ export default function AdminMatches() {
   const { matchId } = useParams();
   const [matchLoading, match] = useMatches(matchId);
   const [eventLocation, setEventLocation] = useState({ x: 0, y: 0 });
+  const [eventEndLocation, setEventEndLocation] = useState({
+    x: 0,
+    y: 0,
+    z: 0
+  });
+
+  useEffect(() => {
+    console.log(eventEndLocation);
+  }, [eventEndLocation]);
 
   if (match) {
     return (
@@ -56,6 +65,7 @@ export default function AdminMatches() {
         <ShowEvent>
           <AdminEventForm
             eventLocation={eventLocation}
+            eventEndLocation={eventEndLocation}
             matchId={matchId}
             teams={[
               { _id: match.homeTeam._id, name: match.homeTeam.name },
@@ -67,7 +77,11 @@ export default function AdminMatches() {
             setEventLocation={setEventLocation}
             scale={9}
           />
-          <AdminGoalChart scale={120} />
+          <AdminGoalChart
+            eventEndLocation={eventEndLocation}
+            setEventEndLocation={setEventEndLocation}
+            scale={120}
+          />
         </ShowEvent>
       </Wrapper>
     );
