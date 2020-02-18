@@ -22,7 +22,7 @@ var eventSchema = new Schema({
   },
   type: {
     type: String,
-    enum: ["Throw", "Half Start", "Half End", "Bad Behaviour"],
+    enum: ["Throw", "Half Start", "Turnover", "Half End", "Bad Behaviour"],
     required: true
   },
 
@@ -33,8 +33,7 @@ var eventSchema = new Schema({
   },
   player: {
     type: Schema.Types.ObjectId,
-    ref: "Player",
-    required: true
+    ref: "Player"
   },
   location: {
     type: Object

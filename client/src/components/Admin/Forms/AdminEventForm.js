@@ -5,6 +5,9 @@ import useClubs from "../../../Hooks/useClubs";
 import useMatches from "../../../Hooks/useMatches";
 import useClubPlayers from "../../../Hooks/useClubPlayers";
 
+import AdminCourtChart from "../Charts/AdminCourtChart";
+import AdminGoalChart from "../Charts/AdminGoalChart";
+
 const Wrapper = styled.div`
   margin: 10px;
   width: auto;
@@ -41,30 +44,33 @@ const Form = styled.form`
 export default function AdminEventForm({
   teams,
   matchId,
+  ytVideoRef,
   eventLocation,
-  eventEndLocation
+  eventEndLocation,
+  setEventLocation,
+  setEventEndLocation
 }) {
   const [matchesLoading, matches] = useMatches();
   const [selectedTeam, setSelectedTeam] = useState(teams[0]._id);
   const [clubPlayersLoading, clubPlayers] = useClubPlayers(selectedTeam);
   const [eventType, setEventType] = useState("Throw");
 
-  const submit = e => {
+  const submit = async e => {
     e.preventDefault();
-    console.log({ target: e.target.team });
+
     let data = {
       index: 1, //e.target.index.value
       matchId: matchId,
       period: e.target.period.value,
-      timestamp: 100, // e.target.timestamp.value
+      //timestamp
       type: e.target.eventType.value,
       team: e.target.team.value,
-      player: e.target.player.value,
       location: eventLocation //e.target.location.value
     };
 
     switch (eventType) {
       case "Throw":
+        data = { ...data, player: e.target.player.value };
         data = {
           ...data,
           throw: {
@@ -76,11 +82,22 @@ export default function AdminEventForm({
         };
         break;
       case "Bad Behaviour":
+        data = { ...data, player: e.target.player.value };
         data = { ...data, BadBehaviour: e.target.BadBehaviour.value };
         break;
-      default:
+      case "Turnover":
+        data = { ...data, player: e.target.player.value };
+        data = { ...data, Turnover: e.target.Turnover.value };
         break;
     }
+    // add timestamp from yt video this must be in the end becouse of event null
+    data = {
+      ...data,
+      timestamp:
+        Math.round(
+          (await ytVideoRef.current.internalPlayer.getCurrentTime()) * 100
+        ) / 100
+    };
 
     fetch("/api/event/add", {
       method: "POST",
@@ -135,6 +152,7 @@ export default function AdminEventForm({
             name="eventType"
           >
             <option value="Throw">Throw</option>
+            <option value="Turnover">Turnover</option>
             <option value="Block">Block</option>
             <option value="Half Start">Half Start</option>
             <option value="Half End">Half End</option>
@@ -153,14 +171,13 @@ export default function AdminEventForm({
           </label>
         ) : null}
 
-        {eventType === "Bad Behaviour" ? (
+        {eventType === "Turnover" ? (
           <label>
-            Bad Behaviour:
-            <select name="looo">
-              <option value="Yellow Card">Yellow Card</option>
-              <option value="2min">2min</option>
-              <option value="Red Card">Red Card</option>
-              <option value="Blue Card">Blue Card</option>
+            Turnover:
+            <select name="Turnover">
+              <option value="Pass">Pass</option>
+              <option value="Catch">Catch</option>
+              <option value="Dribble">Dribble</option>
             </select>
           </label>
         ) : null}
@@ -205,15 +222,31 @@ export default function AdminEventForm({
             {teams ? renderOptions(teams) : null}
           </select>
         </label>
-        <label>
-          Players:{" "}
-          <select name="player">
-            {clubPlayers ? renderOptions(clubPlayers) : null}
-          </select>
-        </label>
+        {eventType !== "Half Start" && eventType !== "Half End" ? (
+          <label>
+            Players:{" "}
+            <select name="player">
+              {clubPlayers ? renderOptions(clubPlayers) : null}
+            </select>
+          </label>
+        ) : null}
 
         <input type="submit" value="Add" />
       </Form>
+
+      <AdminCourtChart
+        eventLocation={eventLocation}
+        setEventLocation={setEventLocation}
+        scale={9}
+      />
+
+      {eventType === "Throw" ? (
+        <AdminGoalChart
+          eventEndLocation={eventEndLocation}
+          setEventEndLocation={setEventEndLocation}
+          scale={120}
+        />
+      ) : null}
     </Wrapper>
   );
 }

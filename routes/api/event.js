@@ -10,6 +10,12 @@ router.get("/", (req, res) => {
     .then(events => res.json(events));
 });
 
+router.get("/match/:matchId", (req, res) => {
+  Event.find({ matchId: req.params.matchId })
+    .populate(["matchid", "team", "player"])
+    .then(events => res.json(events));
+});
+
 router.post("/add", (req, res) => {
   console.log({ event: { ...req.body } });
   const newEvent = new Event({

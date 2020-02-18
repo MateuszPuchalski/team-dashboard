@@ -10,17 +10,10 @@ const Wrapper = styled.div`
   background: rgba(255, 255, 255, 0.4);
 `;
 
-export default function AdminMatchVideo({ ytId }) {
+export default function AdminMatchVideo({ ytId, ytVideoRef }) {
   const [currTime, setCurrTime] = useState();
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-  const ytVideo = useRef(null);
   const wrapperRef = useRef(null);
-
-  const setTime = async () => {
-    const time = await ytVideo.current.internalPlayer.getCurrentTime();
-    console.log(time);
-    setCurrTime(Math.round(time * 100) / 100);
-  };
 
   useEffect(() => {
     if (wrapperRef) {
@@ -33,7 +26,7 @@ export default function AdminMatchVideo({ ytId }) {
   return (
     <Wrapper ref={wrapperRef}>
       <YouTube
-        ref={ytVideo}
+        ref={ytVideoRef}
         opts={{
           width: dimensions.width,
           height: dimensions.height

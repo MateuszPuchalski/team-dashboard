@@ -3,8 +3,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import AdminMatchVideo from "./Matches/AdminMatchVideo";
-import AdminCourtChart from "./Charts/AdminCourtChart";
-import AdminGoalChart from "./Charts/AdminGoalChart";
+
 import AdminEventForm from "./Forms/AdminEventForm";
 
 import useMatches from "../../Hooks/useMatches";
@@ -46,6 +45,14 @@ export default function AdminMatches() {
     z: 0
   });
 
+  const ytVideoRef = useRef(null);
+
+  // const setTime = async () => {
+  //   const time = await ytVideo.current.internalPlayer.getCurrentTime();
+  //   console.log(time);
+  //   setCurrTime(Math.round(time * 100) / 100);
+  // };
+
   useEffect(() => {
     console.log(eventEndLocation);
   }, [eventEndLocation]);
@@ -54,7 +61,7 @@ export default function AdminMatches() {
     return (
       <Wrapper>
         <Video>
-          <AdminMatchVideo ytId={match.ytId} />
+          <AdminMatchVideo ytVideoRef={ytVideoRef} ytId={match.ytId} />
         </Video>
         <AddEvent>
           <h1>
@@ -66,21 +73,14 @@ export default function AdminMatches() {
           <AdminEventForm
             eventLocation={eventLocation}
             eventEndLocation={eventEndLocation}
+            setEventLocation={setEventLocation}
+            setEventEndLocation={setEventEndLocation}
             matchId={matchId}
+            ytVideoRef={ytVideoRef}
             teams={[
               { _id: match.homeTeam._id, name: match.homeTeam.name },
               { _id: match.awayTeam._id, name: match.awayTeam.name }
             ]}
-          />
-          <AdminCourtChart
-            eventLocation={eventLocation}
-            setEventLocation={setEventLocation}
-            scale={9}
-          />
-          <AdminGoalChart
-            eventEndLocation={eventEndLocation}
-            setEventEndLocation={setEventEndLocation}
-            scale={120}
           />
         </ShowEvent>
       </Wrapper>
