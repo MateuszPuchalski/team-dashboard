@@ -83,11 +83,11 @@ export default function AdminEventForm({
         break;
       case "Bad Behaviour":
         data = { ...data, player: e.target.player.value };
-        data = { ...data, BadBehaviour: e.target.BadBehaviour.value };
+        data = { ...data, badBehaviour: e.target.badBehaviour.value };
         break;
       case "Turnover":
         data = { ...data, player: e.target.player.value };
-        data = { ...data, Turnover: e.target.Turnover.value };
+        data = { ...data, turnover: e.target.turnover.value };
         break;
     }
     // add timestamp from yt video this must be in the end becouse of event null
@@ -162,7 +162,7 @@ export default function AdminEventForm({
         {eventType === "Bad Behaviour" ? (
           <label>
             Bad Behaviour:
-            <select name="BadBehaviour">
+            <select name="badBehaviour">
               <option value="Yellow Card">Yellow Card</option>
               <option value="2min">2min</option>
               <option value="Red Card">Red Card</option>
@@ -174,7 +174,7 @@ export default function AdminEventForm({
         {eventType === "Turnover" ? (
           <label>
             Turnover:
-            <select name="Turnover">
+            <select name="turnover">
               <option value="Pass">Pass</option>
               <option value="Catch">Catch</option>
               <option value="Dribble">Dribble</option>

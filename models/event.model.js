@@ -22,7 +22,14 @@ var eventSchema = new Schema({
   },
   type: {
     type: String,
-    enum: ["Throw", "Half Start", "Turnover", "Half End", "Bad Behaviour"],
+    enum: [
+      "Throw",
+      "Pass",
+      "Half Start",
+      "Turnover",
+      "Half End",
+      "Bad Behaviour"
+    ],
     required: true
   },
 
@@ -42,10 +49,16 @@ var eventSchema = new Schema({
     type: Array
   },
 
-  BadBehaviour: {
+  badBehaviour: {
     type: String,
     required: function() {
       if (this.type === "Bad Behaviour") return true;
+    }
+  },
+  turnover: {
+    type: String,
+    required: function() {
+      if (this.type === "Turnover") return true;
     }
   },
   throw: {
