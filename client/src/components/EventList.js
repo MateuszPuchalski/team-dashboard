@@ -1,19 +1,54 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 
-export default function EventList(matchId) {
+import GoalChart from "./CourtCharts/GoalsChart";
+
+const Events = styled.div`
+  display: flex;
+  flex-direction: row;
+  overflow: scroll;
+`;
+
+export default function EventList({ matchId }) {
   const [events, setEvents] = useState();
+  const [throwPoints, setThrowPoints] = useState([]);
 
-  getEvents = matchId => {
-    fetch(`/api/event/match/${matchId}`)
+  const getEvents = async matchId => {
+    const data = await fetch(`/api/event/match/${matchId}`)
       .then(res => res.json())
       .then(data => {
         setEvents(data);
+        return data;
       });
+    console.log({ data: data });
+
+    const throws = data.reduce((acc, event) => {
+      if (event.type === "Throw") {
+        acc.push(...event.throw.endLocation);
+      }
+      return acc;
+    }, []);
+    console.log(throws);
+    setThrowPoints(throws);
+
+    return data;
   };
 
   useEffect(() => {
     getEvents(matchId);
   }, [matchId]);
 
-  return <div></div>;
+  return (
+    <Events>
+      <GoalChart scale={60} cords={throwPoints} />
+      {events
+        ? events.map(event => {
+            if (event.type === "Throw") {
+              return <GoalChart scale={30} cords={event.throw.endLocation} />;
+            }
+            return <div key={event._id}> {event.type} </div>;
+          })
+        : null}
+    </Events>
+  );
 }

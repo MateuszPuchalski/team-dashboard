@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import AdminMatchVideo from "./Matches/AdminMatchVideo";
-
+import EventList from "../EventList";
 import AdminEventForm from "./Forms/AdminEventForm";
 
 import useMatches from "../../Hooks/useMatches";
@@ -64,10 +64,7 @@ export default function AdminMatches() {
           <AdminMatchVideo ytVideoRef={ytVideoRef} ytId={match.ytId} />
         </Video>
         <AddEvent>
-          <h1>
-            {match.homeTeam.name} {match.homeScore} : {match.awayScore}{" "}
-            {match.awayTeam.name}
-          </h1>
+          <EventList matchId={matchId} />
         </AddEvent>
         <ShowEvent>
           <AdminEventForm
