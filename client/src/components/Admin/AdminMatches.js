@@ -7,6 +7,7 @@ import EventList from "../EventList";
 import AdminEventForm from "./Forms/AdminEventForm";
 
 import useMatches from "../../Hooks/useMatches";
+import useEvents from "../../Hooks/useEvents";
 
 const Wrapper = styled.div`
   display: grid;
@@ -38,6 +39,7 @@ const ShowEvent = styled.div`
 export default function AdminMatches() {
   const { matchId } = useParams();
   const [matchLoading, match] = useMatches(matchId);
+  const [eventsLoading, events] = useEvents(matchId);
   const [eventLocation, setEventLocation] = useState({ x: 0, y: 0 });
   const [eventEndLocation, setEventEndLocation] = useState({
     x: 0,
@@ -61,7 +63,11 @@ export default function AdminMatches() {
     return (
       <Wrapper>
         <Video>
-          <AdminMatchVideo ytVideoRef={ytVideoRef} ytId={match.ytId} />
+          <AdminMatchVideo
+            events={events}
+            ytVideoRef={ytVideoRef}
+            ytId={match.ytId}
+          />
         </Video>
         <AddEvent>
           <EventList matchId={matchId} />

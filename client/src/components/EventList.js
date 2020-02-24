@@ -44,9 +44,18 @@ export default function EventList({ matchId }) {
       {events
         ? events.map(event => {
             if (event.type === "Throw") {
-              return <GoalChart scale={30} cords={event.throw.endLocation} />;
+              return (
+                <div id={`${event.matchId}${event._id}`}>
+                  <GoalChart scale={30} cords={event.throw.endLocation} />
+                </div>
+              );
             }
-            return <div key={event._id}> {event.type} </div>;
+            return (
+              <div key={event._id} id={`${event.matchId}${event._id}`}>
+                {" "}
+                {event.type}{" "}
+              </div>
+            );
           })
         : null}
     </Events>
