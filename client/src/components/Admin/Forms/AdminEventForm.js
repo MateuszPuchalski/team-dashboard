@@ -99,7 +99,7 @@ export default function AdminEventForm({
         ) / 100
     };
 
-    fetch("/api/event/add", {
+    fetch("/api/events/add", {
       method: "POST",
       headers: {
         "Content-type": "application/json; charset=UTF-8"

@@ -19,7 +19,9 @@ import PrivateRoute from "./components/PrivateRoute";
 
 import Admin from "./components/Admin/Admin";
 import AdminMatches from "./components/Admin/AdminMatches";
-import AdminShowMatches from "./components/Admin/Matches/AdminSchowMatches";
+import AdminPlayers from "./components/Admin/AdminPlayers";
+import AdminSchowMatches from "./components/Admin/Matches/AdminSchowMatches";
+import AdminSchowPlayers from "./components/Admin/Players/AdminSchowPlayers";
 
 import { useAuth } from "./useAuth";
 const Wrapper = styled.div`
@@ -63,8 +65,10 @@ export default function App2(props) {
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/admin" component={Admin} />
-        <Route exact path="/admin/matches" component={AdminShowMatches} />
+        <Route exact path="/admin/matches" component={AdminSchowMatches} />
         <Route exact path="/admin/matches/:matchId" component={AdminMatches} />
+        <Route exact path="/admin/players" component={AdminSchowPlayers} />
+        <Route exact path="/admin/players/:playerId" component={AdminPlayers} />
         <PrivateRoute path={"/dashboard"} component={Dashboard} />
       </Router>
     </Wrapper>

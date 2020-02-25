@@ -12,6 +12,12 @@ router.get("/", (req, res) => {
     .then(players => res.json(players));
 });
 
+router.get("/:playerId", async (req, res) => {
+  Player.findById(req.params.playerId)
+    .populate(["currentClub"])
+    .then(player => res.json(player));
+});
+
 router.get("/club/:clubId", (req, res) => {
   console.log({ clubId: req.params.clubId });
   Player.find({ currentClub: req.params.clubId })

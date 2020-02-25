@@ -14,7 +14,7 @@ export default function EventList({ matchId }) {
   const [throwPoints, setThrowPoints] = useState([]);
 
   const getEvents = async matchId => {
-    const data = await fetch(`/api/event/match/${matchId}`)
+    const data = await fetch(`/api/events/match/${matchId}`)
       .then(res => res.json())
       .then(data => {
         setEvents(data);

@@ -10,6 +10,18 @@ router.get("/", (req, res) => {
     .then(events => res.json(events));
 });
 
+router.get("/:playerId", (req, res) => {
+  Event.find({ player: req.params.playerId })
+    .populate(["matchid", "team", "player"])
+    .then(events => res.json(events));
+});
+
+router.get("/:playerId/:matchId", (req, res) => {
+  Event.find({ player: req.params.playerId, matchId: req.params.matchId })
+    .populate(["matchid", "team", "player"])
+    .then(events => res.json(events));
+});
+
 router.get("/match/:matchId", (req, res) => {
   Event.find({ matchId: req.params.matchId })
     .populate(["matchid", "team", "player"])
