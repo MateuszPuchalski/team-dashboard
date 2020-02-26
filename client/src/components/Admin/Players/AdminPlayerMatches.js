@@ -7,6 +7,7 @@ import useMatches from "../../../Hooks/useMatches";
 
 const Wrapper = styled.div`
   margin: 10px;
+  display: contents;
   width: 500px;
   height: auto;
   padding: 10px;

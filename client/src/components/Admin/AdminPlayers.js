@@ -7,6 +7,7 @@ import useMatches from "./../../Hooks/useMatches";
 import useEvents from "./../../Hooks/useEvents";
 
 import AdminPlayerMatches from "./Players/AdminPlayerMatches";
+import GoalsChart from "../CourtCharts/GoalsChart";
 
 const Wrapper = styled.div`
   display: grid;
@@ -19,14 +20,25 @@ export default function AdminPlayers() {
   const [loadingMatches, matches] = useMatches();
   const [loadingEvents, events] = useEvents({ playerId: playerId });
   const [loadingPlayer, player] = usePlayers(playerId);
+  const [throwPoints, setThrowPoints] = useState([]);
 
   useEffect(() => {
-    console.log({ Events: events });
-  }, [matches]);
+    if (events) {
+      const throws = events.reduce((acc, event) => {
+        if (event.type === "Throw") {
+          acc.push(...event.throw.endLocation);
+        }
+        return acc;
+      }, []);
+      console.log(throws);
+      setThrowPoints(throws);
+    }
+  }, [events]);
 
   return (
     <Wrapper>
       <h1>{player ? player.name : null}</h1>
+      <GoalsChart scale={100} cords={throwPoints} />
       <AdminPlayerMatches />
     </Wrapper>
   );

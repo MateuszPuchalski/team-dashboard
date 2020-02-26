@@ -51,7 +51,7 @@ export default function AdminSchowMatches() {
         {matches
           ? matches.map(match =>
               match.ytId ? (
-                <Link to={`admin/matches/${match._id}`}>
+                <Link to={`matches/${match._id}`}>
                   <li>
                     {match.homeTeam.name} {match.homeScore} : {match.awayScore}{" "}
                     {match.awayTeam.name} |YT|

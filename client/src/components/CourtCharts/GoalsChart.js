@@ -13,7 +13,7 @@ import styled from "styled-components";
 
 const Court = styled.div`
   margin: 10px;
-
+  display: contents;
   background: rgba(255, 255, 255, 0.1);
 `;
 
