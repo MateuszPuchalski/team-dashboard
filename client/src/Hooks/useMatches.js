@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-export default function useMatches(matchId) {
+export default function useMatches(matchId = null) {
   const [matches, setMatches] = useState();
   const [loading, setLoading] = useState();
 
