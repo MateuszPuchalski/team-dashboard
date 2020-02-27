@@ -58,7 +58,14 @@ export default function AdminPlayers() {
 
   return (
     <Wrapper>
-      <h1>{player ? player.name : null}</h1>
+      <div>
+        <h1>{player ? player.name : null}</h1>
+
+        <img
+          src={`${process.env.PUBLIC_URL}/statues/PlayerPlaceholder.png`}
+          alt="boom"
+        />
+      </div>
       <div>
         <GoalsChart scale={100} cords={throwPoints} />
         <HalfCourtChart scale={20} cords={courtThrowLocation} />
