@@ -8,6 +8,7 @@ import useEvents from "./../../Hooks/useEvents";
 
 import AdminPlayerMatches from "./Players/AdminPlayerMatches";
 import GoalsChart from "../CourtCharts/GoalsChart";
+import HalfCourtChart from "../CourtCharts/HalfCourtChart";
 
 const Wrapper = styled.div`
   display: grid;
@@ -21,6 +22,7 @@ export default function AdminPlayers() {
   const [loadingEvents, events] = useEvents({ playerId: playerId });
   const [loadingPlayer, player] = usePlayers(playerId);
   const [throwPoints, setThrowPoints] = useState([]);
+  const [courtThrowLocation, setCourtThrowLocation] = useState([]);
 
   useEffect(() => {
     if (events) {
@@ -30,15 +32,38 @@ export default function AdminPlayers() {
         }
         return acc;
       }, []);
-      console.log(throws);
+      console.log({ Throws: throws });
       setThrowPoints(throws);
+
+      const courtThrows = events.reduce((acc, event) => {
+        if (event.type === "Throw") {
+          let x, y;
+
+          if (event.location[0].x < 20) {
+            x = 20 - event.location[0].x;
+            y = event.location[0].y;
+          } else {
+            x = event.location[0].x - 20;
+            y = 20 - event.location[0].y;
+          }
+          console.log({ X: x, Y: y });
+          acc.push({ x: x, y: y });
+        }
+        return acc;
+      }, []);
+      console.log({ courtThrows: courtThrows });
+      setCourtThrowLocation(courtThrows);
     }
   }, [events]);
 
   return (
     <Wrapper>
       <h1>{player ? player.name : null}</h1>
-      <GoalsChart scale={100} cords={throwPoints} />
+      <div>
+        <GoalsChart scale={100} cords={throwPoints} />
+        <HalfCourtChart scale={20} cords={courtThrowLocation} />
+      </div>
+
       <AdminPlayerMatches />
     </Wrapper>
   );

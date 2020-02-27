@@ -39,7 +39,7 @@ const ShowEvent = styled.div`
 export default function AdminMatches() {
   const { matchId } = useParams();
   const [matchLoading, match] = useMatches(matchId);
-  const [eventsLoading, events] = useEvents(matchId);
+  const [eventsLoading, events] = useEvents({ matchId: matchId });
   const [eventLocation, setEventLocation] = useState({ x: 0, y: 0 });
   const [eventEndLocation, setEventEndLocation] = useState({
     x: 0,

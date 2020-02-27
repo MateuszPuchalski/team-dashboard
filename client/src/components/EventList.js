@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import GoalChart from "./CourtCharts/GoalsChart";
+import useEvents from "../Hooks/useEvents";
 
 const Events = styled.div`
   display: flex;
@@ -10,43 +11,17 @@ const Events = styled.div`
 `;
 
 export default function EventList({ matchId }) {
-  const [events, setEvents] = useState();
-  const [throwPoints, setThrowPoints] = useState([]);
-
-  const getEvents = async matchId => {
-    const data = await fetch(`/api/events/match/${matchId}`)
-      .then(res => res.json())
-      .then(data => {
-        setEvents(data);
-        return data;
-      });
-    console.log({ data: data });
-
-    const throws = data.reduce((acc, event) => {
-      if (event.type === "Throw") {
-        acc.push(...event.throw.endLocation);
-      }
-      return acc;
-    }, []);
-    console.log(throws);
-    setThrowPoints(throws);
-
-    return data;
-  };
-
-  useEffect(() => {
-    getEvents(matchId);
-  }, [matchId]);
+  const [loading, events] = useEvents({ matchId: matchId });
 
   return (
     <Events>
-      <GoalChart scale={60} cords={throwPoints} />
       {events
         ? events.map(event => {
             if (event.type === "Throw") {
               return (
                 <div id={`${event.matchId}${event._id}`}>
-                  <GoalChart scale={30} cords={event.throw.endLocation} />
+                  <h3>{event.player.name}</h3>
+                  <p>{event.type}</p>
                 </div>
               );
             }

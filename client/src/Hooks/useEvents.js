@@ -7,6 +7,16 @@ export default function useEvents({ matchId = null, playerId = null }) {
   useEffect(() => {
     setLoading(true);
 
+    if (matchId && playerId) {
+      fetch(`/api/events/player/${playerId}/match/${matchId}/`)
+        .then(res => res.json())
+        .then(data => {
+          setEvents(data);
+          setLoading(false);
+        });
+      return;
+    }
+
     if (matchId) {
       fetch(`/api/events/match/${matchId}`)
         .then(res => res.json())
@@ -19,16 +29,6 @@ export default function useEvents({ matchId = null, playerId = null }) {
 
     if (playerId) {
       fetch(`/api/events/player/${playerId}`)
-        .then(res => res.json())
-        .then(data => {
-          setEvents(data);
-          setLoading(false);
-        });
-      return;
-    }
-
-    if (matchId && playerId) {
-      fetch(`/api/events/player/${playerId}/match/${matchId}/`)
         .then(res => res.json())
         .then(data => {
           setEvents(data);
