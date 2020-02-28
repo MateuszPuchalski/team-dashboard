@@ -67,7 +67,7 @@ export default function AdminPlayers() {
         />
       </div>
       <div>
-        <GoalsChart scale={100} cords={throwPoints} />
+        <GoalsChart scale={133} cords={throwPoints} />
         <HalfCourtChart scale={20} cords={courtThrowLocation} />
       </div>
 
