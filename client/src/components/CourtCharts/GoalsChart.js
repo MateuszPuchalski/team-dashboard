@@ -17,6 +17,16 @@ const Court = styled.div`
   background: rgba(255, 255, 255, 0.1);
 `;
 
+function GoalChartTooltip(props) {
+  console.log(props);
+  return props.active ? (
+    <div>
+      {props.payload[0].payload.name}
+      <p>{props.payload[0].payload.technique}</p>
+    </div>
+  ) : null;
+}
+
 export default function GoalChart({ scale, cords }) {
   return (
     <Court>
@@ -62,7 +72,10 @@ export default function GoalChart({ scale, cords }) {
         />
         <XAxis type="number" dataKey="y" hide domain={[7.5, 12.5]} />
         <YAxis type="number" dataKey="z" hide domain={[0, 3]} />
-        <Tooltip cursor={{ strokeDasharray: "3 3" }} />
+        <Tooltip
+          cursor={{ strokeDasharray: "3 3" }}
+          content={<GoalChartTooltip />}
+        />
         <Scatter name="thorws" data={cords.accurate} fill="green" />
         <Scatter name="thorws" data={cords.failed} fill="red" />
       </ScatterChart>

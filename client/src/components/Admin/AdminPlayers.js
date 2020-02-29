@@ -27,11 +27,17 @@ export default function AdminPlayers() {
     if (events) {
       const accThrows = events.reduce((acc, event) => {
         if (event.type === "Throw" && event.throw.outcome === "Goal") {
-          acc.push(...event.throw.endLocation);
+          const testObj = {
+            ...event.throw.endLocation[0],
+            name: event.player.name,
+            technique: event.throw.technique,
+            outcome: event.throw.outcome
+          };
+          acc.push(testObj);
         }
         return acc;
       }, []);
-
+      console.log({ accThrows: accThrows });
       const failedThrows = events.reduce((acc, event) => {
         if (event.type === "Throw" && event.throw.outcome !== "Goal") {
           acc.push(...event.throw.endLocation);
