@@ -63,7 +63,8 @@ export default function GoalChart({ scale, cords }) {
         <XAxis type="number" dataKey="y" hide domain={[7.5, 12.5]} />
         <YAxis type="number" dataKey="z" hide domain={[0, 3]} />
         <Tooltip cursor={{ strokeDasharray: "3 3" }} />
-        <Scatter name="thorws" data={cords} fill="black" />
+        <Scatter name="thorws" data={cords.accurate} fill="green" />
+        <Scatter name="thorws" data={cords.failed} fill="red" />
       </ScatterChart>
     </Court>
   );

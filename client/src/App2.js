@@ -25,6 +25,7 @@ import AdminSchowPlayers from "./components/Admin/Players/AdminSchowPlayers";
 
 import { useAuth } from "./useAuth";
 const Wrapper = styled.div`
+  color: white;
   width: 100vw;
   height: 100vh;
   position: relative;

@@ -12,8 +12,7 @@ import HalfCourtChart from "../CourtCharts/HalfCourtChart";
 
 const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(5, 20vw);
-  grid-template-rows: repeat(4, 25vh);
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 `;
 
 export default function AdminPlayers() {
@@ -21,22 +20,29 @@ export default function AdminPlayers() {
   const [loadingMatches, matches] = useMatches();
   const [loadingEvents, events] = useEvents({ playerId: playerId });
   const [loadingPlayer, player] = usePlayers(playerId);
-  const [throwPoints, setThrowPoints] = useState([]);
+  const [throwPoints, setThrowPoints] = useState({});
   const [courtThrowLocation, setCourtThrowLocation] = useState([]);
 
   useEffect(() => {
     if (events) {
-      const throws = events.reduce((acc, event) => {
-        if (event.type === "Throw") {
+      const accThrows = events.reduce((acc, event) => {
+        if (event.type === "Throw" && event.throw.outcome === "Goal") {
           acc.push(...event.throw.endLocation);
         }
         return acc;
       }, []);
-      console.log({ Throws: throws });
-      setThrowPoints(throws);
 
-      const courtThrows = events.reduce((acc, event) => {
-        if (event.type === "Throw") {
+      const failedThrows = events.reduce((acc, event) => {
+        if (event.type === "Throw" && event.throw.outcome !== "Goal") {
+          acc.push(...event.throw.endLocation);
+        }
+        return acc;
+      }, []);
+
+      setThrowPoints({ accurate: accThrows, failed: failedThrows });
+
+      const accCourtThrows = events.reduce((acc, event) => {
+        if (event.type === "Throw" && event.throw.outcome === "Goal") {
           let x, y;
 
           if (event.location[0].x < 20) {
@@ -51,8 +57,28 @@ export default function AdminPlayers() {
         }
         return acc;
       }, []);
-      console.log({ courtThrows: courtThrows });
-      setCourtThrowLocation(courtThrows);
+
+      const failedCourtThrows = events.reduce((acc, event) => {
+        if (event.type === "Throw" && event.throw.outcome !== "Goal") {
+          let x, y;
+
+          if (event.location[0].x < 20) {
+            x = 20 - event.location[0].x;
+            y = event.location[0].y;
+          } else {
+            x = event.location[0].x - 20;
+            y = 20 - event.location[0].y;
+          }
+          console.log({ X: x, Y: y });
+          acc.push({ x: x, y: y });
+        }
+        return acc;
+      }, []);
+
+      setCourtThrowLocation({
+        accurate: accCourtThrows,
+        failed: failedCourtThrows
+      });
     }
   }, [events]);
 

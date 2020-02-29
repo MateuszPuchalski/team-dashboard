@@ -74,6 +74,7 @@ export default function AdminEventForm({
         data = {
           ...data,
           throw: {
+            assist: e.target.assist.value,
             endLocation: eventEndLocation,
             outcome: e.target.outcome.value,
             technique: e.target.technique.value,
@@ -183,6 +184,14 @@ export default function AdminEventForm({
         ) : null}
         {eventType === "Throw" ? (
           <>
+            <label>
+              Assist:
+              <select name="assist">
+                <option value="">None</option>
+                {clubPlayers ? renderOptions(clubPlayers) : null}
+              </select>
+            </label>
+
             <label>
               Outcome:
               <select name="outcome">

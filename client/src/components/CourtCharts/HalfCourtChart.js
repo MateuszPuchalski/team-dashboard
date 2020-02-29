@@ -132,7 +132,8 @@ export default function HalfCourtChart({ scale, cords }) {
         <XAxis type="number" dataKey="y" hide domain={[0, 20]} />
         <YAxis type="number" dataKey="x" hide domain={[0, 20]} />
         <Tooltip cursor={{ strokeDasharray: "3 3" }} />
-        <Scatter name="thorws" data={cords} fill="black" />
+        <Scatter name="thorws" data={cords.accurate} fill="green" />
+        <Scatter name="thorws" data={cords.failed} fill="red" />
       </ScatterChart>
     </Court>
   );
