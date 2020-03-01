@@ -16,11 +16,11 @@ const StyledLink = styled(Link)`
   height: 5rem;
   color: ${textPrimary};
   text-decoration: none;
-  filter: grayscale(100%) opacity(0.7);
+  filter: grayscale(100%) opacity(0.5);
   transition: ${transitionSpeed};
   img {
-    width: 2rem;
-    min-width: 2rem;
+    width: 3rem;
+    min-width: 3rem;
     margin: 0 1.5rem;
   }
   span {
@@ -31,6 +31,10 @@ const StyledLink = styled(Link)`
     filter: grayscale(0%) opacity(1);
     background: ${bgSecondary};
     color: ${textSecondary};
+    img {
+      filter: invert(10%) sepia(38%) saturate(7146%) hue-rotate(354deg)
+        brightness(100%) contrast(85%);
+    }
   }
 `;
 
@@ -85,7 +89,10 @@ export default function Sidebar() {
           </StyledLink>
         </li>
         <li>
-          <StyledLink to={`${match.url}/matches`}>Matches</StyledLink>
+          <StyledLink to={`${match.url}/matches`}>
+            <img src={`${process.env.PUBLIC_URL}/matches.svg`} />
+            <span>Matches</span>
+          </StyledLink>
         </li>
       </ul>
     </Navbar>
