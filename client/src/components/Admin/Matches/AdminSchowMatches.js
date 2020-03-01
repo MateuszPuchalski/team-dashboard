@@ -5,7 +5,15 @@ import { Link, useRouteMatch, useLocation } from "react-router-dom";
 
 import useMatches from "../../../Hooks/useMatches";
 
+import MatchCard from "../../MatchCard";
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: white;
+`;
+
 const Wrapper = styled.div`
+  text-decoration: none;
   margin: 10px;
   width: 500px;
   height: auto;
@@ -51,17 +59,11 @@ export default function AdminSchowMatches() {
         {matches
           ? matches.map(match =>
               match.ytId ? (
-                <Link to={`matches/${match._id}`}>
-                  <li>
-                    {match.homeTeam.name} {match.homeScore} : {match.awayScore}{" "}
-                    {match.awayTeam.name} |YT|
-                  </li>
-                </Link>
+                <StyledLink to={`matches/${match._id}`}>
+                  <MatchCard match={match} />
+                </StyledLink>
               ) : (
-                <li>
-                  {match.homeTeam.name} {match.homeScore} : {match.awayScore}{" "}
-                  {match.awayTeam.name}
-                </li>
+                <MatchCard match={match} />
               )
             )
           : null}
