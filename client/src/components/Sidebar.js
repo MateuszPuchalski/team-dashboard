@@ -3,30 +3,91 @@ import styled from "styled-components";
 import Avatar from "./avatar";
 import { Link, useRouteMatch } from "react-router-dom";
 
-const Wrapper = styled.div`
-  grid-column: 1 / span 3;
-  grid-row: 1 / span 13;
+const textPrimary = "#b6b6b6";
+const textSecondary = "#ececec";
+const bgPrimary = "#23232e";
+const bgSecondary = "#141418";
+const transitionSpeed = "400ms";
+
+const StyledLink = styled(Link)`
+  display: flex;
+  align-items: center;
+
+  height: 5rem;
+  color: ${textPrimary};
+  text-decoration: none;
+  filter: grayscale(100%) opacity(0.7);
+  transition: ${transitionSpeed};
+  img {
+    width: 2rem;
+    min-width: 2rem;
+    margin: 0 1.5rem;
+  }
+  span {
+    display: none;
+    margin-left: 1rem;
+  }
+  &:hover {
+    filter: grayscale(0%) opacity(1);
+    background: ${bgSecondary};
+    color: ${textSecondary};
+  }
+`;
+
+const Navbar = styled.nav`
+  display: flex;
+  position: fixed;
   background: red;
-  li: {
-    diplay: flex;
+  top: 0;
+  width: 5rem;
+  height: 100vh;
+  z-index: 100;
+  transition: 400ms width ease;
+  background-color: ${bgPrimary};
+  ul {
+    width: 100%;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    height: 100%;
+    li {
+      width: 100%;
+    }
+  }
+
+  &:hover {
+    width: 16rem;
+
+    ${StyledLink} {
+      span {
+        display: inline;
+      }
+    }
   }
 `;
 export default function Sidebar() {
   const match = useRouteMatch();
   return (
-    <Wrapper>
-      <h1>Sidebar</h1>
+    <Navbar>
       <ul>
+        <li>Dashboard</li>
         <li>
-          <Link to={`${match.url}/club`}>Club</Link>
+          <StyledLink to={`${match.url}/club`}>Club</StyledLink>
         </li>
         <li>
-          <Link to={`${match.url}/players`}>Players</Link>
+          <StyledLink to={`${match.url}/players`}>
+            <img src={`${process.env.PUBLIC_URL}/players.svg`} />
+            <span>Players</span>
+          </StyledLink>
         </li>
         <li>
-          <Link to={`${match.url}/matches`}>Matches</Link>
+          <StyledLink to={`${match.url}/matches`}>Matches</StyledLink>
         </li>
       </ul>
-    </Wrapper>
+    </Navbar>
   );
 }
