@@ -8,15 +8,24 @@ const Events = styled.div`
   display: flex;
   flex-direction: column;
   overflow: scroll;
+  color: black;
 
   #avatar {
     width: 5rem;
   }
   .event {
+    border-radius: 0.5rem;
     display: flex;
     margin: 1rem 0.5rem;
+    box-shadow: -12px -12px 12px 0 rgba(255, 255, 255, 1),
+      12px 12px 12px 0 rgba(0, 0, 0, 0.1);
+    transition: 333ms box-shadow;
+
     &:hover {
-      background: green;
+      box-shadow: 0px 0px 0px 0 rgba(255, 255, 255, 1),
+        0px 0px 0px 0 rgba(0, 0, 0, 0.1),
+        inset 12px 12px 12px 0 rgba(0, 0, 0, 0.1),
+        inset -12px -12px 12px 0 rgba(255, 255, 255, 1);
     }
   }
 `;

@@ -33,8 +33,7 @@ const Wrapper = styled.div`
 
   height: 100vh;
   position: relative;
-  background: url(${background});
-  background-size: cover;
+  background: #eeeeee;
   overflow: hidden;
   margin-left: 5rem;
   padding: 1rem;

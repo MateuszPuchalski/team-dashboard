@@ -9,7 +9,7 @@ const primarySize = "3rem";
 const Card = styled.div`
   color: black;
   position: relative;
-  background: white;
+  background: #eeeeee;
   border-radius: 0.5rem;
   margin: 1rem 0;
   display: flex;
@@ -18,6 +18,16 @@ const Card = styled.div`
   text-decoration: none;
   width: 25rem;
   height: 8rem;
+  box-shadow: -12px -12px 12px 0 rgba(255, 255, 255, 1),
+    12px 12px 12px 0 rgba(0, 0, 0, 0.1);
+  transition: 333ms box-shadow;
+
+  &:hover {
+    box-shadow: 0px 0px 0px 0 rgba(255, 255, 255, 1),
+      0px 0px 0px 0 rgba(0, 0, 0, 0.1),
+      inset 12px 12px 12px 0 rgba(0, 0, 0, 0.1),
+      inset -12px -12px 12px 0 rgba(255, 255, 255, 1);
+  }
 
   #yt {
     width: 1.5rem;
