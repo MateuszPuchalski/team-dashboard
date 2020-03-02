@@ -1,6 +1,7 @@
-var express = require("express");
-var path = require("path");
-var cors = require("cors");
+const express = require("express");
+const cloudinary = require("cloudinary").v2;
+const path = require("path");
+const cors = require("cors");
 const passport = require("passport");
 const session = require("express-session");
 require("dotenv").config();

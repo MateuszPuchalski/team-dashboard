@@ -6,8 +6,19 @@ import useEvents from "../Hooks/useEvents";
 
 const Events = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   overflow: scroll;
+
+  #avatar {
+    width: 5rem;
+  }
+  .event {
+    display: flex;
+    margin: 1rem 0.5rem;
+    &:hover {
+      background: green;
+    }
+  }
 `;
 
 export default function EventList({ matchId }) {
@@ -19,14 +30,23 @@ export default function EventList({ matchId }) {
         ? events.map(event => {
             if (event.type === "Throw") {
               return (
-                <div id={`${event.matchId}${event._id}`}>
-                  <h3>{event.player.name}</h3>
+                <div className="event" id={`${event.matchId}${event._id}`}>
+                  {event.player.avatar ? (
+                    <img id="avatar" src={event.player.avatar} />
+                  ) : (
+                    <h3>{event.player.name}</h3>
+                  )}
+
                   <p>{event.type}</p>
                 </div>
               );
             }
             return (
-              <div key={event._id} id={`${event.matchId}${event._id}`}>
+              <div
+                className="event"
+                key={event._id}
+                id={`${event.matchId}${event._id}`}
+              >
                 {" "}
                 {event.type}{" "}
               </div>

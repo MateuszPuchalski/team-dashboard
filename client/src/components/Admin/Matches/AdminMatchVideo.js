@@ -31,14 +31,15 @@ export default function AdminMatchVideo({ ytId, ytVideoRef, events }) {
     // event.target.seekTo(events[0].timestamp, true);
 
     event.target.playVideo();
-
-    events.forEach(item => {
-      let button = document.getElementById(`${item.matchId}${item._id}`);
-      button.addEventListener("click", function() {
-        event.target.seekTo(item.timestamp, true);
-        event.target.playVideo();
+    if (events) {
+      events.forEach(item => {
+        let button = document.getElementById(`${item.matchId}${item._id}`);
+        button.addEventListener("click", function() {
+          event.target.seekTo(item.timestamp, true);
+          event.target.playVideo();
+        });
       });
-    });
+    }
   }
 
   return (

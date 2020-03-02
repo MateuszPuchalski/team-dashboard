@@ -23,6 +23,7 @@ import AdminPlayers from "./components/Admin/AdminPlayers";
 import AdminSchowMatches from "./components/Admin/Matches/AdminSchowMatches";
 import AdminSchowPlayers from "./components/Admin/Players/AdminSchowPlayers";
 import Sidebar from "./components/Sidebar";
+import ClubSettings from "./components/ClubSettings";
 
 import { useAuth } from "./useAuth";
 const Wrapper = styled.div`
@@ -73,7 +74,7 @@ export default function App2(props) {
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/admin" component={Admin} />
-
+          <Route exact path="/admin/club" component={ClubSettings} />
           <Route exact path="/admin/matches" component={AdminSchowMatches} />
           <Route
             exact

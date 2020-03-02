@@ -15,7 +15,19 @@ router.get("/", (req, res) => {
     });
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:clubId", (req, res) => {
+  Club.findById(req.params.clubId)
+    .populate([
+      "currentCompetition",
+      { path: "createdBy", select: "-password" }
+    ])
+    .then(clubs => {
+      console.log({ clubs: clubs });
+      res.json(clubs);
+    });
+});
+
+router.get("/user/:id", (req, res) => {
   Club.find({ createdBy: req.params.id })
     .populate([
       "currentCompetition",

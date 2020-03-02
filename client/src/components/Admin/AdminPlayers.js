@@ -90,14 +90,21 @@ export default function AdminPlayers() {
 
   return (
     <Wrapper>
-      <div>
-        <h1>{player ? player.name : null}</h1>
+      {player ? (
+        <div>
+          <h1>{player.name}</h1>
 
-        <img
-          src={`${process.env.PUBLIC_URL}/statues/PlayerPlaceholder.png`}
-          alt="boom"
-        />
-      </div>
+          {player.silhouette ? (
+            <img src={player.silhouette} alt="something went wrong" />
+          ) : (
+            <img
+              alt="something went wrong"
+              src={`${process.env.PUBLIC_URL}/statues/PlayerPlaceholder.png`}
+            />
+          )}
+        </div>
+      ) : null}
+
       <div>
         <GoalsChart scale={133} cords={throwPoints} />
         <HalfCourtChart scale={20} cords={courtThrowLocation} />

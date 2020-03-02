@@ -70,9 +70,6 @@ export default function AdminMatches() {
           />
         </Video>
         <AddEvent>
-          <EventList matchId={matchId} />
-        </AddEvent>
-        <ShowEvent>
           <AdminEventForm
             eventLocation={eventLocation}
             eventEndLocation={eventEndLocation}
@@ -85,6 +82,9 @@ export default function AdminMatches() {
               { _id: match.awayTeam._id, name: match.awayTeam.name }
             ]}
           />
+        </AddEvent>
+        <ShowEvent>
+          <EventList matchId={matchId} />
         </ShowEvent>
       </Wrapper>
     );

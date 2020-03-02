@@ -21,6 +21,9 @@ const Card = styled.div`
 
   #yt {
     width: 1.5rem;
+    position: absolute;
+    top: 1rem;
+    left: 0.5rem;
   }
 
   img {
@@ -34,6 +37,7 @@ const Card = styled.div`
   }
 
   .midContainer {
+    position: relative;
     display: flex;
     flex-direction: column;
 
@@ -44,7 +48,7 @@ export default function MatchCard({ match }) {
   return (
     <Card>
       <div id="home" classname="logoScoreContainer">
-        <img src={`${process.env.PUBLIC_URL}/bestios.png`} />
+        <img src={match.homeTeam.logo} alt={match.homeTeam.name} />
         <span className="score">{match.homeScore}</span>
       </div>
       <div>
@@ -57,7 +61,7 @@ export default function MatchCard({ match }) {
       </div>
       <div id="away" classname="logoScoreContainer">
         <span className="score">{match.awayScore}</span>
-        <img src={`${process.env.PUBLIC_URL}/bestios.png`} />
+        <img src={match.awayTeam.logo} alt={match.awayTeam.name} />
       </div>
     </Card>
   );
