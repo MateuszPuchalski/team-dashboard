@@ -7,7 +7,7 @@ const textPrimary = "#b6b6b6";
 const textSecondary = "#ececec";
 const bgPrimary = "#23232e";
 const bgSecondary = "#141418";
-const transitionSpeed = "400ms";
+const transitionSpeed = "200ms";
 
 const StyledLink = styled(Link)`
   display: flex;

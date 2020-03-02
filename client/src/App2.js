@@ -26,6 +26,7 @@ import Sidebar from "./components/Sidebar";
 
 import { useAuth } from "./useAuth";
 const Wrapper = styled.div`
+  font-family: "Open Sans";
   font-size: 16px;
   color: white;
 
