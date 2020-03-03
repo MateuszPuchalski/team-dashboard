@@ -62,7 +62,7 @@ const Card = styled.div`
       right: -0.75rem;
       opacity: 0.3;
       #calendar {
-        height: 0.75rem;
+        height: 1rem;
       }
     }
   }
