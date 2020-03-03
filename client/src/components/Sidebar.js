@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Avatar from "./avatar";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link, useRouteMatch, useLocation } from "react-router-dom";
 
-const textPrimary = "#b6b6b6";
+const textPrimary = "white";
 const textSecondary = "#ececec";
-const bgPrimary = "#23232e";
-const bgSecondary = "#141418";
+const bgPrimary = "#9FA2B2";
+const bgSecondary = "#16262E";
 const transitionSpeed = "200ms";
 
 const StyledLink = styled(Link)`
@@ -109,6 +109,8 @@ const Navbar = styled.nav`
 `;
 export default function Sidebar() {
   const match = useRouteMatch();
+  const location = useLocation();
+  console.log({ locationURL: location });
   return (
     <Navbar>
       <ul>
@@ -120,13 +122,27 @@ export default function Sidebar() {
         </li>
 
         <li>
-          <StyledLink to={`${match.url}/players`}>
+          <StyledLink
+            style={
+              location.pathname.match("/admin/players/*")
+                ? { borderLeft: "0.5rem solid red" }
+                : null
+            }
+            to={`${match.url}/players`}
+          >
             <img src={`${process.env.PUBLIC_URL}/players.svg`} />
             <span>Players</span>
           </StyledLink>
         </li>
         <li>
-          <StyledLink to={`${match.url}/matches`}>
+          <StyledLink
+            style={
+              location.pathname.match("/admin/matches/*")
+                ? { borderLeft: "0.5rem solid red" }
+                : null
+            }
+            to={`${match.url}/matches`}
+          >
             <img src={`${process.env.PUBLIC_URL}/matches.svg`} />
             <span>Matches</span>
           </StyledLink>

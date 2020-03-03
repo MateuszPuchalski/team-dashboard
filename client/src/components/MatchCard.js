@@ -32,7 +32,7 @@ const Card = styled.div`
   #yt {
     width: 1.5rem;
     position: absolute;
-    top: 1rem;
+    bottom: 2rem;
     left: 0.5rem;
   }
 
@@ -50,11 +50,25 @@ const Card = styled.div`
     position: relative;
     display: flex;
     flex-direction: column;
-
+    margin: 1rem;
     font-weight: bold;
+    #date {
+      width: 5rem;
+      display: flex;
+      flex-direction: row;
+      position: absolute;
+      font-size: 0.75rem;
+      top: 2.5rem;
+      right: -0.75rem;
+      opacity: 0.3;
+      #calendar {
+        height: 0.75rem;
+      }
+    }
   }
 `;
 export default function MatchCard({ match }) {
+  const date = new Date(match.matchDate);
   return (
     <Card>
       <div id="home" classname="logoScoreContainer">
@@ -64,6 +78,11 @@ export default function MatchCard({ match }) {
       <div>
         <div className="midContainer">
           <span>FINAL</span>
+
+          <div id="date">
+            <img id="calendar" src={`${process.env.PUBLIC_URL}/calendar.svg`} />
+            {date.toLocaleDateString("pl-PL")}
+          </div>
           {match.ytId ? (
             <img id="yt" src={`${process.env.PUBLIC_URL}/youtube.svg`} />
           ) : null}
