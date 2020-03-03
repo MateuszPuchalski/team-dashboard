@@ -36,7 +36,6 @@ const Wrapper = styled.div`
   background: #eeeeee;
   overflow: hidden;
   margin-left: 5rem;
-  padding: 1rem;
 `;
 
 export default function App2(props) {

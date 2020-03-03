@@ -16,14 +16,15 @@ const Wrapper = styled.div`
 `;
 const Video = styled.div`
   grid-column: 1 / 5;
-  grid-row: 1 / 4;
+  grid-row: 1 / 5;
   width: 100%;
   height: 100%;
 
   background: rgba(255, 255, 255, 0.1);
 `;
+
 const AddEvent = styled.div`
-  display: flex;
+  display: none;
   grid-column: 1 / 5;
   grid-row: 4 / 5;
   justify-content: center;

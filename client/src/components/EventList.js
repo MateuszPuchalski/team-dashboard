@@ -5,6 +5,7 @@ import GoalChart from "./CourtCharts/GoalsChart";
 import useEvents from "../Hooks/useEvents";
 
 const Events = styled.div`
+  height: 100vh;
   display: flex;
   flex-direction: column;
   overflow: scroll;

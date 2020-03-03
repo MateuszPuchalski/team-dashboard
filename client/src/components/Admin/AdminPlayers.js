@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 import usePlayers from "./../../Hooks/usePlayers";
 import useMatches from "./../../Hooks/useMatches";
@@ -9,10 +10,21 @@ import useEvents from "./../../Hooks/useEvents";
 import AdminPlayerMatches from "./Players/AdminPlayerMatches";
 import GoalsChart from "../CourtCharts/GoalsChart";
 import HalfCourtChart from "../CourtCharts/HalfCourtChart";
+import MatchCard from "../MatchCard";
 
 const Wrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+`;
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: white;
+`;
+const Matches = styled.div`
+  display: flex;
+  height: 50vh;
+  flex-direction: column;
+  margin: 1rem;
 `;
 
 export default function AdminPlayers() {
@@ -109,8 +121,19 @@ export default function AdminPlayers() {
         <GoalsChart scale={133} cords={throwPoints} />
         <HalfCourtChart scale={20} cords={courtThrowLocation} />
       </div>
-
-      <AdminPlayerMatches />
+      <Matches>
+        {matches
+          ? matches.map(match =>
+              match.ytId ? (
+                <StyledLink to={`matches/${match._id}`}>
+                  <MatchCard match={match} />
+                </StyledLink>
+              ) : (
+                <MatchCard match={match} />
+              )
+            )
+          : null}
+      </Matches>
     </Wrapper>
   );
 }
