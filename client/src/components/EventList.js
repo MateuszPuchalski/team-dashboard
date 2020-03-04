@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import GoalChart from "./CourtCharts/GoalsChart";
 import useEvents from "../Hooks/useEvents";
+import useMatches from "../Hooks/useMatches";
 
 const Events = styled.div`
   height: 100vh;
@@ -32,11 +33,39 @@ const Events = styled.div`
   }
 `;
 
-export default function EventList({ matchId }) {
-  const [loading, events] = useEvents({ matchId: matchId });
+const ScoreBoard = styled.div`
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  justify-content: space-between;
+  height: 10rem;
+  width: 80%;
+  margin: 1rem;
 
+  img {
+    height: 4rem;
+  }
+  span {
+    font-size: 2rem;
+  }
+  #vs {
+    font-size: 1.5rem;
+  }
+`;
+
+export default function EventList({ matchId }) {
+  const [loadingEvent, events] = useEvents({ matchId: matchId });
+  const [loadingMatch, match] = useMatches(matchId);
   return (
     <Events>
+      {match ? (
+        <ScoreBoard>
+          <img src={match.homeTeam.logo} /> <span>{match.homeScore}</span>{" "}
+          <span id="vs">VS</span>
+          <span>{match.awayScore}</span>
+          <img src={match.awayTeam.logo} />
+        </ScoreBoard>
+      ) : null}
       {events
         ? events.map(event => {
             if (event.type === "Throw") {

@@ -6,25 +6,33 @@ const Event = require("../../models/event.model");
 
 router.get("/", (req, res) => {
   Event.find()
-    .populate(["matchid", "team", "player"])
+    .populate(["team", "player"])
+    .populate([
+      {
+        path: "matchId",
+        populate: [{ path: "homeTeam awayTeam" }]
+      }
+    ])
     .then(events => res.json(events));
 });
 
 router.get("/player/:playerId", (req, res) => {
   Event.find({ player: req.params.playerId })
-    .populate(["matchid", "team", "player"])
+    .populate(["matchId", "team", "player"])
     .then(events => res.json(events));
 });
 
 router.get("/player/:playerId/match/:matchId", (req, res) => {
   Event.find({ player: req.params.playerId, matchId: req.params.matchId })
-    .populate(["matchid", "team", "player"])
+    .populate(["matchId", "team", "player"], populate(["homeTeam", "awayTeam"]))
+
     .then(events => res.json(events));
 });
 
 router.get("/match/:matchId", (req, res) => {
   Event.find({ matchId: req.params.matchId })
-    .populate(["matchid", "team", "player"])
+    .populate(["matchId", "team", "player"])
+
     .then(events => res.json(events));
 });
 
