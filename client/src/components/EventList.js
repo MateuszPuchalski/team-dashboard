@@ -40,12 +40,16 @@ const ScoreBoard = styled.div`
   justify-content: space-between;
   height: 10rem;
   width: 80%;
+  margin: 1rem;
 
   img {
     height: 4rem;
   }
   span {
     font-size: 2rem;
+  }
+  #vs {
+    font-size: 1.5rem;
   }
 `;
 
@@ -57,7 +61,7 @@ export default function EventList({ matchId }) {
       {match ? (
         <ScoreBoard>
           <img src={match.homeTeam.logo} /> <span>{match.homeScore}</span>{" "}
-          <span>|</span>
+          <span id="vs">VS</span>
           <span>{match.awayScore}</span>
           <img src={match.awayTeam.logo} />
         </ScoreBoard>
