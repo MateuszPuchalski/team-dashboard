@@ -5,26 +5,28 @@ import { Link } from "react-router-dom";
 
 import usePlayers from "../../../Hooks/usePlayers";
 
+const textPrimary = "white";
+const textSecondary = "#ececec";
+const bgPrimary = "#9FA2B2";
+const bgSecondary = "#16262E";
+const transitionSpeed = "200ms";
+
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: white;
 `;
 
-const Card = styled.div`
-  display: flex;
-  width: 20rem;
-  height: 50rem;
-  flex-direction: column;
+const PlayerTable = styled.table`
+  display: table;
 
   overflow: scroll;
-
-  div {
+  background: ${bgSecondary};
+  img {
     height: 4rem;
-    background: blue;
-    padding: 1rem;
-    img {
-      height: 4rem;
-    }
+  }
+
+  tr {
+    box-sizing: border-box;
     &:hover {
       background: green;
     }
@@ -33,19 +35,29 @@ const Card = styled.div`
 
 export default function AdminSchowPlayers() {
   const [loading, players] = usePlayers();
-  console.log({ Players: players });
+
   return (
-    <Card>
-      {players
-        ? players.map(player => (
-            <StyledLink to={`/admin/players/${player._id}`}>
-              <div>
-                <img src={player.avatar} />
-                <span>{player.name}</span>
-              </div>
-            </StyledLink>
-          ))
-        : null}
-    </Card>
+    <PlayerTable>
+      <tbody>
+        {players
+          ? players.map(player => (
+              <tr>
+                <StyledLink to={`/admin/players/${player._id}`}>
+                  <td>
+                    <img src={player.avatar} />
+                    <span>{player.name}</span>
+                  </td>
+                  <td>
+                    <span>04-03-1996</span>
+                  </td>
+                  <td>
+                    <span>{player.position}</span>
+                  </td>
+                </StyledLink>
+              </tr>
+            ))
+          : null}
+      </tbody>
+    </PlayerTable>
   );
 }
