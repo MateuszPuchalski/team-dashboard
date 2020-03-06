@@ -5,8 +5,8 @@ import { Link, useRouteMatch, useLocation } from "react-router-dom";
 
 const textPrimary = "white";
 const textSecondary = "#ececec";
-const bgPrimary = "#9FA2B2";
-const bgSecondary = "#16262E";
+const bgPrimary = "#2D1B34";
+const bgSecondary = "#1B2E33";
 const transitionSpeed = "200ms";
 
 const StyledLink = styled(Link)`

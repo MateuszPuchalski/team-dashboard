@@ -5,51 +5,82 @@ import GoalChart from "./CourtCharts/GoalsChart";
 import useEvents from "../Hooks/useEvents";
 import useMatches from "../Hooks/useMatches";
 
+const textPrimary = "white";
+const textSecondary = "#ececec";
+const bgPrimary = "#2D1B34";
+const bgSecondary = "#1B2E33";
+const transitionSpeed = "200ms";
+
 const Events = styled.div`
   height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow: scroll;
-  color: black;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  color: white;
 
+  background: ${bgPrimary};
   #avatar {
-    height: 5rem;
+    height: 4rem;
+    width: 4rem;
+    margin: 0 1rem;
+    flex-grow: 1;
   }
+
+  #playButton {
+    filter: invert(0.9);
+    height: 2rem;
+    flex-grow: 1;
+    justify-self: center;
+    align-self: center;
+  }
+
+  #eventType {
+    flex-grow: 2;
+    font-size: 1.5rem;
+    font-weight: bold;
+    justify-self: center;
+    align-self: center;
+  }
+
   .event {
+    padding: 1rem;
     border-radius: 0.5rem;
+
     display: flex;
+    justify-content: space-between;
     height: 6rem;
     margin: 1rem 0.5rem;
-    box-shadow: -12px -12px 12px 0 rgba(255, 255, 255, 1),
-      12px 12px 12px 0 rgba(0, 0, 0, 0.1);
-    transition: 333ms box-shadow;
 
     &:hover {
-      box-shadow: 0px 0px 0px 0 rgba(255, 255, 255, 1),
-        0px 0px 0px 0 rgba(0, 0, 0, 0.1),
-        inset 12px 12px 12px 0 rgba(0, 0, 0, 0.1),
-        inset -12px -12px 12px 0 rgba(255, 255, 255, 1);
+      cursor: pointer;
+      background: #110816;
     }
   }
 `;
 
 const ScoreBoard = styled.div`
+  color: black;
   display: flex;
   flex-direction: row;
-  position: relative;
+  background: white;
   justify-content: space-between;
-  height: 10rem;
-  width: 80%;
-  margin: 1rem;
+  align-content: center;
+
+  margin: 1rem 0;
 
   img {
-    height: 4rem;
+    margin: 0 1rem;
+    height: 3rem;
   }
   span {
+    margin: auto;
     font-size: 2rem;
   }
   #vs {
+    margin: auto 1rem;
     font-size: 1.5rem;
+    opacity: 0.3;
   }
 `;
 
@@ -61,14 +92,14 @@ export default function EventList({ matchId }) {
       {match ? (
         <ScoreBoard>
           <img src={match.homeTeam.logo} /> <span>{match.homeScore}</span>{" "}
-          <span id="vs">VS</span>
+          <span id="vs">|</span>
           <span>{match.awayScore}</span>
           <img src={match.awayTeam.logo} />
         </ScoreBoard>
       ) : null}
       {events
         ? events.map(event => {
-            if (event.type === "Throw") {
+            if (event.type === "Throw" || event.type === "Turnover") {
               return (
                 <div className="event" id={`${event.matchId}${event._id}`}>
                   {event.player.avatar ? (
@@ -76,8 +107,11 @@ export default function EventList({ matchId }) {
                   ) : (
                     <h3>{event.player.name}</h3>
                   )}
-
-                  <p>{event.type}</p>
+                  <img
+                    id="playButton"
+                    src={`${process.env.PUBLIC_URL}/playButton.svg`}
+                  />
+                  <span id="eventType">{event.type}</span>
                 </div>
               );
             }

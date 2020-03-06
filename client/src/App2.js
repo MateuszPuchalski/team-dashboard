@@ -20,6 +20,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import Admin from "./components/Admin/Admin";
 import AdminMatches from "./components/Admin/AdminMatches";
 import AdminPlayers from "./components/Admin/AdminPlayers";
+import EditAdminPlayers from "./components/Admin/EditAdminPlayers";
 import AdminSchowMatches from "./components/Admin/Matches/AdminSchowMatches";
 import AdminSchowPlayers from "./components/Admin/Players/AdminSchowPlayers";
 import Sidebar from "./components/Sidebar";
@@ -84,6 +85,11 @@ export default function App2(props) {
             exact
             path="/admin/players/:playerId"
             component={AdminPlayers}
+          />
+          <Route
+            exact
+            path="/admin/players/:playerId/edit"
+            component={EditAdminPlayers}
           />
           <PrivateRoute path={"/dashboard"} component={Dashboard} />
         </Wrapper>

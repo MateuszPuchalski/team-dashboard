@@ -11,7 +11,7 @@ import useEvents from "../../Hooks/useEvents";
 
 const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(5, 20vw);
+  grid-template-columns: repeat(5, 20%);
   grid-template-rows: repeat(4, 25vh);
 `;
 const Video = styled.div`
