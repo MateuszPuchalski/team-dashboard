@@ -19,9 +19,7 @@ const Editor = styled.div`
 export default function EditAdminPlayers() {
   const { playerId } = useParams();
   const [playerLoading, player] = usePlayers(playerId);
-  useEffect(() => {
-    console.log(player);
-  }, [player]);
+
   return (
     <Editor>
       {player ? (
@@ -41,6 +39,14 @@ export default function EditAdminPlayers() {
           <img src={player.currentClub.logo} id="clubLogo" />
         </>
       ) : null}
+      <form
+        action="/api/players/upload"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <input type="file" name="image" />
+        <button type="submit">SUBMIT</button>
+      </form>
     </Editor>
   );
 }
