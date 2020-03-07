@@ -38,7 +38,7 @@ const Form = styled.form`
 `;
 
 export default function AdminAddPlayer() {
-  const [clubsLoading, clubs] = useClubs();
+  const [clubsLoading, clubs] = useClubs({ clubId: null });
 
   const submit = e => {
     e.preventDefault();

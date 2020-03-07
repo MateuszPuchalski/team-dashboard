@@ -24,9 +24,9 @@ const Video = styled.div`
 `;
 
 const AddEvent = styled.div`
-  display: none;
-  grid-column: 1 / 5;
-  grid-row: 4 / 5;
+  z-index: 100;
+  grid-column: 5 / 6;
+  grid-row: 1 / 6;
   justify-content: center;
   align-items: center;
 `;

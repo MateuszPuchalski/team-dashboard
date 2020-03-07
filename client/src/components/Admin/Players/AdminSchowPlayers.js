@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 import usePlayers from "../../../Hooks/usePlayers";
+import AdminAddPlayer from "../AdminAddPlayer";
 
 const textPrimary = "white";
 const textSecondary = "#ececec";
@@ -91,47 +92,50 @@ export default function AdminSchowPlayers() {
   const [loading, players] = usePlayers();
 
   return (
-    <PlayerTable>
-      <div id="tableHead">
-        <div className="tableCell">NR</div>
-        <div className="tableCell">NAME</div>
-        <div className="tableCell">DATE OF BIRTH</div>
-        <div className="tableCell">POSITION</div>
-        <div className="tableCell">RATING</div>
-      </div>
-      <hr />
-      <div id="tableBody">
-        {players
-          ? players.map(player => (
-              <StyledLink to={`/admin/players/${player._id}`}>
-                <div id="tableRow">
-                  <div className="tableCell" id="number">
-                    <img
-                      src={`${process.env.PUBLIC_URL}/poland.svg`}
-                      id="flag"
-                    />
-                    <span id="nr">{player.jerseyNumber}</span>
-                  </div>
-                  <div className="tableCell" id="name">
-                    <img src={player.avatar} alt="NONE" />
-                    <span>{player.name}</span>
-                  </div>
-                  <div className="tableCell" id="date">
-                    <span>04-03-1996</span>
-                  </div>
-                  <div className="tableCell" id="position">
-                    <div id="positionBox">
-                      <span>{player.position}</span>
+    <>
+      {/* <AdminAddPlayer /> */}
+      <PlayerTable>
+        <div id="tableHead">
+          <div className="tableCell">NR</div>
+          <div className="tableCell">NAME</div>
+          <div className="tableCell">DATE OF BIRTH</div>
+          <div className="tableCell">POSITION</div>
+          <div className="tableCell">RATING</div>
+        </div>
+        <hr />
+        <div id="tableBody">
+          {players
+            ? players.map(player => (
+                <StyledLink to={`/admin/players/${player._id}`}>
+                  <div id="tableRow">
+                    <div className="tableCell" id="number">
+                      <img
+                        src={`${process.env.PUBLIC_URL}/poland.svg`}
+                        id="flag"
+                      />
+                      <span id="nr">{player.jerseyNumber}</span>
+                    </div>
+                    <div className="tableCell" id="name">
+                      <img src={player.avatar} alt="NONE" />
+                      <span>{player.name}</span>
+                    </div>
+                    <div className="tableCell" id="date">
+                      <span>04-03-1996</span>
+                    </div>
+                    <div className="tableCell" id="position">
+                      <div id="positionBox">
+                        <span>{player.position}</span>
+                      </div>
+                    </div>
+                    <div className="tableCell" id="rating">
+                      <span>Rating</span>
                     </div>
                   </div>
-                  <div className="tableCell" id="rating">
-                    <span>Rating</span>
-                  </div>
-                </div>
-              </StyledLink>
-            ))
-          : null}
-      </div>
-    </PlayerTable>
+                </StyledLink>
+              ))
+            : null}
+        </div>
+      </PlayerTable>
+    </>
   );
 }
