@@ -13,6 +13,9 @@ const Wrapper = styled.div`
   width: auto;
   height: auto;
   padding: 10px;
+  display: flex;
+  flex-direction: row;
+  color: black;
   background: rgba(255, 255, 255, 0.1);
   h3 {
     text-align: center;
@@ -40,6 +43,13 @@ const Form = styled.form`
       padding: 10px;
     }
   }
+  .period {
+    height: 2rem;
+  }
+  .matchLogo {
+    height: 4rem;
+    filter: grayscale(100%);
+  }
 `;
 export default function AdminEventForm({
   teams,
@@ -54,6 +64,7 @@ export default function AdminEventForm({
   const [selectedTeam, setSelectedTeam] = useState(teams[0]._id);
   const [clubPlayersLoading, clubPlayers] = useClubPlayers(selectedTeam);
   const [eventType, setEventType] = useState("Throw");
+  const [period, setPeriod] = useState("1");
 
   const submit = async e => {
     e.preventDefault();
@@ -61,7 +72,7 @@ export default function AdminEventForm({
     let data = {
       index: 1, //e.target.index.value
       matchId: matchId,
-      period: e.target.period.value,
+      period: period,
       //timestamp
       type: e.target.eventType.value,
       team: e.target.team.value,
@@ -138,11 +149,36 @@ export default function AdminEventForm({
       <Form onSubmit={submit}>
         <label>
           Period:
-          <select name="period">
-            <option value="1">First Half</option>
-            <option value="2">Second Half</option>
-            <option value="5">Peneltys</option>
-          </select>
+          <img
+            style={
+              period == "1" ? { background: "green" } : { background: "red" }
+            }
+            className="period"
+            onClick={e => {
+              setPeriod("1");
+            }}
+            src={`${process.env.PUBLIC_URL}/one.svg`}
+          />
+          <img
+            style={
+              period == "2" ? { background: "green" } : { background: "red" }
+            }
+            className="period"
+            onClick={e => {
+              setPeriod("2");
+            }}
+            src={`${process.env.PUBLIC_URL}/two.svg`}
+          />
+          <img
+            style={
+              period == "5" ? { background: "green" } : { background: "red" }
+            }
+            className="period"
+            onClick={e => {
+              setPeriod("5");
+            }}
+            src={`${process.env.PUBLIC_URL}/five.svg`}
+          />
         </label>
         <label>
           Type:
@@ -221,15 +257,38 @@ export default function AdminEventForm({
           </>
         ) : null}
         <label>
-          Team:
-          <select
+          <img
+            style={
+              selectedTeam == teams[0]._id
+                ? { filter: "grayscale(0%)" }
+                : { filter: "grayscale(100%)" }
+            }
+            onClick={e => {
+              setSelectedTeam(teams[0]._id);
+            }}
+            className="matchLogo"
+            src={teams[0].logo}
+          />
+          <img
+            style={
+              selectedTeam == teams[1]._id
+                ? { filter: "grayscale(0%)" }
+                : { filter: "grayscale(100%)" }
+            }
+            onClick={e => {
+              setSelectedTeam(teams[1]._id);
+            }}
+            className="matchLogo"
+            src={teams[1].logo}
+          />
+          {/* <select
             onChange={e => {
               setSelectedTeam(e.target.value);
             }}
             name="team"
           >
             {teams ? renderOptions(teams) : null}
-          </select>
+          </select> */}
         </label>
         {eventType !== "Half Start" && eventType !== "Half End" ? (
           <label>

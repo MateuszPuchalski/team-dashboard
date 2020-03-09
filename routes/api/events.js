@@ -36,6 +36,10 @@ router.get("/match/:matchId", (req, res) => {
     .then(events => res.json(events));
 });
 
+router.delete("/:eventId/delete", (req, res) => {
+  Event.findByIdAndRemove(req.params.eventId).then(event => req.json(event));
+});
+
 router.post("/add", (req, res) => {
   console.log({ event: { ...req.body } });
   const newEvent = new Event({

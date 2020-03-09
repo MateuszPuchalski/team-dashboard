@@ -5,6 +5,8 @@ import GoalChart from "./CourtCharts/GoalsChart";
 import useEvents from "../Hooks/useEvents";
 import useMatches from "../Hooks/useMatches";
 
+import EfficiencyCard from "./EfficiencyCard";
+
 const textPrimary = "white";
 const textSecondary = "#ececec";
 const bgPrimary = "#2D1B34";
@@ -46,11 +48,22 @@ const Events = styled.div`
   .event {
     padding: 1rem;
     border-radius: 0.5rem;
-
+    position: relative;
     display: flex;
     justify-content: space-between;
     height: 6rem;
     margin: 1rem 0.5rem;
+    #deleteButton {
+      height: 1.5rem;
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      filter: invert(0.9);
+      transition: height ${transitionSpeed};
+      &:hover {
+        height: 2rem;
+      }
+    }
 
     &:hover {
       cursor: pointer;
@@ -89,6 +102,7 @@ export default function EventList({ matchId }) {
   const [loadingMatch, match] = useMatches(matchId);
   return (
     <Events>
+      <EfficiencyCard />
       {match ? (
         <ScoreBoard>
           <img src={match.homeTeam.logo} /> <span>{match.homeScore}</span>{" "}
@@ -112,6 +126,16 @@ export default function EventList({ matchId }) {
                     src={`${process.env.PUBLIC_URL}/playButton.svg`}
                   />
                   <span id="eventType">{event.type}</span>
+                  <img
+                    onClick={e => {
+                      fetch(`/api/events/${event._id}/delete`, {
+                        method: "DELETE"
+                      });
+                      e.target.parentNode.style.display = "none";
+                    }}
+                    id="deleteButton"
+                    src={`${process.env.PUBLIC_URL}/trash.svg`}
+                  />
                 </div>
               );
             }
@@ -123,6 +147,16 @@ export default function EventList({ matchId }) {
               >
                 {" "}
                 {event.type}{" "}
+                <img
+                  onClick={e => {
+                    fetch(`/api/events/${event._id}/delete`, {
+                      method: "DELETE"
+                    });
+                    e.target.parentNode.style.display = "none";
+                  }}
+                  id="deleteButton"
+                  src={`${process.env.PUBLIC_URL}/trash.svg`}
+                />
               </div>
             );
           })

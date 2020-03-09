@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
+import useMatches from "../Hooks/useMatches";
+import useEvents from "../Hooks/useEvents";
+import useThrowEfficiency from "../Hooks/useThrowEfficiency";
+
+import { useParams } from "react-router-dom";
 // DO the fucking data fetching bitch
 const Wrapper = styled.div`
   padding: 12px 18px;
@@ -53,105 +58,17 @@ const Row = styled.tr`
 `;
 //toDo add compare funcionality
 // sorted func
-export default function EfficiencyCard(props) {
-  const [matches, setMatches] = useState();
-  const [logs, setLogs] = useState();
-  const [players, setPlayers] = useState();
-  const [playerThrows, setPlayerThrows] = useState();
-  const [teamEfficiency, setTeamEfficiency] = useState();
-
-  const throwFilter = logs => {
-    const throws = logs.filter(log => log.log === "throw");
-    const attempts = throws.length;
-    let made = 0;
-    const playerThrows = {};
-
-    throws.forEach(element => {
-      if (playerThrows[element.player_id]) {
-        if (element.throw_acc == 1) {
-          made++;
-          playerThrows[element.player_id].attempts++;
-          playerThrows[element.player_id].made++;
-        } else {
-          playerThrows[element.player_id].attempts++;
-        }
-      } else {
-        if (element.throw_acc == 1) {
-          playerThrows[element.player_id] = {
-            attempts: 1,
-            made: 1
-          };
-        } else {
-          playerThrows[element.player_id] = {
-            attempts: 1,
-            made: 0
-          };
-        }
-      }
-    });
-    const teamEfficiency = ((made / attempts) * 100).toFixed(2);
-    return { playerThrows, teamEfficiency };
-  };
-
-  const getMatches = () => {
-    fetch("/matches")
-      .then(res => res.json())
-      .then(data => setMatches(data));
-  };
-
-  const getPlayers = async () => {
-    const data = await fetch("/players")
-      .then(res => res.json())
-      .then(data => data);
-    const players = {};
-    data.forEach(item => {
-      players[item.id] = item;
-    });
-    setPlayers(players);
-  };
-
-  const getLogs = async match => {
-    let logs = [];
-    if (match.length) {
-      match.forEach(async item => {
-        await fetch(`/matches/${item}`)
-          .then(res => res.json())
-          .then(data => {
-            logs = logs.concat(data);
-            setLogs(logs);
-          });
-      });
-    } else {
-      await fetch(`/matches/${match}`)
-        .then(res => res.json())
-        .then(data => {
-          logs = logs.concat(data);
-          console.log({ logggg: logs });
-        });
-    }
-    console.log({ wtf: logs });
-    setLogs(logs);
-  };
+export default function EfficiencyCard() {
+  const { matchId } = useParams();
+  const [throwEfficiencyLoading, throwEfficiency] = useThrowEfficiency({
+    matchId
+  });
 
   useEffect(() => {
-    getMatches();
-    getLogs(16);
-    getPlayers();
-  }, []);
-
-  useEffect(() => {
-    if (logs) {
-      const { playerThrows, teamEfficiency } = throwFilter(logs);
-      setPlayerThrows(playerThrows);
-      setTeamEfficiency(teamEfficiency);
+    if (throwEfficiency) {
+      console.log(throwEfficiency);
     }
-  }, [logs]);
-  //toDO: Display attempts made and sort by procentage
-  // add selecting by matches
-  const wow = e => {
-    console.log(e);
-    console.log(`Hello ${e}`);
-  };
+  }, [matchId]);
   return (
     <Wrapper>
       <Card>
@@ -160,7 +77,7 @@ export default function EfficiencyCard(props) {
           <p>Last Match</p>
         </Header>
         <EfficiencyNumber>
-          <h1>{teamEfficiency}%</h1>
+          <h1>33%</h1>
         </EfficiencyNumber>
         <Rows>
           <TableHeader>
@@ -171,31 +88,11 @@ export default function EfficiencyCard(props) {
             </Row>
           </TableHeader>
           <RowGroup>
-            {playerThrows
-              ? Object.keys(playerThrows)
-                  .sort(
-                    (a, b) =>
-                      playerThrows[b].attempts - playerThrows[a].attempts
-                  )
-                  .map(item => (
-                    <Row>
-                      <td>
-                        {players[item].name} {players[item].surname}
-                      </td>
-                      <td>
-                        {(
-                          (playerThrows[item].made /
-                            playerThrows[item].attempts) *
-                          100
-                        ).toFixed(2)}
-                        %
-                      </td>
-                      <td>
-                        {playerThrows[item].made}/{playerThrows[item].attempts}
-                      </td>
-                    </Row>
-                  ))
-              : null}
+            <Row>
+              <td>Mateusz Puchalski</td>
+              <td>44%</td>
+              <td>3/6</td>
+            </Row>
           </RowGroup>
         </Rows>
       </Card>

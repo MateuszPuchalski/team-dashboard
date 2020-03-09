@@ -4,38 +4,34 @@ import styled from "styled-components";
 
 import AdminMatchVideo from "./Matches/AdminMatchVideo";
 import EventList from "../EventList";
+
 import AdminEventForm from "./Forms/AdminEventForm";
 
 import useMatches from "../../Hooks/useMatches";
 import useEvents from "../../Hooks/useEvents";
 
 const Wrapper = styled.div`
-  display: grid;
-  grid-template-columns: repeat(5, 20%);
-  grid-template-rows: repeat(4, 25vh);
+  display: flex;
+  flex-direction: row-reverse;
 `;
 const Video = styled.div`
-  grid-column: 1 / 5;
-  grid-row: 1 / 5;
   width: 100%;
-  height: 100%;
-
-  background: rgba(255, 255, 255, 0.1);
+  height: 100vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background: rgba(255, 255, 255, 0.4);
 `;
 
 const AddEvent = styled.div`
-  z-index: 100;
-  grid-column: 5 / 6;
-  grid-row: 1 / 6;
+  display: none;
+
   justify-content: center;
   align-items: center;
 `;
 const ShowEvent = styled.div`
   display: flex;
+  width: 25%;
   flex-direction: column;
-
-  grid-column: 5 / 6;
-  grid-row: 1 / 6;
 `;
 export default function AdminMatches() {
   const { matchId } = useParams();
@@ -55,39 +51,50 @@ export default function AdminMatches() {
   //   console.log(time);
   //   setCurrTime(Math.round(time * 100) / 100);
   // };
-
+  useEffect(() => {
+    console.log({ match: match });
+  }, [match]);
   useEffect(() => {
     console.log(eventEndLocation);
   }, [eventEndLocation]);
 
   if (match) {
     return (
-      <Wrapper>
-        <Video>
-          <AdminMatchVideo
-            events={events}
-            ytVideoRef={ytVideoRef}
-            ytId={match.ytId}
-          />
-        </Video>
-        <AddEvent>
-          <AdminEventForm
-            eventLocation={eventLocation}
-            eventEndLocation={eventEndLocation}
-            setEventLocation={setEventLocation}
-            setEventEndLocation={setEventEndLocation}
-            matchId={matchId}
-            ytVideoRef={ytVideoRef}
-            teams={[
-              { _id: match.homeTeam._id, name: match.homeTeam.name },
-              { _id: match.awayTeam._id, name: match.awayTeam.name }
-            ]}
-          />
-        </AddEvent>
-        <ShowEvent>
-          <EventList matchId={matchId} />
-        </ShowEvent>
-      </Wrapper>
+      <>
+        <Wrapper>
+          <AddEvent></AddEvent>
+          <ShowEvent>
+            <EventList matchId={matchId} />
+          </ShowEvent>
+          <Video>
+            <AdminMatchVideo
+              events={events}
+              ytVideoRef={ytVideoRef}
+              ytId={match.ytId}
+            />
+            <AdminEventForm
+              eventLocation={eventLocation}
+              eventEndLocation={eventEndLocation}
+              setEventLocation={setEventLocation}
+              setEventEndLocation={setEventEndLocation}
+              matchId={matchId}
+              ytVideoRef={ytVideoRef}
+              teams={[
+                {
+                  _id: match.homeTeam._id,
+                  name: match.homeTeam.name,
+                  logo: match.homeTeam.logo
+                },
+                {
+                  _id: match.awayTeam._id,
+                  name: match.awayTeam.name,
+                  logo: match.awayTeam.logo
+                }
+              ]}
+            />
+          </Video>
+        </Wrapper>
+      </>
     );
   } else {
     return <h3>LOADING...</h3>;
