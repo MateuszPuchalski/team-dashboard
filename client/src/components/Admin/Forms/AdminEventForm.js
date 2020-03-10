@@ -20,6 +20,21 @@ const Wrapper = styled.div`
   h3 {
     text-align: center;
   }
+  .avatarWrapper {
+    display: flex;
+    flex-direction: column;
+    height: 30rem;
+    width: 10rem;
+    overflow: scroll;
+    .avatar {
+      height: 3rem;
+      width: 3rem;
+    }
+  }
+  .formResult {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 const Form = styled.form`
@@ -44,11 +59,43 @@ const Form = styled.form`
     }
   }
   .period {
+    border-radius: 5px;
     height: 2rem;
   }
   .matchLogo {
     height: 4rem;
     filter: grayscale(100%);
+  }
+  .outcome {
+    border-radius: 5px;
+    height: 4rem;
+    width: 4rem;
+    font-size: 1rem;
+    background: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1px;
+  }
+  .technique {
+    border-radius: 5px;
+    height: 4rem;
+    width: 4rem;
+    font-size: 1rem;
+    background: red;
+    display: flex;
+
+    margin: 1px;
+  }
+  .goalType {
+    border-radius: 5px;
+    height: 4rem;
+    width: 4rem;
+    font-size: 1rem;
+    background: red;
+    display: flex;
+
+    margin: 1px;
   }
 `;
 export default function AdminEventForm({
@@ -63,8 +110,12 @@ export default function AdminEventForm({
   const [matchesLoading, matches] = useMatches();
   const [selectedTeam, setSelectedTeam] = useState(teams[0]._id);
   const [clubPlayersLoading, clubPlayers] = useClubPlayers(selectedTeam);
+  const [selectedPlayer, setSelectedPlayer] = useState("");
   const [eventType, setEventType] = useState("Throw");
   const [period, setPeriod] = useState("1");
+  const [outcome, setOutcome] = useState("Goal");
+  const [technique, setTechnique] = useState("Jump Shot");
+  const [goalType, setGoalType] = useState("Regular Play");
 
   const submit = async e => {
     e.preventDefault();
@@ -87,9 +138,9 @@ export default function AdminEventForm({
           throw: {
             assist: e.target.assist.value,
             endLocation: eventEndLocation,
-            outcome: e.target.outcome.value,
+            outcome: outcome,
             technique: e.target.technique.value,
-            type: e.target.goalType.value
+            type: goalType
           }
         };
         break;
@@ -230,29 +281,155 @@ export default function AdminEventForm({
 
             <label>
               Outcome:
-              <select name="outcome">
-                <option value="Goal">Goal</option>
+              {/* <select name="outcome"> */}
+              <div
+                style={
+                  outcome == "Goal"
+                    ? { background: "green" }
+                    : { background: "red" }
+                }
+                onClick={() => {
+                  setOutcome("Goal");
+                }}
+                className="goal outcome"
+              >
+                Goal
+              </div>
+              <div
+                style={
+                  outcome == "Blocked"
+                    ? { background: "green" }
+                    : { background: "red" }
+                }
+                onClick={() => {
+                  setOutcome("Blocked");
+                }}
+                className="blocked outcome"
+              >
+                Blocked
+              </div>
+              <div
+                style={
+                  outcome == "Post"
+                    ? { background: "green" }
+                    : { background: "red" }
+                }
+                onClick={() => {
+                  setOutcome("Post");
+                }}
+                className="post outcome"
+              >
+                Post
+              </div>
+              <div
+                style={
+                  outcome == "Saved"
+                    ? { background: "green" }
+                    : { background: "red" }
+                }
+                onClick={() => {
+                  setOutcome("Saved");
+                }}
+                className="saved outcome"
+              >
+                Saved
+              </div>
+              {/* <option value="Goal">Goal</option>
                 <option value="Blocked">Blocked</option>
                 <option value="Post">Post</option>
                 <option value="Saved">Saved</option>
-              </select>
+              </select> */}
             </label>
             <label>
               Technique:
-              <select name="technique">
-                <option value="Jump Shot">Jump Shot</option>
-                <option value="Overarm">Overarm</option>
-                <option value="Underarm">Underarm</option>
-                <option value="Spin Shot">Spin Shot</option>
-              </select>
+              <div
+                style={
+                  technique == "Jump Shot"
+                    ? { background: "green" }
+                    : { background: "red" }
+                }
+                onClick={() => {
+                  setTechnique("Jump Shot");
+                }}
+                className="technique"
+              >
+                Jump Shot
+              </div>
+              <div
+                style={
+                  technique == "Overarm"
+                    ? { background: "green" }
+                    : { background: "red" }
+                }
+                onClick={() => {
+                  setTechnique("Overarm");
+                }}
+                className="technique"
+              >
+                Overarm
+              </div>
+              <div
+                style={
+                  technique == "Underarm"
+                    ? { background: "green" }
+                    : { background: "red" }
+                }
+                onClick={() => {
+                  setTechnique("Underarm");
+                }}
+                className="technique"
+              >
+                Underarm
+              </div>
+              <div
+                style={
+                  technique == "Spin Shot"
+                    ? { background: "green" }
+                    : { background: "red" }
+                }
+                onClick={() => {
+                  setTechnique("Spin Shot");
+                }}
+                className="techinque"
+              >
+                Spin Shot
+              </div>
             </label>
             <label>
-              Type:
-              <select name="goalType">
-                <option value="Regular Play">Regular Play</option>
-                <option value="Fast Break">Fast Break</option>
-                <option value="7m">7m</option>
-              </select>
+              Goal Type:
+              <div
+                style={
+                  goalType == "Regular Play"
+                    ? { background: "green" }
+                    : { background: "red" }
+                }
+                className="goalType"
+                onClick={() => setGoalType("Regular Play")}
+              >
+                Regular Play
+              </div>
+              <div
+                style={
+                  goalType == "Fast Break"
+                    ? { background: "green" }
+                    : { background: "red" }
+                }
+                className="goalType"
+                onClick={() => setGoalType("Fast Break")}
+              >
+                Fast Break
+              </div>
+              <div
+                style={
+                  goalType == "7m"
+                    ? { background: "green" }
+                    : { background: "red" }
+                }
+                className="goalType"
+                onClick={() => setGoalType("7m")}
+              >
+                7m
+              </div>
             </label>
           </>
         ) : null}
@@ -290,31 +467,62 @@ export default function AdminEventForm({
             {teams ? renderOptions(teams) : null}
           </select> */}
         </label>
-        {eventType !== "Half Start" && eventType !== "Half End" ? (
-          <label>
-            Players:{" "}
-            <select name="player">
-              {clubPlayers ? renderOptions(clubPlayers) : null}
-            </select>
-          </label>
-        ) : null}
 
         <input type="submit" value="Add" />
       </Form>
-
-      <AdminCourtChart
-        eventLocation={eventLocation}
-        setEventLocation={setEventLocation}
-        scale={9}
-      />
-
-      {eventType === "Throw" ? (
-        <AdminGoalChart
-          eventEndLocation={eventEndLocation}
-          setEventEndLocation={setEventEndLocation}
-          scale={120}
-        />
+      {eventType !== "Half Start" && eventType !== "Half End" ? (
+        <div className="avatarWrapper">
+          {clubPlayers
+            ? clubPlayers.map(player => {
+                return player.avatar ? (
+                  <img
+                    style={
+                      selectedPlayer == player._id
+                        ? { background: "green" }
+                        : { background: "red" }
+                    }
+                    onClick={() => setSelectedPlayer(player._id)}
+                    className="avatar"
+                    src={player.avatar}
+                  />
+                ) : (
+                  <p
+                    style={
+                      selectedPlayer == player._id
+                        ? { background: "green" }
+                        : { background: "red" }
+                    }
+                    onClick={() => setSelectedPlayer(player._id)}
+                  >
+                    {player.name}
+                  </p>
+                );
+              })
+            : null}
+        </div>
       ) : null}
+      <div>
+        {eventType === "Throw" ? (
+          <AdminGoalChart
+            eventEndLocation={eventEndLocation}
+            setEventEndLocation={setEventEndLocation}
+            scale={120}
+          />
+        ) : null}
+        <AdminCourtChart
+          eventLocation={eventLocation}
+          setEventLocation={setEventLocation}
+          scale={9}
+        />
+      </div>
+      <div className="formResult">
+        <span>Period: {period}</span>
+        <span>Team: {selectedTeam}</span>
+        <span>Player: {clubPlayers ? selectedPlayer : null}</span>
+        <span>Outcome: {outcome}</span>
+        <span>Technique: {technique}</span>
+        <span>Goal Type: {goalType}</span>
+      </div>
     </Wrapper>
   );
 }
