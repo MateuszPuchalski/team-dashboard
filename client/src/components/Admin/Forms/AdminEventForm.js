@@ -442,6 +442,7 @@ export default function AdminEventForm({
             }
             onClick={e => {
               setSelectedTeam(teams[0]._id);
+              setSelectedPlayer("");
             }}
             className="matchLogo"
             src={teams[0].logo}
@@ -454,6 +455,7 @@ export default function AdminEventForm({
             }
             onClick={e => {
               setSelectedTeam(teams[1]._id);
+              setSelectedPlayer("");
             }}
             className="matchLogo"
             src={teams[1].logo}
@@ -470,6 +472,7 @@ export default function AdminEventForm({
 
         <input type="submit" value="Add" />
       </Form>
+      {/* PLAYER CONTAINER */}
       {eventType !== "Half Start" && eventType !== "Half End" ? (
         <div className="avatarWrapper">
           {clubPlayers
@@ -494,7 +497,8 @@ export default function AdminEventForm({
                     }
                     onClick={() => setSelectedPlayer(player._id)}
                   >
-                    {player.name}
+                    {player.name}{" "}
+                    {player.jerseyNumber ? player.jerseyNumber : null}
                   </p>
                 );
               })
