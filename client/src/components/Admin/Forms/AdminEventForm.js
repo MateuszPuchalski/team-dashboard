@@ -37,6 +37,12 @@ const Wrapper = styled.div`
   }
 `;
 
+const Result = styled.div`
+  div {
+    margin: 1rem 0;
+  }
+`;
+
 const Form = styled.form`
   display: flex;
   flex-direction: column;
@@ -97,6 +103,12 @@ const Form = styled.form`
 
     margin: 1px;
   }
+
+  .formResult {
+    div {
+      padding: 1rem;
+    }
+  }
 `;
 export default function AdminEventForm({
   teams,
@@ -116,6 +128,7 @@ export default function AdminEventForm({
   const [outcome, setOutcome] = useState("Goal");
   const [technique, setTechnique] = useState("Jump Shot");
   const [goalType, setGoalType] = useState("Regular Play");
+  const [selectedGoalkeeper, setSelectedGoalkeeper] = useState("");
 
   const submit = async e => {
     e.preventDefault();
@@ -505,6 +518,29 @@ export default function AdminEventForm({
             : null}
         </div>
       ) : null}
+      {/* Goalkeepers */}
+      <div className="goalkeepers">
+        {clubPlayers
+          ? clubPlayers.map(player => {
+              if (player.position == "BR") {
+                return (
+                  <p
+                    style={
+                      selectedGoalkeeper == player._id
+                        ? { background: "green" }
+                        : { background: "red" }
+                    }
+                    onClick={() => {
+                      setSelectedGoalkeeper(player._id);
+                    }}
+                  >
+                    {player.name}
+                  </p>
+                );
+              }
+            })
+          : null}
+      </div>
       <div>
         {eventType === "Throw" ? (
           <AdminGoalChart
@@ -519,14 +555,14 @@ export default function AdminEventForm({
           scale={9}
         />
       </div>
-      <div className="formResult">
-        <span>Period: {period}</span>
-        <span>Team: {selectedTeam}</span>
-        <span>Player: {clubPlayers ? selectedPlayer : null}</span>
-        <span>Outcome: {outcome}</span>
-        <span>Technique: {technique}</span>
-        <span>Goal Type: {goalType}</span>
-      </div>
+      <Result>
+        <div>Period: {period}</div>
+        <div>Team: {selectedTeam}</div>
+        <div>Player: {clubPlayers ? selectedPlayer : null}</div>
+        <div>Outcome: {outcome}</div>
+        <div>Technique: {technique}</div>
+        <div>Goal Type: {goalType}</div>
+      </Result>
     </Wrapper>
   );
 }
