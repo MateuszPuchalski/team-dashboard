@@ -122,6 +122,15 @@ export default function AdminEventForm({
   const [matchesLoading, matches] = useMatches();
   const [selectedTeam, setSelectedTeam] = useState(teams[0]._id);
   const [clubPlayersLoading, clubPlayers] = useClubPlayers(selectedTeam);
+
+  const [oppositeToSelectedTeam, setOppositeToSelectedTeam] = useState(
+    teams[1]._id
+  );
+  const [
+    oppositeToSelectedTeamClubPlayersLoading,
+    oppositeToSelectedTeamClubPlayers
+  ] = useClubPlayers(oppositeToSelectedTeam);
+
   const [selectedPlayer, setSelectedPlayer] = useState("");
   const [eventType, setEventType] = useState("Throw");
   const [period, setPeriod] = useState("1");
@@ -139,30 +148,31 @@ export default function AdminEventForm({
       period: period,
       //timestamp
       type: e.target.eventType.value,
-      team: e.target.team.value,
+      team: selectedTeam,
       location: eventLocation //e.target.location.value
     };
 
     switch (eventType) {
       case "Throw":
-        data = { ...data, player: e.target.player.value };
+        data = { ...data, player: selectedPlayer };
         data = {
           ...data,
           throw: {
             assist: e.target.assist.value,
             endLocation: eventEndLocation,
             outcome: outcome,
-            technique: e.target.technique.value,
-            type: goalType
+            technique: technique,
+            type: goalType,
+            againstGoalkeeper: selectedGoalkeeper
           }
         };
         break;
       case "Bad Behaviour":
-        data = { ...data, player: e.target.player.value };
+        data = { ...data, player: selectedPlayer };
         data = { ...data, badBehaviour: e.target.badBehaviour.value };
         break;
       case "Turnover":
-        data = { ...data, player: e.target.player.value };
+        data = { ...data, player: selectedPlayer };
         data = { ...data, turnover: e.target.turnover.value };
         break;
     }
@@ -293,8 +303,7 @@ export default function AdminEventForm({
             </label>
 
             <label>
-              Outcome:
-              {/* <select name="outcome"> */}
+              O{/* <select name="outcome"> */}
               <div
                 style={
                   outcome == "Goal"
@@ -346,6 +355,19 @@ export default function AdminEventForm({
                 className="saved outcome"
               >
                 Saved
+              </div>
+              <div
+                style={
+                  outcome == "7m"
+                    ? { background: "green" }
+                    : { background: "red" }
+                }
+                onClick={() => {
+                  setOutcome("7m");
+                }}
+                className="7m outcome"
+              >
+                7m
               </div>
               {/* <option value="Goal">Goal</option>
                 <option value="Blocked">Blocked</option>
@@ -455,7 +477,9 @@ export default function AdminEventForm({
             }
             onClick={e => {
               setSelectedTeam(teams[0]._id);
+              setOppositeToSelectedTeam(teams[1]._id);
               setSelectedPlayer("");
+              setSelectedGoalkeeper("");
             }}
             className="matchLogo"
             src={teams[0].logo}
@@ -468,7 +492,9 @@ export default function AdminEventForm({
             }
             onClick={e => {
               setSelectedTeam(teams[1]._id);
+              setOppositeToSelectedTeam(teams[0]._id);
               setSelectedPlayer("");
+              setSelectedGoalkeeper("");
             }}
             className="matchLogo"
             src={teams[1].logo}
@@ -520,8 +546,8 @@ export default function AdminEventForm({
       ) : null}
       {/* Goalkeepers */}
       <div className="goalkeepers">
-        {clubPlayers
-          ? clubPlayers.map(player => {
+        {oppositeToSelectedTeamClubPlayers
+          ? oppositeToSelectedTeamClubPlayers.map(player => {
               if (player.position == "BR") {
                 return (
                   <p
@@ -562,6 +588,7 @@ export default function AdminEventForm({
         <div>Outcome: {outcome}</div>
         <div>Technique: {technique}</div>
         <div>Goal Type: {goalType}</div>
+        <div>Goalkeeper: {selectedGoalkeeper}</div>
       </Result>
     </Wrapper>
   );

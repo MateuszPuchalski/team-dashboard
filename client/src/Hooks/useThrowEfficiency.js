@@ -74,6 +74,10 @@ export default function useThrowEfficiency({ matchId }) {
     });
   }
 
+  playerStats.sort((a, b) => {
+    return b.throwCount - a.throwCount;
+  });
+
   useEffect(() => {
     console.log(playerStats);
   }, [playerStats]);

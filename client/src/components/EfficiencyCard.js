@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 const Wrapper = styled.div`
   padding: 12px 18px;
   margin: 5px;
-  background: #eeeeee;
+  background: #1b2e33;
   border-radius: 10px;
 `;
 
@@ -60,6 +60,7 @@ const Row = styled.tr`
 // sorted func
 export default function EfficiencyCard() {
   const { matchId } = useParams();
+  // List of players [{id,name,throwCount, madeCount, missCount, turnoversCount},...]
   const [throwEfficiencyLoading, throwEfficiency] = useThrowEfficiency({
     matchId
   });
@@ -88,11 +89,19 @@ export default function EfficiencyCard() {
             </Row>
           </TableHeader>
           <RowGroup>
-            <Row>
-              <td>Mateusz Puchalski</td>
-              <td>44%</td>
-              <td>3/6</td>
-            </Row>
+            {throwEfficiency.map(player => {
+              return (
+                <Row>
+                  <td>{player.name}</td>
+                  <td>
+                    {Math.round((player.madeThrows / player.throwCount) * 100)}%
+                  </td>
+                  <td>
+                    {player.madeThrows}/{player.throwCount}
+                  </td>
+                </Row>
+              );
+            })}
           </RowGroup>
         </Rows>
       </Card>

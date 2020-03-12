@@ -125,7 +125,14 @@ export default function EventList({ matchId }) {
                     id="playButton"
                     src={`${process.env.PUBLIC_URL}/playButton.svg`}
                   />
-                  <span id="eventType">{event.type}</span>
+                  <div id="eventType">
+                    {event.type}
+                    {event.type == "Throw" ? (
+                      <p style={{ "font-size": "1rem" }}>
+                        {event.throw.outcome}{" "}
+                      </p>
+                    ) : null}
+                  </div>
                   <img
                     onClick={e => {
                       fetch(`/api/events/${event._id}/delete`, {
