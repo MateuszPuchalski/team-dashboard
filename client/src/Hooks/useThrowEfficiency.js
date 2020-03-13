@@ -9,7 +9,6 @@ export default function useThrowEfficiency({ matchId }) {
 
   if (!eventsLoading) {
     events.forEach(event => {
-      console.log(event);
       if (event.type === "Throw" || event.type === "Turnover") {
         const playerIndex = playerStats.findIndex(
           player => player.id == event.player._id
@@ -77,10 +76,6 @@ export default function useThrowEfficiency({ matchId }) {
   playerStats.sort((a, b) => {
     return b.throwCount - a.throwCount;
   });
-
-  useEffect(() => {
-    console.log(playerStats);
-  }, [playerStats]);
 
   return [loading, playerStats];
 }

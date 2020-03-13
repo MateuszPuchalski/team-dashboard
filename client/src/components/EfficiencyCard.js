@@ -65,11 +65,21 @@ export default function EfficiencyCard() {
     matchId
   });
 
-  useEffect(() => {
-    if (throwEfficiency) {
-      console.log(throwEfficiency);
-    }
-  }, [matchId]);
+  const [total, setTotal] = useState(0);
+
+  const totalEfficiency = data => {
+    const result = data.reduce(
+      (acc, cur) => {
+        console.log({ ACC: acc, CUR: cur });
+        acc.made += cur.madeThrows;
+        acc.total += cur.throwCount;
+        return acc;
+      },
+      { made: 0, total: 0 }
+    );
+    return Math.round((result.made / result.total) * 100);
+  };
+
   return (
     <Wrapper>
       <Card>
@@ -78,7 +88,7 @@ export default function EfficiencyCard() {
           <p>Last Match</p>
         </Header>
         <EfficiencyNumber>
-          <h1>33%</h1>
+          <h1>{totalEfficiency(throwEfficiency)}%</h1>
         </EfficiencyNumber>
         <Rows>
           <TableHeader>
