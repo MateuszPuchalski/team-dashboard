@@ -23,7 +23,7 @@ const handleSignin = (req, res) => {
     if (isValid) {
       const token = createToken(email);
       console.log({ token });
-      return res.json(token);
+      return res.json({ token, email: data.email });
     } else {
       return res.send("Wrong password boyyy!");
     }

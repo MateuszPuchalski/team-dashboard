@@ -3,13 +3,9 @@ import {
   BrowserRouter as Router,
   Route,
   Link,
-  Switch,
-  useHistory,
-  useLocation
+  useHistory
 } from "react-router-dom";
 import styled from "styled-components";
-
-import background from "./images/backgroundmat.webp";
 
 import Register from "./components/Register";
 import Login from "./components/Login";
@@ -24,6 +20,7 @@ import EditAdminPlayers from "./components/Admin/EditAdminPlayers";
 import AdminSchowMatches from "./components/Admin/Matches/AdminSchowMatches";
 import AdminSchowPlayers from "./components/Admin/Players/AdminSchowPlayers";
 import Sidebar from "./components/Sidebar";
+import ProfilePage from "./components/ProfilePage/ProfilePage";
 import ClubSettings from "./components/ClubSettings";
 
 const Wrapper = styled.div`
@@ -39,10 +36,34 @@ const Wrapper = styled.div`
 `;
 
 export default function App2(props) {
+  const [user, setUser] = useState(null);
+  let history = useHistory();
+
+  useEffect(() => {
+    const token = window.sessionStorage.getItem("token");
+    if (token) {
+      fetch("http://localhost:3000/api/auth", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token
+        }
+      })
+        .then(response => response.json())
+        .then(data => {
+          setUser(data);
+          history.push("/profile");
+        });
+    }
+  }, []);
+
   return (
     <>
       <Router>
         <Route path="/admin" component={Sidebar} />
+        <Route path="/profile">
+          <ProfilePage user={user} />
+        </Route>
         <Wrapper>
           <Route exact path="/">
             <ul>
@@ -55,7 +76,9 @@ export default function App2(props) {
             </ul>
           </Route>
 
-          <Route exact path="/login" component={Login} />
+          <Route exact path="/login">
+            <Login setUser={setUser} />
+          </Route>
           <Route exact path="/register" component={Register} />
           <Route exact path="/admin" component={Admin} />
           <Route exact path="/admin/club" component={ClubSettings} />
