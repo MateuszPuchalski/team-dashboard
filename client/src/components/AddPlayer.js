@@ -1,38 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { useAuth } from "../useAuth";
 
 export default function AddPlayer() {
-  const auth = useAuth();
+  //todo:
 
-  const submit = e => {
-    e.preventDefault();
-    const data = {
-      name: e.target.name.value,
-      currentClub: "5e1feda70ec36c0758e36b97",
-      position: e.target.position.value,
-      weight: e.target.weight.value,
-      height: e.target.height.value,
-      jerseyNumber: e.target.jerseyNumber.value,
-      date: e.target.date.value,
-      addBy: auth.user.user.id
-    };
-    console.log(data);
-    fetch("/api/players/add", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json; charset=UTF-8"
-      },
-      body: JSON.stringify(data)
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log({ fromPOST: data });
-      })
-      .catch(err => console.error(err));
-  };
   return (
-    <form onSubmit={submit}>
+    <form>
       <label>
         Name:
         <input type="text" name="name" />

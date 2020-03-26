@@ -1,35 +1,47 @@
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../useAuth";
-import { useHistory } from "react-router-dom";
+
 import { Link } from "react-router-dom";
 export default function Login(props) {
-  const auth = useAuth();
-  let history = useHistory();
-  const [user, setUser] = useState("Placholder");
-  const submit = e => {
+  const logIn = e => {
     e.preventDefault();
     const data = {
       email: e.target.email.value,
       password: e.target.password.value
     };
 
-    auth.signin(data.email, data.password);
-    if (auth.user) history.push("/dashboard");
-  };
-
-  const checkAuth = e => {
-    fetch("/api/auth")
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        setUser(data.username);
+    fetch("/api/auth", {
+      method: "POST",
+      headers: { "Content-type": "application/json; charset=UTF-8" },
+      body: JSON.stringify(data)
+    })
+      .then(response => response.json())
+      .then(token => {
+        window.sessionStorage.setItem("token", token);
       });
   };
+
+  useEffect(() => {
+    const token = window.sessionStorage.getItem("token");
+    if (token) {
+      fetch("http://localhost:3000/api/auth", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token
+        }
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log("im ind ROGER!!");
+          console.log(data);
+        });
+    }
+  }, []);
 
   return (
     <>
       <h1>Login</h1>
-      <form onSubmit={submit}>
+      <form onSubmit={logIn}>
         <label>
           Email:
           <input type="email" name="email" />
@@ -40,8 +52,7 @@ export default function Login(props) {
         </label>
         <input type="submit" value="Submit" />
       </form>
-      <button onClick={checkAuth}>{user}</button>
-      {auth.user ? <h1>{auth.user.msg ? auth.user.msg : null}</h1> : null}
+      <button>Submit</button>
     </>
   );
 }

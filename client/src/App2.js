@@ -26,7 +26,6 @@ import AdminSchowPlayers from "./components/Admin/Players/AdminSchowPlayers";
 import Sidebar from "./components/Sidebar";
 import ClubSettings from "./components/ClubSettings";
 
-import { useAuth } from "./useAuth";
 const Wrapper = styled.div`
   font-family: "Open Sans";
   font-size: 16px;
@@ -40,20 +39,6 @@ const Wrapper = styled.div`
 `;
 
 export default function App2(props) {
-  const auth = useAuth();
-
-  const checkAuth = () => {
-    fetch("/api/auth")
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        auth.setUser(data);
-      });
-  };
-
-  useEffect(() => {
-    checkAuth();
-  }, []);
   return (
     <>
       <Router>

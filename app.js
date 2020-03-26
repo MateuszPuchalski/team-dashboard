@@ -2,10 +2,10 @@ const express = require("express");
 const cloudinary = require("cloudinary").v2;
 const path = require("path");
 const cors = require("cors");
-const passport = require("passport");
+
 const session = require("express-session");
 require("dotenv").config();
-require("./config/passport")(passport);
+
 const mongoose = require("mongoose");
 
 const uri = process.env.ATLAS_URI;
@@ -47,9 +47,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(session({ secret: "cats", resave: false, saveUninitialized: false }));
-
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use("/api/test", testRouter);
 app.use("/api/players", playersRouter);
