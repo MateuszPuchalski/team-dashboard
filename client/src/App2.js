@@ -38,70 +38,62 @@ const Wrapper = styled.div`
 export default function App2(props) {
   const [user, setUser] = useState(null);
   let history = useHistory();
-
   useEffect(() => {
     const token = window.sessionStorage.getItem("token");
+    console.log({ app2: token });
     if (token) {
       fetch("http://localhost:3000/api/auth", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: token
+          authorization: token
         }
       })
         .then(response => response.json())
         .then(data => {
+          console.log({ appEntryAuth: data });
           setUser(data);
           history.push("/profile");
-        });
+        })
+        .catch(err => console.log(err));
     }
   }, []);
 
   return (
     <>
-      <Router>
-        <Route path="/admin" component={Sidebar} />
-        <Route path="/profile">
-          <ProfilePage user={user} />
+      <Route path="/admin" component={Sidebar} />
+      <Route path="/profile">
+        <ProfilePage user={user} />
+      </Route>
+      <Wrapper>
+        <Route exact path="/">
+          <ul>
+            <li>
+              <Link to="login">Login</Link>
+            </li>
+            <li>
+              <Link to="register">Register</Link>
+            </li>
+          </ul>
         </Route>
-        <Wrapper>
-          <Route exact path="/">
-            <ul>
-              <li>
-                <Link to="login">Login</Link>
-              </li>
-              <li>
-                <Link to="register">Register</Link>
-              </li>
-            </ul>
-          </Route>
 
-          <Route exact path="/login">
-            <Login setUser={setUser} />
-          </Route>
-          <Route exact path="/register" component={Register} />
-          <Route exact path="/admin" component={Admin} />
-          <Route exact path="/admin/club" component={ClubSettings} />
-          <Route exact path="/admin/matches" component={AdminSchowMatches} />
-          <Route
-            exact
-            path="/admin/matches/:matchId"
-            component={AdminMatches}
-          />
-          <Route exact path="/admin/players" component={AdminSchowPlayers} />
-          <Route
-            exact
-            path="/admin/players/:playerId"
-            component={AdminPlayers}
-          />
-          <Route
-            exact
-            path="/admin/players/:playerId/edit"
-            component={EditAdminPlayers}
-          />
-          <PrivateRoute path={"/dashboard"} component={Dashboard} />
-        </Wrapper>
-      </Router>
+        <Route exact path="/login">
+          <Login setUser={setUser} />
+        </Route>
+        <Route exact path="/register" component={Register} />
+        <Route exact path="/admin" component={Admin} />
+        <Route exact path="/admin/club" component={ClubSettings} />
+        <Route exact path="/admin/matches" component={AdminSchowMatches} />
+        <Route exact path="/admin/matches/:matchId" component={AdminMatches} />
+        <Route exact path="/admin/players" component={AdminSchowPlayers} />
+        <Route exact path="/admin/players/:playerId" component={AdminPlayers} />
+        <Route
+          exact
+          path="/admin/players/:playerId/edit"
+          component={EditAdminPlayers}
+        />
+        <PrivateRoute path={"/dashboard"} component={Dashboard} />
+      </Wrapper>
     </>
   );
 }

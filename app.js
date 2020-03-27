@@ -3,7 +3,6 @@ const cloudinary = require("cloudinary").v2;
 const path = require("path");
 const cors = require("cors");
 
-const session = require("express-session");
 require("dotenv").config();
 
 const mongoose = require("mongoose");
@@ -45,8 +44,6 @@ app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-app.use(session({ secret: "cats", resave: false, saveUninitialized: false }));
 
 app.use("/api/test", testRouter);
 app.use("/api/players", playersRouter);
