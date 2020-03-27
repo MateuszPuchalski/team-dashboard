@@ -8,19 +8,27 @@ import styled from "styled-components";
     - Add icons to email and password
     - Add some color transtion upon hover on login
 */
-const Wrapper = styled.div`
+const WrapperWrapper = styled.div`
+  height: 100vh;
+  width: 100vw;
+  background: lightgreen;
+`;
+
+const LoginWrapper = styled.div`
   width: 800px;
   height: 500px;
   display: flex;
   margin: auto;
-  margin-top: 10vh;
+  padding-top: 10vh;
   box-sizing: border-box;
+  border-radius: 10px;
 
   img {
     position: absolute;
     width: inherit;
     height: inherit;
     z-index: 0;
+    border-radius: 10px;
   }
   h1 {
     z-index: 1;
@@ -28,7 +36,8 @@ const Wrapper = styled.div`
 
   .loginForm {
     position: absolute;
-
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -102,29 +111,31 @@ export default function Login({ setUser }) {
   };
 
   return (
-    <Wrapper>
-      <img src={`${process.env.PUBLIC_URL}/loginbackground.jpg`} />
+    <WrapperWrapper>
+      <LoginWrapper>
+        <img src={`${process.env.PUBLIC_URL}/loginbackground.jpg`} />
 
-      <form className="loginForm" onSubmit={logIn}>
-        <h1>Login</h1>
-        <div className="wrapInput">
-          <input
-            className="input1"
-            type="email"
-            name="email"
-            placeholder="Email"
-          />
-        </div>
-        <div className="wrapInput">
-          <input
-            className="input1"
-            type="password"
-            name="password"
-            placeholder="Password"
-          />
-        </div>
-        <input className="login" type="submit" value="Login" />
-      </form>
-    </Wrapper>
+        <form className="loginForm" onSubmit={logIn}>
+          <h1>Welcome</h1>
+          <div className="wrapInput">
+            <input
+              className="input1"
+              type="email"
+              name="email"
+              placeholder="Email"
+            />
+          </div>
+          <div className="wrapInput">
+            <input
+              className="input1"
+              type="password"
+              name="password"
+              placeholder="Password"
+            />
+          </div>
+          <input className="login" type="submit" value="Login" />
+        </form>
+      </LoginWrapper>
+    </WrapperWrapper>
   );
 }
