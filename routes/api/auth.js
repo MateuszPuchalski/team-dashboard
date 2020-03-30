@@ -25,7 +25,7 @@ const handleSignin = (req, res) => {
       console.log({ token });
       return res.json({ token, email: data.email });
     } else {
-      return res.send("Wrong password boyyy!");
+      return res.status(401);
     }
   });
 };

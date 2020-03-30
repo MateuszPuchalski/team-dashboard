@@ -9,7 +9,7 @@ export default function PrivateRoute({ children, ...rest }) {
     <Route
       {...rest}
       render={({ location }) =>
-        fakeAuth.isAuthenicated ? (
+        sessionStorage.getItem("user") ? (
           children
         ) : (
           <Redirect to={{ pathname: "/login", state: { from: location } }} />

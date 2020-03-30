@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useHistory, Redirect } from "react-router-dom";
 import styled from "styled-components";
 
+import { useDispatch, useSelector } from "react-redux";
+import { userActions } from "../_actions";
+
 /*
   TODO:
     - Change background img to something handball related
@@ -88,26 +91,26 @@ const LoginWrapper = styled.div`
   }
 `;
 
-export default function Login({ setUser }) {
-  let history = useHistory();
-  const logIn = e => {
-    e.preventDefault();
-    const data = {
-      email: e.target.email.value,
-      password: e.target.password.value
-    };
+export default function Login() {
+  const [inputs, setInputs] = useState({
+    email: "",
+    password: ""
+  });
+  const { email, password } = inputs;
+  const dispatch = useDispatch();
 
-    fetch("/api/auth", {
-      method: "POST",
-      headers: { "Content-type": "application/json; charset=UTF-8" },
-      body: JSON.stringify(data)
-    })
-      .then(response => response.json())
-      .then(data => {
-        window.sessionStorage.setItem("token", data.token);
-        setUser(data.email);
-        history.push("/profile");
-      });
+  const handleChange = evt => {
+    const { name, value } = evt.target;
+    setInputs(inputs => ({ ...inputs, [name]: value }));
+  };
+
+  const handleSubmit = evt => {
+    evt.preventDefault();
+    console.log("WORK FROM OUTSIDE IF");
+    console.log({ email: email, password: password });
+
+    console.log("WORKWORK");
+    dispatch(userActions.login(email, password));
   };
 
   return (
@@ -115,10 +118,11 @@ export default function Login({ setUser }) {
       <LoginWrapper>
         <img src={`${process.env.PUBLIC_URL}/loginbackground.jpg`} />
 
-        <form className="loginForm" onSubmit={logIn}>
+        <form className="loginForm" onSubmit={handleSubmit}>
           <h1>Welcome</h1>
           <div className="wrapInput">
             <input
+              onChange={handleChange}
               className="input1"
               type="email"
               name="email"
@@ -127,6 +131,7 @@ export default function Login({ setUser }) {
           </div>
           <div className="wrapInput">
             <input
+              onChange={handleChange}
               className="input1"
               type="password"
               name="password"

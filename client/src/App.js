@@ -1,42 +1,88 @@
-import React, { Component } from "react";
-import Sidebar from "./components/sidebar";
-import PlayerInfo from "./components/playerinfo";
-import SeasonStats from "./components/seasonStats";
-import PhysicalForm from "./components/physicalForm";
-import Chart from "./components/chart";
-import Court from "./components/court";
-import Header from "./components/header";
-import Match from "./components/match";
-import Stats from "./components/stats";
-import Comparison from "./components/comparison";
+import React, { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  useHistory
+} from "react-router-dom";
+import styled from "styled-components";
 
-import { UserContext } from "./UserContext";
+import Register from "./components/Register";
+import Login from "./components/Login";
 
-import { Switch, Route } from "react-router-dom";
-import "./normalize.css";
-import "./main.css";
-import "./finalcss.css";
+import Dashboard from "./components/Dashboard";
+import PrivateRoute from "./components/PrivateRoute";
 
-export default function App() {
+import Admin from "./components/Admin/Admin";
+import AdminMatches from "./components/Admin/AdminMatches";
+import AdminPlayers from "./components/Admin/AdminPlayers";
+import EditAdminPlayers from "./components/Admin/EditAdminPlayers";
+import AdminSchowMatches from "./components/Admin/Matches/AdminSchowMatches";
+import AdminSchowPlayers from "./components/Admin/Players/AdminSchowPlayers";
+import Sidebar from "./components/Sidebar";
+import ProfilePage from "./components/ProfilePage/ProfilePage";
+import ClubSettings from "./components/ClubSettings";
+
+import { useSelector, useDispatch } from "react-redux";
+import { setTestField } from "./_actions/test.actions";
+
+const Wrapper = styled.div`
+  font-family: "Open Sans";
+  font-size: 16px;
+  color: white;
+
+  height: 100vh;
+  position: relative;
+  background: #eeeeee;
+  overflow: hidden;
+`;
+
+export default function App(props) {
+  const testField = useSelector(state => state.test.testField);
+  const dispatch = useDispatch();
+
+  const test = () => {
+    dispatch(setTestField("Mat"));
+  };
+
   return (
-    <UserContext.Provider value={"BOOOM!!!!!"}>
-      <div className="dashboard">
-        <Sidebar />
-        <Route path="/" component={Header} />
-        <Route path="/players/:id" component={Comparison} />
+    <>
+      <Route path="/admin" component={Sidebar} />
+      <PrivateRoute path={"/profile"}>
+        <ProfilePage />
+      </PrivateRoute>
 
-        <Route path="/matches/:id" component={Match} />
-        <Route path="/players/:id" component={PlayerInfo} />
-        <Route path="/players/:id" component={SeasonStats} />
-        <Route path="/players/:id" component={Court} />
-        <Route path="/players/:id">
-          <div className="physicalFormWithChart">
-            <Route path="/players/:id" component={PhysicalForm} />
-            <Route path="/players/:id" component={Chart} />
-          </div>
+      <Wrapper>
+        <Route exact path="/">
+          <ul>
+            <li>
+              <Link to="login">Login</Link>
+            </li>
+            <li>
+              <Link to="register">Register</Link>
+            </li>
+          </ul>
         </Route>
-        <Route path="/stats/:id" component={Stats} />
-      </div>
-    </UserContext.Provider>
+
+        <Route exact path="/login">
+          <Login />
+        </Route>
+        <Route exact path="/register" component={Register} />
+        <Route exact path="/admin" component={Admin} />
+        <Route exact path="/admin/club" component={ClubSettings} />
+        <Route exact path="/admin/matches" component={AdminSchowMatches} />
+        <Route exact path="/admin/matches/:matchId" component={AdminMatches} />
+        <Route exact path="/admin/players" component={AdminSchowPlayers} />
+        <Route exact path="/admin/players/:playerId" component={AdminPlayers} />
+        <Route
+          exact
+          path="/admin/players/:playerId/edit"
+          component={EditAdminPlayers}
+        />
+        <PrivateRoute path={"/dashboard"}>
+          <Dashboard />
+        </PrivateRoute>
+      </Wrapper>
+    </>
   );
 }
