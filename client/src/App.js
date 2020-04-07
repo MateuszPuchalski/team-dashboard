@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Route,
   Link,
-  useHistory
+  useHistory,
 } from "react-router-dom";
 import styled from "styled-components";
 
@@ -26,19 +26,8 @@ import ClubSettings from "./components/ClubSettings";
 import { useSelector, useDispatch } from "react-redux";
 import { setTestField } from "./_actions/test.actions";
 
-const Wrapper = styled.div`
-  font-family: "Open Sans";
-  font-size: 16px;
-  color: white;
-
-  height: 100vh;
-  position: relative;
-  background: #eeeeee;
-  overflow: hidden;
-`;
-
 export default function App(props) {
-  const testField = useSelector(state => state.test.testField);
+  const testField = useSelector((state) => state.test.testField);
   const dispatch = useDispatch();
 
   const test = () => {
@@ -52,37 +41,35 @@ export default function App(props) {
         <ProfilePage />
       </PrivateRoute>
 
-      <Wrapper>
-        <Route exact path="/">
-          <ul>
-            <li>
-              <Link to="login">Login</Link>
-            </li>
-            <li>
-              <Link to="register">Register</Link>
-            </li>
-          </ul>
-        </Route>
+      <Route exact path="/">
+        <ul>
+          <li>
+            <Link to="login">Login</Link>
+          </li>
+          <li>
+            <Link to="register">Register</Link>
+          </li>
+        </ul>
+      </Route>
 
-        <Route exact path="/login">
-          <Login />
-        </Route>
-        <Route exact path="/register" component={Register} />
-        <Route exact path="/admin" component={Admin} />
-        <Route exact path="/admin/club" component={ClubSettings} />
-        <Route exact path="/admin/matches" component={AdminSchowMatches} />
-        <Route exact path="/admin/matches/:matchId" component={AdminMatches} />
-        <Route exact path="/admin/players" component={AdminSchowPlayers} />
-        <Route exact path="/admin/players/:playerId" component={AdminPlayers} />
-        <Route
-          exact
-          path="/admin/players/:playerId/edit"
-          component={EditAdminPlayers}
-        />
-        <PrivateRoute path={"/dashboard"}>
-          <Dashboard />
-        </PrivateRoute>
-      </Wrapper>
+      <Route exact path="/login">
+        <Login />
+      </Route>
+      <Route exact path="/register" component={Register} />
+      <Route exact path="/admin" component={Admin} />
+      <Route exact path="/admin/club" component={ClubSettings} />
+      <Route exact path="/admin/matches" component={AdminSchowMatches} />
+      <Route exact path="/admin/matches/:matchId" component={AdminMatches} />
+      <Route exact path="/admin/players" component={AdminSchowPlayers} />
+      <Route exact path="/admin/players/:playerId" component={AdminPlayers} />
+      <Route
+        exact
+        path="/admin/players/:playerId/edit"
+        component={EditAdminPlayers}
+      />
+      <PrivateRoute path={"/dashboard"}>
+        <Dashboard />
+      </PrivateRoute>
     </>
   );
 }

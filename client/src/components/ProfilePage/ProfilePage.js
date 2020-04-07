@@ -1,110 +1,85 @@
 import React from "react";
 import LogoutButton from "../LogutButton";
+import MatchCard from "./MatchCard";
+import Metrics from "./Metrics";
+import SeasonStats from "./SeasonStats";
 import styled from "styled-components";
+import TestChart from "../Charts/TestChart";
+import BusinesCard from "./BusinesCard";
+import Silhouette from "./Silhouette";
 
-const SeasonStats = styled.div`
-  .stat {
-    margin-bottom: 1rem;
-    .statName {
-    }
-    .statNumber {
-      font-weight: bold;
-    }
-  }
+const Wrapper = styled.div`
+  height: 100vh;
+  width: 100vw;
+  background-image: url(${process.env.PUBLIC_URL}/meczreczna.jpg);
+  background-size: cover;
+
+  /* background: rgba(255, 0, 0, 0.7); */
+`;
+// const BackgroundImg = styled.img`
+//   position: absolute;
+//   height: 100vh;
+//   width: 100vw;
+//   /* filter: opacity(30%); */
+//   z-index: -1;
+//   object-fit: cover;
+// `;
+const PositionWrap = styled.div`
+  height: 100%;
+  width: 100%;
+  background: rgba(255, 0, 0, 0.7);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+`;
+const Left = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
-const PlayerDescription = styled.div`
-  display: grid;
-  width: 25vw;
-  height: 900px;
-  grid-template-rows: 1fr 8fr 1fr;
-  box-sizing: border-box;
-  -webkit-font-smoothing: antialiased;
-  .name {
-    grid-row: 1/2;
-    background: red;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    /* align-items: center; */
-
-    h2 {
-      margin: 0;
-    }
-    h4 {
-      margin: 0;
-    }
+const Center = styled.div`
+  display: flex;
+  flex-direction: column;
+  /* align-items: flex-end; */
+  position: relative;
+  /* z-index: 100; */
+  img {
+    /* left: 10px; */
+    position: absolute;
+    height: 100%;
+    object-fit: contain;
   }
-  .sylwetka {
-    grid-row: 2/3;
-    background: green;
-    img {
-      object-fit: scale-down;
-    }
-  }
-  .metrics {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    grid-row: 3/4;
-    background: blue;
-    .number {
-      font-size: 2rem;
-      font-weight: bold;
-    }
-    .desc {
-      text-align: center;
-    }
-  }
+`;
+const Right = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
 `;
 export default function ProfilePage() {
   return (
-    <>
-      <PlayerDescription>
-        <div className="name">
-          <h2>Mateusz Puchalski</h2>
-          <h4>Środkowy Rozgrywający</h4>
-        </div>
-        <div className="sylwetka">
-          <img
-            src={`${process.env.PUBLIC_URL}/statues/PlayerPlaceholder.png`}
-          />
-        </div>
-        <div className="metrics">
-          <div id="yr">
-            <div className="number">24</div>
-            <div className="desc">yr</div>
-          </div>
-          <div id="height">
-            <div className="number">189</div>
-            <div className="desc">cm</div>
-          </div>
-          <div id="weight">
-            <div className="number">95</div>
-            <div className="desc">kg</div>
-          </div>
-        </div>
-      </PlayerDescription>
-      <SeasonStats>
-        <h3>SEASON STATS</h3>
-        <div className="stat">
-          <span className="statName">Appearances: </span>
-          <span className="statNumber">12</span>
-        </div>
-        <div className="stat">
-          <span className="statName">Goals: </span>
-          <span className="statNumber">88</span>
-        </div>
-        <div className="stat">
-          <span className="statName">Throws: </span>
-          <span className="statNumber">120</span>
-        </div>
-      </SeasonStats>
+    <Wrapper>
+      <PositionWrap>
+        <Left>
+          <BusinesCard />
+          <Metrics />
+          <SeasonStats />
+        </Left>
+        <Center>
+          {/* <Silhouette /> */}
+
+          <TestChart />
+        </Center>
+
+        <Right>
+          <MatchCard />
+        </Right>
+      </PositionWrap>
+
       {/* <div>
         <h1>Profile Page</h1>
       </div>
 
       <LogoutButton /> */}
-    </>
+    </Wrapper>
   );
 }
