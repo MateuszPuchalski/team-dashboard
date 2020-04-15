@@ -9,7 +9,8 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   color: whitesmoke;
-  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+  background:rgba(39, 38, 67, 1);
+  /* background: linear-gradient(to right, #0f2027, #203a43, #2c5364); */
   padding: 2rem;
   margin: 1rem;
   /* align-items: center; */

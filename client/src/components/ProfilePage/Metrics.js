@@ -10,12 +10,15 @@ const Wrapper = styled.div`
   border-radius: ${borderRadius};
 
   color: whitesmoke;
-  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+  /* background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+   */
+   background: rgba(39, 38, 67, 1);
   padding: 2rem;
 
   margin: 1rem;
   .number {
     font-size: 2rem;
+    
     font-weight: bold;
   }
   .desc {

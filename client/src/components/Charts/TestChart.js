@@ -6,13 +6,19 @@ import styled from "styled-components";
 const borderRadius = "5px";
 
 const Wrapper = styled.div`
-  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+  /* background: linear-gradient(to right, #0f2027, #203a43, #2c5364); */
+  background: rgba(39, 38, 67, 1);
   border-radius: ${borderRadius};
   margin: 1rem;
 
   /* border: 1px solid black; */
   /* background: #000928; */
 `;
+
+// PTS, FGA, FGM, FTA, FTM, ORB, DFR, STL, AST,BLK, PF, TO BASKETBALL
+
+//  PTS, ThrowsAtempted, ThrowsMade, PenaltyThrow Atempted, Penalty Throw Made
+//  Blocks, 2min recived, redcards, yellow cards, assists, turnowers
 const data = [
   { axis: "Speed", value: 1 },
   { axis: "Strength", value: 0.7 },
@@ -96,8 +102,8 @@ export default function TestChart() {
           )
           .join(" ");
       })
-      .style("stroke", "grey")
-      .style("fill", "grey")
+      .style("stroke", "#ffffff")
+      .style("fill", "#ffffff")
       .style("fill-opacity", 0.05)
       .style("filter", "url(#glow)");
 
@@ -151,9 +157,9 @@ export default function TestChart() {
           })
           .join(" ")
       )
-      .style("stroke", "#ff7f00")
+      .style("stroke", "#79d2d2")
       .style("stroke-width", "2px")
-      .style("fill", "#ff7f00")
+      .style("fill", "#bae8e8")
       .style("fill-opacity", 0.7);
   }
 

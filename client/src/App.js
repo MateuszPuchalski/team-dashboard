@@ -7,9 +7,9 @@ import {
 } from "react-router-dom";
 import styled from "styled-components";
 
-import Register from "./components/Register";
+import Register from "./components/Login/Register";
 import Login from "./components/Login";
-
+import Login2 from "./components/Login/Login";
 import Dashboard from "./components/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 
@@ -42,14 +42,7 @@ export default function App(props) {
       </PrivateRoute>
 
       <Route exact path="/">
-        <ul>
-          <li>
-            <Link to="login">Login</Link>
-          </li>
-          <li>
-            <Link to="register">Register</Link>
-          </li>
-        </ul>
+        <Login2 />
       </Route>
 
       <Route exact path="/login">

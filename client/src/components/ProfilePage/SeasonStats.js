@@ -5,14 +5,19 @@ const borderRadius = "5px";
 
 const Wrapper = styled.div`
   color: whitesmoke;
-  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+  background: rgba(39, 38, 67, 1);
+  /* background: linear-gradient(to right, #0f2027, #203a43, #2c5364); */
   padding: 2rem;
   border-radius: ${borderRadius};
 
   margin: 1rem;
   .stat {
     margin-bottom: 1rem;
+    
+
+    }
     .statName {
+      
     }
     .statNumber {
       font-weight: bold;
@@ -25,6 +30,7 @@ export default function SeasonStats() {
     <Wrapper>
       <h3>SEASON STATS</h3>
       <div className="stat">
+        
         <span className="statName">Appearances: </span>
         <span className="statNumber">12</span>
       </div>
@@ -35,6 +41,14 @@ export default function SeasonStats() {
       <div className="stat">
         <span className="statName">Throws: </span>
         <span className="statNumber">120</span>
+      </div>
+      <div className="stat">
+        <span className="statName">Assists: </span>
+        <span className="statNumber">55</span>
+      </div>
+      <div className="stat">
+        <span className="statName">Steals: </span>
+        <span className="statNumber">7</span>
       </div>
     </Wrapper>
   );

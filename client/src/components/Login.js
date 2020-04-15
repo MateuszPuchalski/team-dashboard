@@ -14,7 +14,7 @@ import { userActions } from "../_actions";
 const WrapperWrapper = styled.div`
   height: 100vh;
   width: 100vw;
-  background: lightgreen;
+  background: rgba(39, 38, 67, 1);
 `;
 
 const LoginWrapper = styled.div`
@@ -73,7 +73,8 @@ const LoginWrapper = styled.div`
     }
 
     .login {
-      background: #57b846;
+      color: #fff;
+      background: rgba(39, 38, 67, 1);
       margin-top: 15px;
       text-transform: uppercase;
       width: 80%;
@@ -94,17 +95,17 @@ const LoginWrapper = styled.div`
 export default function Login() {
   const [inputs, setInputs] = useState({
     email: "",
-    password: ""
+    password: "",
   });
   const { email, password } = inputs;
   const dispatch = useDispatch();
 
-  const handleChange = evt => {
+  const handleChange = (evt) => {
     const { name, value } = evt.target;
-    setInputs(inputs => ({ ...inputs, [name]: value }));
+    setInputs((inputs) => ({ ...inputs, [name]: value }));
   };
 
-  const handleSubmit = evt => {
+  const handleSubmit = (evt) => {
     evt.preventDefault();
     console.log("WORK FROM OUTSIDE IF");
     console.log({ email: email, password: password });
@@ -116,7 +117,7 @@ export default function Login() {
   return (
     <WrapperWrapper>
       <LoginWrapper>
-        <img src={`${process.env.PUBLIC_URL}/loginbackground.jpg`} />
+        <img src={`${process.env.PUBLIC_URL}/abstractHandball.webp`} />
 
         <form className="loginForm" onSubmit={handleSubmit}>
           <h1>Welcome</h1>
@@ -140,6 +141,7 @@ export default function Login() {
           </div>
           <input className="login" type="submit" value="Login" />
         </form>
+        <button className="login">Register</button>
       </LoginWrapper>
     </WrapperWrapper>
   );

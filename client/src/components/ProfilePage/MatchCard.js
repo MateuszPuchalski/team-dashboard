@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useSpring, animated } from "react-spring";
 import styled from "styled-components";
 
 const matchCardWidth = "350px";
@@ -6,8 +7,8 @@ const borderRadius = "5px";
 
 const Wrapper = styled.div`
   color: whitesmoke;
-  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-
+  /* background: linear-gradient(to right, #0f2027, #203a43, #2c5364); */
+  background: rgba(39, 38, 67, 1);
   border-radius: ${borderRadius};
   width: ${matchCardWidth};
 
@@ -34,8 +35,8 @@ const Wrapper = styled.div`
      */
     background-image: url(${process.env.PUBLIC_URL}/matmatchcard.JPG);
     background-size: cover;
-    border-bottom-left-radius: ${borderRadius};
-    border-bottom-right-radius: ${borderRadius};
+    /* border-bottom-left-radius: ${borderRadius};
+    border-bottom-right-radius: ${borderRadius}; */
     height: 180px;
     width: ${matchCardWidth};
     display: flex;
@@ -85,9 +86,28 @@ const Wrapper = styled.div`
       }
     }
   }
+
+  .matchStatsWrapper {
+    min-height: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    img {
+      height: 30px;
+    }
+    .stats {
+      overflow:hidden;
+      width: ${matchCardWidth};
+      height: 0; 
+    }
+  }
 `;
 
 export default function MatchCard() {
+  const [open, setOpen] = useState(false);
+  const props = useSpring({ height: open ? 200 : 0, from: { height: 0 } });
+
   return (
     <Wrapper>
       <div className="competitionNameWrapper">
@@ -121,6 +141,23 @@ export default function MatchCard() {
             <span>MKS Piotrkiowianin</span>
           </div>
         </div>
+      </div>
+      <div className="matchStatsWrapper">
+        <animated.div style={props} className="stats">
+          <p>Woowowlwowlwo</p>
+          <p>Woowowlwowlwo</p>
+
+          <p>Woowowlwowlwo</p>
+
+          <p>Woowowlwowlwo</p>
+
+          <p>Woowowlwowlwo</p>
+        </animated.div>
+
+        <img
+          onClick={() => setOpen(!open)}
+          src={`${process.env.PUBLIC_URL}/down-arrow.svg`}
+        />
       </div>
     </Wrapper>
   );
