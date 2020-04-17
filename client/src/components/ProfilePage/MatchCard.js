@@ -6,12 +6,12 @@ const matchCardWidth = "350px";
 const borderRadius = "5px";
 
 const Wrapper = styled.div`
-  color: whitesmoke;
+  
   /* background: linear-gradient(to right, #0f2027, #203a43, #2c5364); */
-  background: rgba(39, 38, 67, 1);
+  background: ${(props) => props.theme.primary};
   border-radius: ${borderRadius};
   width: ${matchCardWidth};
-
+  box-shadow: ${(props) => props.theme.boxShadow};
   .competitionNameWrapper {
     /* ----- */
     border-top-left-radius: ${borderRadius};
@@ -33,6 +33,7 @@ const Wrapper = styled.div`
     /* ____
       |OvsO|
      */
+     color: white;
     background-image: url(${process.env.PUBLIC_URL}/matmatchcard.JPG);
     background-size: cover;
     /* border-bottom-left-radius: ${borderRadius};
