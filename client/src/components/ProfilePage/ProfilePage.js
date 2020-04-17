@@ -13,6 +13,7 @@ const Wrapper = styled.div`
   width: 100vw;
   background-image: url(${process.env.PUBLIC_URL}/meczreczna.jpg);
   background-size: cover;
+  color: ${(props) => props.theme.textColor};
   /* background: rgba(255, 0, 0, 0.7); */
 `;
 // const BackgroundImg = styled.img`
@@ -26,7 +27,8 @@ const Wrapper = styled.div`
 const PositionWrap = styled.div`
   height: 100%;
   width: 100%;
-  background: rgba(39, 38, 67, 0.9);
+
+  background: ${(props) => props.theme.bg};
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;

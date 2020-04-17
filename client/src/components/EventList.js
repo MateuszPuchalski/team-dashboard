@@ -21,7 +21,7 @@ const Events = styled.div`
   overflow-x: hidden;
   color: white;
 
-  background: ${bgPrimary};
+  background: ${(props) => props.theme.bg};
   #avatar {
     height: 4rem;
     width: 4rem;
@@ -53,6 +53,7 @@ const Events = styled.div`
     justify-content: space-between;
     height: 6rem;
     margin: 1rem 0.5rem;
+    background: ${(props) => props.theme.bg};
     #deleteButton {
       height: 1.5rem;
       position: absolute;
@@ -67,7 +68,6 @@ const Events = styled.div`
 
     &:hover {
       cursor: pointer;
-      background: #110816;
     }
   }
 `;
@@ -112,7 +112,7 @@ export default function EventList({ matchId }) {
         </ScoreBoard>
       ) : null}
       {events
-        ? events.map(event => {
+        ? events.map((event) => {
             if (event.type === "Throw" || event.type === "Turnover") {
               return (
                 <div className="event" id={`${event.matchId}${event._id}`}>
@@ -134,9 +134,9 @@ export default function EventList({ matchId }) {
                     ) : null}
                   </div>
                   <img
-                    onClick={e => {
+                    onClick={(e) => {
                       fetch(`/api/events/${event._id}/delete`, {
-                        method: "DELETE"
+                        method: "DELETE",
                       });
                       e.target.parentNode.style.display = "none";
                     }}
@@ -155,9 +155,9 @@ export default function EventList({ matchId }) {
                 {" "}
                 {event.type}{" "}
                 <img
-                  onClick={e => {
+                  onClick={(e) => {
                     fetch(`/api/events/${event._id}/delete`, {
-                      method: "DELETE"
+                      method: "DELETE",
                     });
                     e.target.parentNode.style.display = "none";
                   }}

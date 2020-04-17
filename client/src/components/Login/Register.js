@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import { useSpring } from "react-spring";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../../_actions";
 import { Link } from "react-router-dom";
-
+import TextMovingButton from "../TextMovingButton";
 const StyledLink = styled(Link)`
   color: black;
   text-decoration: none;
@@ -29,6 +30,7 @@ const Wrapper = styled.div`
   display: flex;
   border-radius: 5px;
 `;
+const Role = styled.div``;
 const FormWrapper = styled.div`
   padding: 50px;
   width: 40%;
@@ -108,6 +110,8 @@ const Presentation = styled.div`
   }
 `;
 export default function Login() {
+  const [roleToggle, setRoleToggle] = useState(false);
+  const [role, setRole] = useState("Set Role");
   return (
     <Page>
       <Wrapper>
@@ -115,14 +119,54 @@ export default function Login() {
           <Form>
             <h1>Register to Dash.</h1>
             <FormNav>
-              <span>
-                <StyledLink to="/">Login</StyledLink>
-              </span>
-              <span>
-                <StyledLink to="/register">Register</StyledLink>
-              </span>
+              <StyledLink to="/">
+                <span>Login</span>
+              </StyledLink>
+
+              <StyledLink to="/register">
+                <span>Register</span>
+              </StyledLink>
             </FormNav>
             <Inputs>
+              <Role>
+                <span
+                  onClick={() => {
+                    setRoleToggle(!roleToggle);
+                  }}
+                >
+                  {role}
+                </span>
+                <ul
+                  style={
+                    roleToggle ? { display: "block" } : { display: "none" }
+                  }
+                >
+                  <li
+                    onClick={() => {
+                      setRole("Club");
+                      setRoleToggle(!roleToggle);
+                    }}
+                  >
+                    Club
+                  </li>
+                  <li
+                    onClick={() => {
+                      setRole("Player");
+                      setRoleToggle(!roleToggle);
+                    }}
+                  >
+                    Player
+                  </li>
+                  <li
+                    onClick={() => {
+                      setRole("Coach");
+                      setRoleToggle(!roleToggle);
+                    }}
+                  >
+                    Coach
+                  </li>
+                </ul>
+              </Role>
               <div className="formGroup">
                 <input
                   className="formField"
@@ -139,8 +183,16 @@ export default function Login() {
                   placeholder="Password"
                 />
               </div>
+              <div className="formGroup">
+                <input
+                  className="formField"
+                  type="password"
+                  name="confirmPassword"
+                  placeholder="Confirm Password"
+                />
+              </div>
             </Inputs>
-            <button className="signin">REGISTER</button>
+            <TextMovingButton text="Register" />
           </Form>
         </FormWrapper>
         <Presentation>

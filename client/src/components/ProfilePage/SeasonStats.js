@@ -4,8 +4,8 @@ import styled from "styled-components";
 const borderRadius = "5px";
 
 const Wrapper = styled.div`
-  color: whitesmoke;
-  background: rgba(39, 38, 67, 1);
+  box-shadow: ${(props) => props.theme.boxShadow};
+  background: ${(props) => props.theme.primary};
   /* background: linear-gradient(to right, #0f2027, #203a43, #2c5364); */
   padding: 2rem;
   border-radius: ${borderRadius};
@@ -30,7 +30,6 @@ export default function SeasonStats() {
     <Wrapper>
       <h3>SEASON STATS</h3>
       <div className="stat">
-        
         <span className="statName">Appearances: </span>
         <span className="statNumber">12</span>
       </div>

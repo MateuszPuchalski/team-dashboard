@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../../_actions";
 import { Link } from "react-router-dom";
 import { useSpring, animated, interpolate } from "react-spring";
-
+import TextMovingButton from "../TextMovingButton";
 const StyledLink = styled(Link)`
   color: black;
   text-decoration: none;
@@ -26,7 +26,7 @@ const Wrapper = styled.div`
   background: #ffffff;
   width: 1200px;
   height: 800px;
-  box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: ${(props) => props.theme.boxShadow};
   display: flex;
   border-radius: 5px;
 `;
@@ -149,12 +149,13 @@ export default function Login() {
           <Form onSubmit={handleSubmit}>
             <h1>Login to Dash.</h1>
             <FormNav>
-              <span>
-                <StyledLink to="/">Login</StyledLink>
-              </span>
-              <span>
-                <StyledLink to="/register">Register</StyledLink>
-              </span>
+              <StyledLink to="/">
+                <span>Login</span>
+              </StyledLink>
+
+              <StyledLink to="/register">
+                <span>Register</span>
+              </StyledLink>
             </FormNav>
             <Inputs>
               <div className="formGroup">
@@ -176,34 +177,7 @@ export default function Login() {
                 />
               </div>
             </Inputs>
-            <button
-              onMouseMove={(evt) => {
-                const { clientX, clientY } = evt;
-                const {
-                  left,
-                  top,
-                  width,
-                  height,
-                } = evt.target.getBoundingClientRect();
-                const x = clientX - left - width / 2;
-                const y = clientY - top - height / 2;
-                console.log({ evt: evt.target.getBoundingClientRect() });
-                set({ xy: [x, y] });
-              }}
-              onMouseLeave={() => set({ xy: [0, 0] })}
-              className="signin"
-            >
-              <animated.span
-                style={{
-                  transform: xy.interpolate(
-                    (x, y) => `translate(${x / 10}px,${y / 10}px)`
-                  ),
-                }}
-                className="loginText"
-              >
-                LOGIN
-              </animated.span>
-            </button>
+            <TextMovingButton text="LOGIN" />
           </Form>
         </FormWrapper>
         <Presentation>

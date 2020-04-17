@@ -8,17 +8,16 @@ const Wrapper = styled.div`
   justify-content: space-evenly;
   align-items: center;
   border-radius: ${borderRadius};
-
-  color: whitesmoke;
+  box-shadow: ${(props) => props.theme.boxShadow};
   /* background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
    */
-   background: rgba(39, 38, 67, 1);
+  background: ${(props) => props.theme.primary};
   padding: 2rem;
 
   margin: 1rem;
   .number {
     font-size: 2rem;
-    
+
     font-weight: bold;
   }
   .desc {

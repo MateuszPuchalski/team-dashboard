@@ -7,10 +7,10 @@ const borderRadius = "5px";
 
 const Wrapper = styled.div`
   /* background: linear-gradient(to right, #0f2027, #203a43, #2c5364); */
-  background: rgba(39, 38, 67, 1);
+  /* background: ${(props) => props.theme.primary}; */
   border-radius: ${borderRadius};
   margin: 1rem;
-
+  /* box-shadow: ${(props) => props.theme.boxShadow}; */
   /* border: 1px solid black; */
   /* background: #000928; */
 `;
@@ -102,8 +102,8 @@ export default function TestChart() {
           )
           .join(" ");
       })
-      .style("stroke", "#ffffff")
-      .style("fill", "#ffffff")
+      .style("stroke", "#23c0ef")
+      .style("fill", "#23c0ef")
       .style("fill-opacity", 0.05)
       .style("filter", "url(#glow)");
 
@@ -157,9 +157,9 @@ export default function TestChart() {
           })
           .join(" ")
       )
-      .style("stroke", "#79d2d2")
+      .style("stroke", "#efff")
       .style("stroke-width", "2px")
-      .style("fill", "#bae8e8")
+      .style("fill", "whitesmoke")
       .style("fill-opacity", 0.7);
   }
 
