@@ -8,7 +8,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 const User = require("../../models/user.model");
 
-const createToken = data => {
+const createToken = (data) => {
   const jwtPayload = data;
   return jwt.sign(jwtPayload, JWT_SECRET);
 };
@@ -16,18 +16,23 @@ const createToken = data => {
 const handleSignin = (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    return res.send("Co ty odpierdalasz wypełnij te dwa pola");
+    return res.status(400).send("bad request");
   }
-  return User.findOne({ email: email }).then(data => {
-    const isValid = bcrypt.compareSync(password, data.password);
-    if (isValid) {
-      const token = createToken(email);
-      console.log({ token });
-      return res.json({ token, email: data.email });
-    } else {
-      return res.status(401);
-    }
-  });
+  return User.findOne({ email: email })
+    .then((data) => {
+      const isValid = bcrypt.compareSync(password, data.password);
+      if (isValid) {
+        const token = createToken(email);
+        console.log({ token });
+        return res.json({ token, email: data.email });
+      } else {
+        return res.status(401);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      return error;
+    });
 };
 
 const verifyToken = (req, res) => {

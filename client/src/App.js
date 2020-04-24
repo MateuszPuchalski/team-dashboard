@@ -27,13 +27,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { setTestField } from "./_actions/test.actions";
 
 export default function App(props) {
-  const testField = useSelector((state) => state.test.testField);
-  const dispatch = useDispatch();
-
-  const test = () => {
-    dispatch(setTestField("Mat"));
-  };
-
   return (
     <>
       <Route path="/admin" component={Sidebar} />

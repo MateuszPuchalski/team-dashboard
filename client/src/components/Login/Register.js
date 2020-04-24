@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { useSpring } from "react-spring";
+import { useSpring, animated } from "react-spring";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../../_actions";
 import { Link } from "react-router-dom";
 import TextMovingButton from "../TextMovingButton";
+import RegisterPlayerFields from "./RegisterPlayerFields";
+import RolePicker from "./RolePicker";
 const StyledLink = styled(Link)`
   color: black;
   text-decoration: none;
@@ -30,57 +32,15 @@ const Wrapper = styled.div`
   display: flex;
   border-radius: 5px;
 `;
-const Role = styled.div``;
 const FormWrapper = styled.div`
   padding: 50px;
   width: 40%;
+  height: 100%;
+  overflow: hidden;
 `;
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-
-  .signin {
-    color: #fff;
-    background: rgb(0, 180, 255);
-    background: radial-gradient(
-      circle,
-      rgba(0, 180, 255, 1) 50%,
-      rgba(0, 160, 255, 1) 100%
-    );
-    margin-top: 15px;
-    text-transform: uppercase;
-    border: none;
-    height: 50px;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0 25px;
-    &:hover {
-      cursor: pointer;
-      background: red;
-    }
-  }
-`;
-const Inputs = styled.div`
-  padding: 5px;
-  display: flex;
-  flex-direction: column;
-
-  .formGroup {
-    position: relative;
-
-    margin-top: 10px;
-
-    .formField {
-      border: 0;
-      padding: 15px 0;
-      background: whitesmoke;
-      width: 100%;
-      
-      }
-    }
-  }
 `;
 const FormNav = styled.div`
   font-weight: bold;
@@ -110,90 +70,37 @@ const Presentation = styled.div`
   }
 `;
 export default function Login() {
-  const [roleToggle, setRoleToggle] = useState(false);
-  const [role, setRole] = useState("Set Role");
+  const [role, setRole] = useState("Select Role");
+  const props = useSpring({
+    from: {
+      transform: "translateX(400px)",
+    },
+    to: {
+      transform: "translateX(0)",
+    },
+  });
   return (
     <Page>
       <Wrapper>
         <FormWrapper>
-          <Form>
-            <h1>Register to Dash.</h1>
-            <FormNav>
-              <StyledLink to="/">
-                <span>Login</span>
-              </StyledLink>
+          <h1>Register to Dash.</h1>
+          <FormNav>
+            <StyledLink to="/">
+              <span>Login</span>
+            </StyledLink>
 
-              <StyledLink to="/register">
-                <span>Register</span>
-              </StyledLink>
-            </FormNav>
-            <Inputs>
-              <Role>
-                <span
-                  onClick={() => {
-                    setRoleToggle(!roleToggle);
-                  }}
-                >
-                  {role}
-                </span>
-                <ul
-                  style={
-                    roleToggle ? { display: "block" } : { display: "none" }
-                  }
-                >
-                  <li
-                    onClick={() => {
-                      setRole("Club");
-                      setRoleToggle(!roleToggle);
-                    }}
-                  >
-                    Club
-                  </li>
-                  <li
-                    onClick={() => {
-                      setRole("Player");
-                      setRoleToggle(!roleToggle);
-                    }}
-                  >
-                    Player
-                  </li>
-                  <li
-                    onClick={() => {
-                      setRole("Coach");
-                      setRoleToggle(!roleToggle);
-                    }}
-                  >
-                    Coach
-                  </li>
-                </ul>
-              </Role>
-              <div className="formGroup">
-                <input
-                  className="formField"
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                />
-              </div>
-              <div className="formGroup">
-                <input
-                  className="formField"
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                />
-              </div>
-              <div className="formGroup">
-                <input
-                  className="formField"
-                  type="password"
-                  name="confirmPassword"
-                  placeholder="Confirm Password"
-                />
-              </div>
-            </Inputs>
-            <TextMovingButton text="Register" />
-          </Form>
+            <StyledLink to="/register">
+              <span>Register</span>
+            </StyledLink>
+          </FormNav>
+          <animated.div style={props}>
+            <Form>
+              <RolePicker role={role} setRole={setRole} />
+              {role == "Player" ? <RegisterPlayerFields /> : null}
+
+              <TextMovingButton text="Register" />
+            </Form>
+          </animated.div>
         </FormWrapper>
         <Presentation>
           <img src={`${process.env.PUBLIC_URL}/abstractHandball.png`} />

@@ -1,7 +1,8 @@
 import React from "react";
 import { useSpring, animated, interpolate } from "react-spring";
 import styled from "styled-components";
-
+//TODO;
+//  Add disabled version
 const MovingButton = styled.button`
   color: #fff;
 
@@ -25,11 +26,28 @@ const MovingButton = styled.button`
   &:hover {
     cursor: pointer;
   }
+  span {
+    img {
+      @keyframes infiniteRotate {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      transform: rotate(20deg);
+      height: 1.5rem;
+      animation: infiniteRotate 1s linear infinite;
+    }
+  }
 `;
-export default function TextMovingButton({ text }) {
+export default function TextMovingButton({ text, loading }) {
   const [{ xy }, set] = useSpring(() => ({
     xy: [0, 0],
+    config: { mass: 1, tension: 180, friction: 8 },
   }));
+
   return (
     <MovingButton
       onMouseMove={(evt) => {
@@ -37,7 +55,6 @@ export default function TextMovingButton({ text }) {
         const { left, top, width, height } = evt.target.getBoundingClientRect();
         const x = clientX - left - width / 2;
         const y = clientY - top - height / 2;
-        console.log({ evt: evt.target.getBoundingClientRect() });
         set({ xy: [x, y] });
       }}
       onMouseLeave={() => set({ xy: [0, 0] })}
@@ -49,7 +66,11 @@ export default function TextMovingButton({ text }) {
           ),
         }}
       >
-        {text}
+        {loading ? (
+          <animated.img src={process.env.PUBLIC_URL + "/load.svg"} />
+        ) : (
+          text
+        )}
       </animated.span>
     </MovingButton>
   );

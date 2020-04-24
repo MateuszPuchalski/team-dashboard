@@ -53,7 +53,9 @@ const Events = styled.div`
     justify-content: space-between;
     height: 6rem;
     margin: 1rem 0.5rem;
-    background: ${(props) => props.theme.bg};
+    background: radial-gradient(circle, rgba(0,180,255,1) 50%, rgba(84,101,213,1) 100%);
+    /* background: ${(props) => props.theme.bg}; */
+    
     #deleteButton {
       height: 1.5rem;
       position: absolute;
@@ -116,15 +118,16 @@ export default function EventList({ matchId }) {
             if (event.type === "Throw" || event.type === "Turnover") {
               return (
                 <div className="event" id={`${event.matchId}${event._id}`}>
+                  <img
+                    id="playButton"
+                    src={`${process.env.PUBLIC_URL}/playButton.svg`}
+                  />
                   {event.player.avatar ? (
                     <img id="avatar" src={event.player.avatar} />
                   ) : (
                     <h3>{event.player.name}</h3>
                   )}
-                  <img
-                    id="playButton"
-                    src={`${process.env.PUBLIC_URL}/playButton.svg`}
-                  />
+
                   <div id="eventType">
                     {event.type}
                     {event.type == "Throw" ? (

@@ -12,7 +12,7 @@ export default function PrivateRoute({ children, ...rest }) {
         sessionStorage.getItem("user") ? (
           children
         ) : (
-          <Redirect to={{ pathname: "/login", state: { from: location } }} />
+          <Redirect to={{ pathname: "/", state: { from: location } }} />
         )
       }
     />

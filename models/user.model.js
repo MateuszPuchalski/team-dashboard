@@ -3,9 +3,9 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
   {
-    username: { type: String, required: true },
+    role: { type: String, required: true }, // array of string for multiple roles
     password: { type: String, required: true },
-    email: { type: String, required: true }
+    email: { type: String, required: true },
   },
   { timestamps: true }
 );

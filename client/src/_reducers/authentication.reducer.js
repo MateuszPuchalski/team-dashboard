@@ -8,15 +8,18 @@ export const authentication = (state = initialState, action) => {
     case userConstants.LOGIN_REQUEST:
       return {
         loggingIn: true,
-        user: action.user
+        user: action.user,
       };
     case userConstants.LOGIN_SUCCESS:
       return {
-        loggingIn: true,
-        user: action.user
+        loggingIn: false,
+        user: action.user,
       };
     case userConstants.LOGIN_FAILURE:
-      return {};
+      return {
+        loggingIn: false,
+        error: action.error,
+      };
     case userConstants.LOGOUT:
       return {};
     default:

@@ -3,17 +3,21 @@ import { userConstants } from "../_constants";
 import { history } from "../_helpers";
 export const userActions = {
   login,
-  logout
+  logout,
+  register,
 };
 
 function login(email, password) {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(request(email));
-    userService.login(email, password).then(user => {
-      dispatch(success(user));
-      history.push("/profile");
-      return { type: userConstants.LOGIN_SUCCESS, user };
-    });
+    userService
+      .login(email, password)
+      .then((user) => {
+        dispatch(success(user));
+        history.push("/profile");
+        return success(user);
+      })
+      .catch((error) => failure(error));
   };
 
   function request(user) {
@@ -26,7 +30,25 @@ function login(email, password) {
     return { type: userConstants.LOGIN_FAILURE, error };
   }
 }
+function register(data) {
+  return (dispatch) => {
+    dispatch(request(data.email));
+    userService.register(data).then((user) => {
+      dispatch(success(user.email));
+      return { type: userConstants.REGISTER_SUCCESS, user };
+    });
+  };
 
+  function request(user) {
+    return { type: userConstants.REGISTER_REQUEST, email: user };
+  }
+  function success(user) {
+    return { type: userConstants.REGISTER_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.REGISTER_FAILURE, error };
+  }
+}
 function logout() {
   userService.logout();
   history.push("/");

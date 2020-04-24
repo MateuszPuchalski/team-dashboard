@@ -5,6 +5,8 @@ import { userActions } from "../../_actions";
 import { Link } from "react-router-dom";
 import { useSpring, animated, interpolate } from "react-spring";
 import TextMovingButton from "../TextMovingButton";
+import LoginComp from "./LoginComp";
+import RegisterComp from "./RegisterComp";
 const StyledLink = styled(Link)`
   color: black;
   text-decoration: none;
@@ -31,61 +33,10 @@ const Wrapper = styled.div`
   border-radius: 5px;
 `;
 const FormWrapper = styled.div`
+  position: relative;
   padding: 50px;
   width: 40%;
-`;
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-
-  .signin {
-    color: #fff;
-
-    font-weight: bold;
-    background: rgb(0, 180, 255);
-    background: radial-gradient(
-      circle,
-      rgba(0, 180, 255, 1) 50%,
-      rgba(0, 160, 255, 1) 100%
-    );
-    margin-top: 15px;
-    text-transform: uppercase;
-    transition: box-shadow 500ms, font-size 500ms;
-    border: none;
-    height: 50px;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0 25px;
-    &:hover {
-      cursor: pointer;
-      .loginText {
-      }
-    }
-    .loginText {
-    }
-  }
-`;
-const Inputs = styled.div`
-  padding: 5px;
-  display: flex;
-  flex-direction: column;
-
-  .formGroup {
-    position: relative;
-
-    margin-top: 10px;
-
-    .formField {
-      border: 0;
-      padding: 15px 0;
-      background: whitesmoke;
-      width: 100%;
-      
-      }
-    }
-  }
+  overflow: hidden;
 `;
 const FormNav = styled.div`
   font-weight: bold;
@@ -106,6 +57,20 @@ const FormNav = styled.div`
     }
   }
 `;
+
+const LoginRegisterWrapper = styled.div`
+  position: absolute;
+  width: 1320px;
+  display: flex;
+  left: -440px;
+  .login {
+    width: 440px;
+  }
+  .register {
+    width: 440px;
+  }
+`;
+
 const Presentation = styled.div`
   width: 60%;
   background: orange;
@@ -114,71 +79,77 @@ const Presentation = styled.div`
     height: 100%;
   }
 `;
+
 export default function Login() {
-  const [{ xy }, set] = useSpring(() => ({
-    xy: [0, 0],
-  }));
+  const [form, setForm] = useState("Login");
+  const loginProps = useSpring(
+    form == "Login"
+      ? {
+          from: { transform: "translateX(-270px)" },
+          to: { transform: "translateX(490px)" },
+        }
+      : {
+          from: { transform: "translateX(490px)" },
+          to: { transform: "translateX(-270ox)" },
+        }
+  );
 
-  const [inputs, setInputs] = useState({
-    email: "",
-    password: "",
-  });
-  const { email, password } = inputs;
-  const dispatch = useDispatch();
-
-  const handleChange = (evt) => {
-    const { name, value } = evt.target;
-    setInputs((inputs) => ({ ...inputs, [name]: value }));
-  };
-
-  const handleSubmit = (evt) => {
-    evt.preventDefault();
-    console.log("WORK FROM OUTSIDE IF");
-    console.log({ email: email, password: password });
-
-    console.log("WORKWORK");
-    dispatch(userActions.login(email, password));
-  };
-  useEffect(() => {
-    console.log({ fromEffect: xy });
-  }, []);
+  const registerProps = useSpring(
+    form == "Login"
+      ? {
+          from: { transform: "translateX(40px)" },
+          to: { transform: "translateX(800px)" },
+        }
+      : {
+          from: { transform: "translateX(800px)" },
+          to: { transform: "translateX(40px)" },
+        }
+  );
   return (
     <Page>
       <Wrapper>
         <FormWrapper>
-          <Form onSubmit={handleSubmit}>
-            <h1>Login to Dash.</h1>
-            <FormNav>
-              <StyledLink to="/">
-                <span>Login</span>
-              </StyledLink>
+          <h1>{form} to Dash.</h1>
+          <FormNav>
+            <div
+              onClick={() => {
+                setForm("Login");
+              }}
+            >
+              <span
+                style={
+                  form == "Login" ? { borderBottom: "2px solid #00b4ff" } : {}
+                }
+              >
+                Login
+              </span>
+            </div>
 
-              <StyledLink to="/register">
-                <span>Register</span>
-              </StyledLink>
-            </FormNav>
-            <Inputs>
-              <div className="formGroup">
-                <input
-                  onChange={handleChange}
-                  className="formField"
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                />
-              </div>
-              <div className="formGroup">
-                <input
-                  onChange={handleChange}
-                  className="formField"
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                />
-              </div>
-            </Inputs>
-            <TextMovingButton text="LOGIN" />
-          </Form>
+            <div
+              onClick={() => {
+                setForm("Register");
+              }}
+            >
+              <span
+                style={
+                  form == "Register"
+                    ? { borderBottom: "2px solid #00b4ff" }
+                    : {}
+                }
+              >
+                Register
+              </span>
+            </div>
+          </FormNav>
+          <LoginRegisterWrapper>
+            <animated.div className="login" style={loginProps}>
+              <LoginComp />
+            </animated.div>
+
+            <animated.div className="register" style={registerProps}>
+              <RegisterComp />
+            </animated.div>
+          </LoginRegisterWrapper>
         </FormWrapper>
         <Presentation>
           <img src={`${process.env.PUBLIC_URL}/abstractHandball.png`} />
