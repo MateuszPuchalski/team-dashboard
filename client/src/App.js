@@ -6,6 +6,7 @@ import {
   useHistory,
 } from "react-router-dom";
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
 
 import Register from "./components/Login/Register";
 import Login from "./components/Login";
@@ -23,12 +24,13 @@ import Sidebar from "./components/Sidebar";
 import ProfilePage from "./components/ProfilePage/ProfilePage";
 import ClubSettings from "./components/ClubSettings";
 
-import { useSelector, useDispatch } from "react-redux";
 import { setTestField } from "./_actions/test.actions";
+import EventPicker from "./components/EventPicker/EventPicker";
 
 export default function App(props) {
   return (
     <>
+      <Route path="/testing" component={EventPicker} />
       <Route path="/admin" component={Sidebar} />
       <PrivateRoute path={"/profile"}>
         <ProfilePage />
