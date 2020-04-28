@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import faker from "faker";
 import PlayerButton from "./PlayerButton";
@@ -19,12 +19,37 @@ const fakePlayers = (x) => {
   }
   return players;
 };
+// const fakePlayers = [
+//   { name: "Mateusz", nr: 27 },
+//   { name: "Mateusz", nr: 27 },
+//   { name: "Mateusz", nr: 27 },
+//   { name: "Mateusz", nr: 27 },
+//   { name: "Mateusz", nr: 27 },
+//   { name: "Mateusz", nr: 27 },
+//   { name: "Mateusz", nr: 27 },
+//   { name: "Mateusz", nr: 27 },
+//   { name: "Mateusz", nr: 27 },
+//   { name: "Mateusz", nr: 27 },
+//   { name: "Mateusz", nr: 27 },
+//   { name: "Mateusz", nr: 27 },
+//   { name: "Mateusz", nr: 27 },
+//   { name: "Mateusz", nr: 27 },
+//   { name: "Mateusz", nr: 27 },
+// ];
 
-export default function PlayerPicker(side) {
+export default function PlayerPicker({ active, setActive }) {
   return (
     <Wrapper>
-      {fakePlayers(10).map((element, i) => {
-        return <PlayerButton key={i} name={element.name} nr={element.nr} />;
+      {fakePlayers(16).map((element, i) => {
+        return (
+          <PlayerButton
+            key={i}
+            active={active}
+            setActive={setActive}
+            name={element.name}
+            nr={element.nr}
+          />
+        );
       })}
     </Wrapper>
   );
