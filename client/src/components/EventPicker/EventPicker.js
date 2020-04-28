@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 import PlayerPicker from "./PlayerPicker";
@@ -39,19 +39,20 @@ const ConstructionCard = styled.div`
   grid-area: c;
 `;
 export default function EventPicker() {
+  const [active, setActive] = useState(null);
   return (
     <Wrapper>
       <ConstructionCard>
         <EventConstructionCard />
       </ConstructionCard>
       <Home>
-        <PlayerPicker />
+        <PlayerPicker active={active} setActive={setActive} />
       </Home>
       <EventTypes>
         <EventTypePicker />
       </EventTypes>
       <Away>
-        <PlayerPicker />
+        <PlayerPicker active={active} setActive={setActive} />
       </Away>
     </Wrapper>
   );
