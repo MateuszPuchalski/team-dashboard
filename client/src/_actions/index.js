@@ -1,3 +1,3 @@
 export * from "./user.actions";
 export * from "./test.actions";
-export * from "./event.actions";
+export * from "./eventAdding.actions";
