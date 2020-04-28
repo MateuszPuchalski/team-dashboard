@@ -1,10 +1,8 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
-
-import { eventActions } from "../../_actions";
+import { useSpring, useTransition, animated, interpolate } from "react-spring";
+import { eventAddingActions } from "../../_actions";
 import { useDispatch, useSelector } from "react-redux";
-
-import ClickOutside from "../../_helpers/clickOutside";
 
 const Wrapper = styled.div`
   margin: 10px;
@@ -14,7 +12,7 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
-const Event = styled.div`
+const Event = styled(animated.div)`
   background: ${(props) => props.theme.primary};
   width: 120px;
   height: 120px;
@@ -29,7 +27,7 @@ const Event = styled.div`
     cursor: pointer;
   }
 `;
-const EventTypeWrapper = styled.div`
+const EventTypeWrapper = styled(animated.div)`
   position: absolute;
   top: -30px;
   display: flex;
@@ -54,29 +52,48 @@ const EventType = styled.div`
 export default function EventTypeButton({ event, active, setActive }) {
   const dispatch = useDispatch();
   const ref = useRef();
-  console.log(setActive);
+  const props = useSpring({
+    background:
+      ref == active
+        ? "linear-gradient(270deg, rgba(0,180,255,1) 0%, rgba(0,120,255,1) 100% "
+        : "linear-gradient(270deg,rgba(255, 255, 255, 1) 0%,rgba(255, 255, 255, 1) 100%)",
+  });
+  //"linear-gradient(180deg,rgba(254, 95, 100, 1) 0%,rgba(250, 25, 154, 1) 100%)",
+  const eventTypePopups = useTransition(ref == active, null, {
+    from: { transform: "scale(0)", opacity: 0 },
+    enter: { transform: "scale(1)", opacity: 1 },
+    leave: { transform: "scale(0)", opacity: 0 },
+  });
+
   return (
     <Wrapper>
-      <EventTypeWrapper
-        style={ref == active ? { display: "flex" } : { display: "none" }}
-      >
-        {event[1]
-          ? event[1].map((element, i) => (
-              <EventType
-                key={i}
-                onClick={() => dispatch(eventActions.setEventType(element))}
-              >
-                {element}
-              </EventType>
-            ))
-          : null}
-      </EventTypeWrapper>
+      {eventTypePopups.map(({ item, props, key }) => {
+        return item ? (
+          // <animated.div key={key} style={props}>
+          <EventTypeWrapper key={key} style={props}>
+            {event[1]
+              ? event[1].map((element, i) => (
+                  <EventType
+                    key={i}
+                    onClick={() =>
+                      dispatch(eventAddingActions.setEventType(element))
+                    }
+                  >
+                    {element}
+                  </EventType>
+                ))
+              : null}
+          </EventTypeWrapper>
+        ) : // </animated.div>
+        null;
+      })}
 
       <Event
+        style={props}
         ref={ref}
         onClick={() => {
-          dispatch(eventActions.setEventType(""));
-          dispatch(eventActions.setEvent(event[0]));
+          dispatch(eventAddingActions.setEventType(""));
+          dispatch(eventAddingActions.setEvent(event[0]));
           setActive(ref);
         }}
       >
