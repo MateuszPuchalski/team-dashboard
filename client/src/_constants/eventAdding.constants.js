@@ -6,4 +6,7 @@ export const eventAddingConstants = {
   SET_PLAYER: "SET_PLAYER",
   SET_EVENT: "SET_EVENT",
   SET_EVENT_TYPE: "SET_EVENT_TYPE",
+
+  SET_COURT_CORDS: "SET_COURT_CORDS",
+  SET_GOAL_CORDS: "SET_GOAL_CORDS",
 };

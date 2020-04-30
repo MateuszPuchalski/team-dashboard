@@ -5,6 +5,8 @@ export const eventAddingActions = {
   setEventType,
   getMatch,
   getPlayers,
+  setGoalCords,
+  setCourtCords,
 };
 
 function setPlayer(player) {
@@ -44,4 +46,10 @@ function getPlayers(side, clubId) {
         }
       });
   };
+}
+function setCourtCords(cords) {
+  return { type: eventAddingConstants.SET_COURT_CORDS, cords };
+}
+function setGoalCords(cords) {
+  return { type: eventAddingConstants.SET_GOAL_CORDS, cords };
 }
