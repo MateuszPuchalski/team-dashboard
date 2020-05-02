@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import faker from "faker";
 import PlayerButton from "./PlayerButton";
@@ -9,48 +10,32 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-const fakePlayers = (x) => {
-  const players = [];
-  for (let i = 0; i < x; i++) {
-    players.push({
-      name: faker.name.lastName(),
-      nr: faker.random.number(99),
-    });
-  }
-  return players;
-};
-// const fakePlayers = [
-//   { name: "Mateusz", nr: 27 },
-//   { name: "Mateusz", nr: 27 },
-//   { name: "Mateusz", nr: 27 },
-//   { name: "Mateusz", nr: 27 },
-//   { name: "Mateusz", nr: 27 },
-//   { name: "Mateusz", nr: 27 },
-//   { name: "Mateusz", nr: 27 },
-//   { name: "Mateusz", nr: 27 },
-//   { name: "Mateusz", nr: 27 },
-//   { name: "Mateusz", nr: 27 },
-//   { name: "Mateusz", nr: 27 },
-//   { name: "Mateusz", nr: 27 },
-//   { name: "Mateusz", nr: 27 },
-//   { name: "Mateusz", nr: 27 },
-//   { name: "Mateusz", nr: 27 },
-// ];
-
-export default function PlayerPicker({ active, setActive }) {
+export default function PlayerPicker({ side, active, setActive }) {
+  const players = useSelector((state) => {
+    if (side == "home") {
+      return state.eventShape.homePlayers;
+    }
+    if (side == "away") {
+      return state.eventShape.awayPlayers;
+    }
+  });
   return (
     <Wrapper>
-      {fakePlayers(16).map((element, i) => {
-        return (
-          <PlayerButton
-            key={i}
-            active={active}
-            setActive={setActive}
-            name={element.name}
-            nr={element.nr}
-          />
-        );
-      })}
+      {players
+        ? players.map((element, i) => {
+            return (
+              <PlayerButton
+                playerInfo={element}
+                avatar={element.avatar}
+                key={i}
+                active={active}
+                setActive={setActive}
+                name={element.name}
+                nr={element.jerseyNumber}
+              />
+            );
+          })
+        : "Loading"}
     </Wrapper>
   );
 }
