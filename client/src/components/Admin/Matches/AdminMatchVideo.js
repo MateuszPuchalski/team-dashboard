@@ -13,17 +13,6 @@ const Wrapper = styled.div`
 export default function AdminMatchVideo({ ytId, ytVideoRef, events }) {
   const [currTime, setCurrTime] = useState();
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-  const wrapperRef = useRef(null);
-
-  console.log({ EVVVEEVE: events });
-
-  useEffect(() => {
-    if (wrapperRef) {
-      console.log({ MatchVideoRef: wrapperRef.current });
-      const cur = wrapperRef.current;
-      setDimensions({ width: cur.clientWidth, height: cur.clientHeight });
-    }
-  }, []);
 
   function _onReady(event) {
     // access to player in all event handlers via event.target
@@ -32,9 +21,9 @@ export default function AdminMatchVideo({ ytId, ytVideoRef, events }) {
 
     event.target.playVideo();
     if (events) {
-      events.forEach(item => {
+      events.forEach((item) => {
         let button = document.getElementById(`${item.matchId}${item._id}`);
-        button.addEventListener("click", function() {
+        button.addEventListener("click", function () {
           event.target.seekTo(item.timestamp, true);
           event.target.playVideo();
         });
@@ -43,13 +32,16 @@ export default function AdminMatchVideo({ ytId, ytVideoRef, events }) {
   }
 
   return (
-    <Wrapper ref={wrapperRef}>
+    <Wrapper>
+      <button onClick={() => setDimensions({ width: 800, height: 800 })}>
+        BUTTON
+      </button>
       <YouTube
         ref={ytVideoRef}
         onReady={_onReady}
         opts={{
           width: dimensions.width,
-          height: dimensions.height
+          height: dimensions.height,
         }}
         videoId={ytId}
       />

@@ -1,20 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-
+import { useDispatch } from "react-redux";
 import AdminMatchVideo from "./Matches/AdminMatchVideo";
 import EventList from "../EventList";
 
-import AdminEventForm from "./Forms/AdminEventForm";
+import EventPicker from "../EventPicker/EventPicker";
 
 import useMatches from "../../Hooks/useMatches";
 import useEvents from "../../Hooks/useEvents";
+
+import { eventAddingActions } from "../../_actions";
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row-reverse;
 `;
 const Video = styled.div`
+  position: relative;
   width: 100%;
   height: 100vh;
   overflow-y: scroll;
@@ -33,30 +36,25 @@ const ShowEvent = styled.div`
   width: 25%;
   flex-direction: column;
 `;
+const Toggle = styled.img`
+  position: absolute;
+  top: 80%;
+  left:80%;
+  height: 35px;
+  border-radius: 100%;
+  background: radial-gradient(circle,rgba(0,180,255,1) 50%,rgba(84,101,213,1) 100%);
+}
+`;
+
 export default function AdminMatches() {
+  const dispatch = useDispatch();
   const { matchId } = useParams();
+  const [toggle, set] = useState(false);
   const [matchLoading, match] = useMatches(matchId);
   const [eventsLoading, events] = useEvents({ matchId: matchId });
-  const [eventLocation, setEventLocation] = useState({ x: 0, y: 0 });
-  const [eventEndLocation, setEventEndLocation] = useState({
-    x: 0,
-    y: 0,
-    z: 0
-  });
-
+  dispatch(eventAddingActions.getMatch(matchId));
   const ytVideoRef = useRef(null);
-
-  // const setTime = async () => {
-  //   const time = await ytVideo.current.internalPlayer.getCurrentTime();
-  //   console.log(time);
-  //   setCurrTime(Math.round(time * 100) / 100);
-  // };
-  useEffect(() => {
-    console.log({ match: match });
-  }, [match]);
-  useEffect(() => {
-    console.log(eventEndLocation);
-  }, [eventEndLocation]);
+  console.log({ ytvidep: ytVideoRef });
 
   if (match) {
     return (
@@ -72,26 +70,14 @@ export default function AdminMatches() {
               ytVideoRef={ytVideoRef}
               ytId={match.ytId}
             />
-            <AdminEventForm
-              eventLocation={eventLocation}
-              eventEndLocation={eventEndLocation}
-              setEventLocation={setEventLocation}
-              setEventEndLocation={setEventEndLocation}
-              matchId={matchId}
-              ytVideoRef={ytVideoRef}
-              teams={[
-                {
-                  _id: match.homeTeam._id,
-                  name: match.homeTeam.name,
-                  logo: match.homeTeam.logo
-                },
-                {
-                  _id: match.awayTeam._id,
-                  name: match.awayTeam.name,
-                  logo: match.awayTeam.logo
-                }
-              ]}
-            />
+            {toggle ? (
+              <EventPicker ytVideoRef={ytVideoRef} />
+            ) : (
+              <Toggle
+                src={process.env.PUBLIC_URL + "/toggleadd.svg"}
+                onClick={() => set(true)}
+              />
+            )}
           </Video>
         </Wrapper>
       </>
