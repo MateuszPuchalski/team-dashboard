@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import { useDispatch } from "react-redux";
 import {
   ReferenceDot,
   ReferenceLine,
@@ -9,10 +9,11 @@ import {
   CartesianGrid,
   Tooltip,
   XAxis,
-  YAxis
+  YAxis,
 } from "recharts";
 
 import styled from "styled-components";
+import { eventAddingActions } from "../../../_actions";
 
 const Court = styled.div`
   margin: 10px;
@@ -20,19 +21,15 @@ const Court = styled.div`
   background: rgba(255, 255, 255, 0.1);
 `;
 
-export default function AdminGoalChart({
-  scale,
-  eventEndLocation,
-  setEventEndLocation
-}) {
-  const getCords = e => {
-    console.log(e);
-    setEventEndLocation([
-      {
-        y: Math.round(e.xValue * 100) / 100,
-        z: Math.round(e.yValue * 100) / 100
-      }
-    ]);
+export default function AdminGoalChart({ scale }) {
+  const dispatch = useDispatch();
+  const getCords = (e) => {
+    dispatch(
+      eventAddingActions.setGoalCords({
+        x: Math.round(e.xValue * 100) / 100,
+        y: Math.round(e.yValue * 100) / 100,
+      })
+    );
   };
 
   return (
@@ -45,7 +42,7 @@ export default function AdminGoalChart({
           top: 0,
           right: 0,
           bottom: 0,
-          left: 0
+          left: 0,
         }}
       >
         <ReferenceArea
@@ -81,7 +78,7 @@ export default function AdminGoalChart({
         <XAxis type="number" dataKey="y" hide domain={[7.5, 12.5]} />
         <YAxis type="number" dataKey="z" hide domain={[0, 3]} />
         <Tooltip cursor={{ strokeDasharray: "3 3" }} />
-        <Scatter name="thorws" data={eventEndLocation} fill="black" />
+        <Scatter name="thorws" data={{ x: 1, y: 1 }} fill="black" />
       </ScatterChart>
     </Court>
   );

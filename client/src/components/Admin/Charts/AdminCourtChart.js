@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import { useDispatch } from "react-redux";
 import {
   ReferenceDot,
   ReferenceLine,
@@ -10,30 +10,26 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-  Curve
+  Curve,
 } from "recharts";
 
 import styled from "styled-components";
-
+import { eventAddingActions } from "../../../_actions";
 const Court = styled.div`
   margin: 10px;
 
   background: rgba(255, 255, 255, 0.1);
 `;
 
-export default function AdminCourtChart({
-  scale,
-  setEventLocation,
-  eventLocation
-}) {
-  const getCords = e => {
-    console.log(e);
-    setEventLocation([
-      {
+export default function AdminCourtChart({ scale }) {
+  const dispatch = useDispatch();
+  const getCords = (e) => {
+    dispatch(
+      eventAddingActions.setCourtCords({
         x: Math.round(e.xValue * 100) / 100,
-        y: Math.round(e.yValue * 100) / 100
-      }
-    ]);
+        y: Math.round(e.yValue * 100) / 100,
+      })
+    );
   };
 
   return (
@@ -46,7 +42,7 @@ export default function AdminCourtChart({
           top: 0,
           right: 0,
           bottom: 0,
-          left: 0
+          left: 0,
         }}
       >
         <ReferenceArea
@@ -265,7 +261,7 @@ export default function AdminCourtChart({
         <XAxis type="number" dataKey="x" hide domain={[0, 40]} />
         <YAxis type="number" dataKey="y" hide domain={[0, 20]} />
         <Tooltip cursor={{ strokeDasharray: "3 3" }} />
-        <Scatter name="thorws" data={eventLocation} fill="black" />
+        <Scatter name="thorws" data={{ x: 1, y: 2 }} fill="black" />
       </ScatterChart>
     </Court>
   );
