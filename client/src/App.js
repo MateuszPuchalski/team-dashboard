@@ -31,7 +31,7 @@ export default function App(props) {
   return (
     <>
       <Route path="/testing" component={EventPicker} />
-      <Route path="/admin" component={Sidebar} />
+      {/* <Route path="/admin" component={Sidebar} /> */}
       <PrivateRoute path={"/profile"}>
         <ProfilePage />
       </PrivateRoute>
