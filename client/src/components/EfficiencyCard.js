@@ -62,15 +62,14 @@ export default function EfficiencyCard() {
   const { matchId } = useParams();
   // List of players [{id,name,throwCount, madeCount, missCount, turnoversCount},...]
   const [throwEfficiencyLoading, throwEfficiency] = useThrowEfficiency({
-    matchId
+    matchId,
   });
 
   const [total, setTotal] = useState(0);
 
-  const totalEfficiency = data => {
+  const totalEfficiency = (data) => {
     const result = data.reduce(
       (acc, cur) => {
-        console.log({ ACC: acc, CUR: cur });
         acc.made += cur.madeThrows;
         acc.total += cur.throwCount;
         return acc;
@@ -99,7 +98,7 @@ export default function EfficiencyCard() {
             </Row>
           </TableHeader>
           <RowGroup>
-            {throwEfficiency.map(player => {
+            {throwEfficiency.map((player) => {
               return (
                 <Row>
                   <td>{player.name}</td>
