@@ -16,9 +16,19 @@ const Wrapper = styled(animated.div)`
   &:hover {
     cursor: pointer;
   }
+  img {
+    height: 55px;
+  }
 `;
 
-export default function PlayerButton({ name, nr, active, setActive }) {
+export default function PlayerButton({
+  playerInfo,
+  avatar,
+  name,
+  nr,
+  active,
+  setActive,
+}) {
   const dispatch = useDispatch();
   const ref = useRef();
   const props = useSpring({
@@ -33,21 +43,26 @@ export default function PlayerButton({ name, nr, active, setActive }) {
       style={props}
       onClick={() => {
         setActive(ref);
-        dispatch(eventAddingActions.setPlayer(name));
+        dispatch(eventAddingActions.setPlayer(playerInfo));
       }}
     >
-      <svg width="60" height="60">
-        <circle
-          cx="30"
-          cy="30"
-          r="25"
-          stroke="black"
-          stroke-width="2"
-          fill="rgba(0,0,0,.1)"
-        />
-      </svg>
-      <h3>{name}</h3>
-      <h3>{nr}</h3>
+      {avatar ? (
+        <img src={playerInfo.avatar} />
+      ) : (
+        <svg width="60" height="60">
+          <circle
+            cx="30"
+            cy="30"
+            r="25"
+            stroke="black"
+            stroke-width="2"
+            fill="rgba(0,0,0,.1)"
+          />
+        </svg>
+      )}
+
+      <h3>{playerInfo.name}</h3>
+      <h3>{playerInfo.jerseyNumber}</h3>
     </Wrapper>
   );
 }
