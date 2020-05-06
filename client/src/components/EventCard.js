@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-
+import fancyTimeFormat from "../_helpers/fancyTimeFormat";
 const Event = styled.div`
   position: relative;
   display: flex;
@@ -45,28 +45,55 @@ const TimelineLine = styled.div`
 
   border-right: 3px solid white;
 `;
-function fancyTimeFormat(time) {
-  // Hours, minutes and seconds
-  var hrs = ~~(time / 3600);
-  var mins = ~~((time % 3600) / 60);
-  var secs = ~~time % 60;
 
-  // Output like "1:01" or "4:03:59" or "123:03:59"
-  var ret = "";
-
-  if (hrs > 0) {
-    ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
-  }
-
-  ret += "" + mins + ":" + (secs < 10 ? "0" : "");
-  ret += "" + secs;
-  return ret;
-}
 export default function EventCard({ eventData, ytVideoRef }) {
+  const wichIcon = (data) => {
+    switch (data.type) {
+      case "Throw":
+        return <img src={process.env.PUBLIC_URL + "/kempaball.png"} />;
+        break;
+      case "Bad Behaviour":
+        switch (data.badBehaviour) {
+          case "Yellow Card":
+            return <img src={process.env.PUBLIC_URL + "/yellow-card1.svg"} />;
+            break;
+          case "Red Card":
+            return <img src={process.env.PUBLIC_URL + "/red-card.svg"} />;
+            break;
+          case "Blue Card":
+            return <img src={process.env.PUBLIC_URL + "/blue-card.svg"} />;
+            break;
+          case "2min":
+            return <img src={process.env.PUBLIC_URL + "/2min.svg"} />;
+            break;
+
+          default:
+            break;
+        }
+        break;
+      case "Turnover":
+        switch (data.turnover) {
+          case "Pass":
+            return "Pass";
+            break;
+          case "Catch":
+            return "Catch";
+            break;
+          case "Dribble":
+            return "Dribble";
+            break;
+
+          default:
+            break;
+        }
+        break;
+      default:
+        break;
+    }
+  };
   return (
     <Event
       onClick={() => {
-        console.log("BOOM");
         ytVideoRef.current.internalPlayer.seekTo(eventData.timestamp, true);
         ytVideoRef.current.internalPlayer.playVideo();
       }}
@@ -74,9 +101,7 @@ export default function EventCard({ eventData, ytVideoRef }) {
       <TimelineLine />
 
       <Timestamp>{fancyTimeFormat(eventData.timestamp)}</Timestamp>
-      <EventIcon>
-        <img src={process.env.PUBLIC_URL + "/ball.png"} />
-      </EventIcon>
+      <EventIcon>{wichIcon(eventData)}</EventIcon>
       {eventData.player ? (
         <EventDescription>
           <h4>{eventData.player.name}</h4>
