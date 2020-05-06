@@ -7,6 +7,7 @@ const Event = styled.div`
   flex-direction: row;
 
   justify-content: space-between;
+
   &:hover {
     color: black;
     background: whitesmoke;
@@ -45,52 +46,65 @@ const TimelineLine = styled.div`
 
   border-right: 3px solid white;
 `;
+const wichIcon = (data) => {
+  switch (data.type) {
+    case "Half Start":
+      return <img src={process.env.PUBLIC_URL + "/whistle.svg"} />;
+      break;
+    case "Half End":
+      return <img src={process.env.PUBLIC_URL + "/whistle.svg"} />;
+      break;
+    case "Throw":
+      switch (data.throw.outcome) {
+        case "Saved":
+          return <img src={process.env.PUBLIC_URL + "/goalpostsquare.svg"} />;
+          break;
 
+        default:
+          return <img src={process.env.PUBLIC_URL + "/ball.svg"} />;
+          break;
+      }
+
+    case "Bad Behaviour":
+      switch (data.badBehaviour) {
+        case "Yellow Card":
+          return <img src={process.env.PUBLIC_URL + "/yellow-card1.svg"} />;
+          break;
+        case "Red Card":
+          return <img src={process.env.PUBLIC_URL + "/red-card.svg"} />;
+          break;
+        case "Blue Card":
+          return <img src={process.env.PUBLIC_URL + "/blue-card.svg"} />;
+          break;
+        case "2min":
+          return <img src={process.env.PUBLIC_URL + "/2min.svg"} />;
+          break;
+
+        default:
+          break;
+      }
+      break;
+    case "Turnover":
+      switch (data.turnover) {
+        case "Pass":
+          return "Pass";
+          break;
+        case "Catch":
+          return "Catch";
+          break;
+        case "Dribble":
+          return "Dribble";
+          break;
+
+        default:
+          break;
+      }
+      break;
+    default:
+      break;
+  }
+};
 export default function EventCard({ eventData, ytVideoRef }) {
-  const wichIcon = (data) => {
-    switch (data.type) {
-      case "Throw":
-        return <img src={process.env.PUBLIC_URL + "/kempaball.png"} />;
-        break;
-      case "Bad Behaviour":
-        switch (data.badBehaviour) {
-          case "Yellow Card":
-            return <img src={process.env.PUBLIC_URL + "/yellow-card1.svg"} />;
-            break;
-          case "Red Card":
-            return <img src={process.env.PUBLIC_URL + "/red-card.svg"} />;
-            break;
-          case "Blue Card":
-            return <img src={process.env.PUBLIC_URL + "/blue-card.svg"} />;
-            break;
-          case "2min":
-            return <img src={process.env.PUBLIC_URL + "/2min.svg"} />;
-            break;
-
-          default:
-            break;
-        }
-        break;
-      case "Turnover":
-        switch (data.turnover) {
-          case "Pass":
-            return "Pass";
-            break;
-          case "Catch":
-            return "Catch";
-            break;
-          case "Dribble":
-            return "Dribble";
-            break;
-
-          default:
-            break;
-        }
-        break;
-      default:
-        break;
-    }
-  };
   return (
     <Event
       onClick={() => {
@@ -109,7 +123,7 @@ export default function EventCard({ eventData, ytVideoRef }) {
         </EventDescription>
       ) : (
         <EventDescription>
-          <h4>Place</h4>
+          <h4>{eventData.type}</h4>
           <h6 className="type">Holder</h6>
         </EventDescription>
       )}
