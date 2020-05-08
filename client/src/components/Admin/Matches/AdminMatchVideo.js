@@ -10,35 +10,14 @@ const Wrapper = styled.div`
   background: rgba(255, 255, 255, 0.4);
 `;
 
-export default function AdminMatchVideo({ ytId, ytVideoRef, events }) {
+export default function AdminMatchVideo({ ytId, ytVideoRef }) {
   const [currTime, setCurrTime] = useState();
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-
-  function _onReady(event) {
-    // access to player in all event handlers via event.target
-
-    // event.target.seekTo(events[0].timestamp, true);
-
-    event.target.playVideo();
-    if (events) {
-      events.forEach((item) => {
-        let button = document.getElementById(`${item.matchId}${item._id}`);
-        button.addEventListener("click", function () {
-          event.target.seekTo(item.timestamp, true);
-          event.target.playVideo();
-        });
-      });
-    }
-  }
+  const [dimensions, setDimensions] = useState({ width: 1300, height: 900 });
 
   return (
     <Wrapper>
-      <button onClick={() => setDimensions({ width: 800, height: 800 })}>
-        BUTTON
-      </button>
       <YouTube
         ref={ytVideoRef}
-        onReady={_onReady}
         opts={{
           width: dimensions.width,
           height: dimensions.height,
