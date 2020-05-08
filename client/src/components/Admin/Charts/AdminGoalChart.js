@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   ReferenceDot,
   ReferenceLine,
@@ -31,7 +31,8 @@ export default function AdminGoalChart({ scale }) {
       })
     );
   };
-
+  //change y to z
+  const cords = useSelector((state) => state.eventShape.goalCords);
   return (
     <Court>
       <ScatterChart
@@ -78,7 +79,11 @@ export default function AdminGoalChart({ scale }) {
         <XAxis type="number" dataKey="y" hide domain={[7.5, 12.5]} />
         <YAxis type="number" dataKey="z" hide domain={[0, 3]} />
         <Tooltip cursor={{ strokeDasharray: "3 3" }} />
-        <Scatter name="thorws" data={{ x: 1, y: 1 }} fill="black" />
+        <Scatter
+          name="throws"
+          data={cords ? [{ y: cords.x, z: cords.y }] : []}
+          fill="black"
+        />
       </ScatterChart>
     </Court>
   );

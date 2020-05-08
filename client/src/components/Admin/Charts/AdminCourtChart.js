@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   ReferenceDot,
   ReferenceLine,
@@ -31,6 +31,7 @@ export default function AdminCourtChart({ scale }) {
       })
     );
   };
+  const cords = useSelector((state) => state.eventShape.courtCords);
 
   return (
     <Court>
@@ -261,7 +262,7 @@ export default function AdminCourtChart({ scale }) {
         <XAxis type="number" dataKey="x" hide domain={[0, 40]} />
         <YAxis type="number" dataKey="y" hide domain={[0, 20]} />
         <Tooltip cursor={{ strokeDasharray: "3 3" }} />
-        <Scatter name="thorws" data={{ x: 1, y: 2 }} fill="black" />
+        <Scatter name="throws" data={[cords]} fill="black" />
       </ScatterChart>
     </Court>
   );
