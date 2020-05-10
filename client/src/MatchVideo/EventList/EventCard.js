@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import fancyTimeFormat from "../_helpers/fancyTimeFormat";
+import fancyTimeFormat from "../../_helpers/fancyTimeFormat";
 const Event = styled.div`
   position: relative;
   display: flex;

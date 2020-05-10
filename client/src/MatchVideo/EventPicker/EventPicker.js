@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSpring, animated } from "react-spring";
 import PlayerPicker from "./PlayerPicker";
 import EventTypePicker from "./EventTypePicker";
-import AdminCourtChart from "../Admin/Charts/AdminCourtChart";
-import AdminGoalChart from "../Admin/Charts/AdminGoalChart";
+import CourtChart from "../Charts/CourtChart";
+import GoalChart from "../Charts/GoalChart";
 
 import EventConstructionCard from "./EventConstructionCard";
 import { eventAddingActions } from "../../_actions";
@@ -94,10 +94,10 @@ export default function EventPicker(props) {
       </Home>
       <Mid>
         {["Turnover", "Throw", "Penalty"].includes(eventShape.event) && (
-          <AdminCourtChart scale={10} />
+          <CourtChart scale={10} />
         )}
 
-        {eventShape.event == "Throw" && <AdminGoalChart scale={98} />}
+        {eventShape.event == "Throw" && <GoalChart scale={98} />}
       </Mid>
 
       <EventTypes>
