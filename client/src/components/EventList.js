@@ -6,7 +6,7 @@ import useEvents from "../Hooks/useEvents";
 import useMatches from "../Hooks/useMatches";
 
 import EfficiencyCard from "./EfficiencyCard";
-
+import EventCard from "./EventCard";
 const textPrimary = "white";
 const textSecondary = "#ececec";
 const bgPrimary = "#2D1B34";
@@ -22,55 +22,18 @@ const Events = styled.div`
   color: white;
 
   background: ${(props) => props.theme.bg};
-  #avatar {
-    height: 4rem;
-    width: 4rem;
-    margin: 0 1rem;
-    flex-grow: 1;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
   }
-
-  #playButton {
-    filter: invert(0.9);
-    height: 2rem;
-    flex-grow: 1;
-    justify-self: center;
-    align-self: center;
+  &::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.1);
   }
-
-  #eventType {
-    flex-grow: 2;
-    font-size: 1.5rem;
-    font-weight: bold;
-    justify-self: center;
-    align-self: center;
-  }
-
-  .event {
-    padding: 1rem;
-    border-radius: 0.5rem;
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    height: 6rem;
-    margin: 1rem 0.5rem;
-    background: radial-gradient(circle, rgba(0,180,255,1) 50%, rgba(84,101,213,1) 100%);
-    /* background: ${(props) => props.theme.bg}; */
-    
-    #deleteButton {
-      height: 1.5rem;
-      position: absolute;
-      top: 0.5rem;
-      right: 0.5rem;
-      filter: invert(0.9);
-      transition: height ${transitionSpeed};
-      &:hover {
-        height: 2rem;
-      }
-    }
-
-    &:hover {
-      cursor: pointer;
-    }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.3);
   }
 `;
 
@@ -81,9 +44,7 @@ const ScoreBoard = styled.div`
   background: white;
   justify-content: space-between;
   align-content: center;
-
-  margin: 1rem 0;
-
+  padding: 10px 0;
   img {
     margin: 0 1rem;
     height: 3rem;
@@ -99,12 +60,11 @@ const ScoreBoard = styled.div`
   }
 `;
 
-export default function EventList({ matchId }) {
+export default function EventList({ matchId, ytVideoRef }) {
   const [loadingEvent, events] = useEvents({ matchId: matchId });
   const [loadingMatch, match] = useMatches(matchId);
   return (
     <Events>
-      <EfficiencyCard />
       {match ? (
         <ScoreBoard>
           <img src={match.homeTeam.logo} /> <span>{match.homeScore}</span>{" "}
@@ -113,64 +73,13 @@ export default function EventList({ matchId }) {
           <img src={match.awayTeam.logo} />
         </ScoreBoard>
       ) : null}
-      {events
-        ? events.map((event) => {
-            if (event.type === "Throw" || event.type === "Turnover") {
-              return (
-                <div className="event" id={`${event.matchId}${event._id}`}>
-                  <img
-                    id="playButton"
-                    src={`${process.env.PUBLIC_URL}/playButton.svg`}
-                  />
-                  {event.player.avatar ? (
-                    <img id="avatar" src={event.player.avatar} />
-                  ) : (
-                    <h3>{event.player.name}</h3>
-                  )}
-
-                  <div id="eventType">
-                    {event.type}
-                    {event.type == "Throw" ? (
-                      <p style={{ "font-size": "1rem" }}>
-                        {event.throw.outcome}{" "}
-                      </p>
-                    ) : null}
-                  </div>
-                  <img
-                    onClick={(e) => {
-                      fetch(`/api/events/${event._id}/delete`, {
-                        method: "DELETE",
-                      });
-                      e.target.parentNode.style.display = "none";
-                    }}
-                    id="deleteButton"
-                    src={`${process.env.PUBLIC_URL}/trash.svg`}
-                  />
-                </div>
-              );
-            }
-            return (
-              <div
-                className="event"
-                key={event._id}
-                id={`${event.matchId}${event._id}`}
-              >
-                {" "}
-                {event.type}{" "}
-                <img
-                  onClick={(e) => {
-                    fetch(`/api/events/${event._id}/delete`, {
-                      method: "DELETE",
-                    });
-                    e.target.parentNode.style.display = "none";
-                  }}
-                  id="deleteButton"
-                  src={`${process.env.PUBLIC_URL}/trash.svg`}
-                />
-              </div>
-            );
-          })
-        : null}
+      {!loadingEvent ? (
+        events.map((event) => {
+          return <EventCard eventData={event} ytVideoRef={ytVideoRef} />;
+        })
+      ) : (
+        <h3>LOADING...</h3>
+      )}
     </Events>
   );
 }
