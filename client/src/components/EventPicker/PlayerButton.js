@@ -2,11 +2,11 @@ import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { useSpring, animated } from "react-spring";
 import { eventAddingActions } from "../../_actions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const Wrapper = styled(animated.div)`
   background: ${(props) => props.theme.primary};
-  width: 80%;
+  width: 100%;
   margin: 10px;
   border-radius: 5px;
   display: flex;
@@ -21,32 +21,27 @@ const Wrapper = styled(animated.div)`
   }
 `;
 
-export default function PlayerButton({
-  playerInfo,
-  avatar,
-  name,
-  nr,
-  active,
-  setActive,
-}) {
+export default function PlayerButton({ playerInfo, id }) {
   const dispatch = useDispatch();
-  const ref = useRef();
+
+  const selectedPlayerId = useSelector(
+    (state) =>
+      state.eventShape && state.eventShape.player && state.eventShape.player._id
+  );
   const props = useSpring({
     background:
-      ref == active
+      id == selectedPlayerId
         ? "linear-gradient(270deg, rgba(0,180,255,1) 0%, rgba(0,120,255,1) 100% "
         : "linear-gradient(270deg,rgba(255, 255, 255, 1) 0%,rgba(255, 255, 255, 1) 100%)",
   });
   return (
     <Wrapper
-      ref={ref}
       style={props}
       onClick={() => {
-        setActive(ref);
         dispatch(eventAddingActions.setPlayer(playerInfo));
       }}
     >
-      {avatar ? (
+      {playerInfo.avatar ? (
         <img src={playerInfo.avatar} />
       ) : (
         <svg width="60" height="60">
