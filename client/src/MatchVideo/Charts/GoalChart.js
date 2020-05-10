@@ -1,5 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { setGoalCords } from "../EventPicker/eventConstruction";
+
 import {
   ReferenceDot,
   ReferenceLine,
@@ -25,14 +27,14 @@ export default function AdminGoalChart({ scale }) {
   const dispatch = useDispatch();
   const getCords = (e) => {
     dispatch(
-      eventAddingActions.setGoalCords({
+      setGoalCords({
         x: Math.round(e.xValue * 100) / 100,
         y: Math.round(e.yValue * 100) / 100,
       })
     );
   };
   //change y to z
-  const cords = useSelector((state) => state.eventShape.goalCords);
+  const cords = useSelector((state) => state.eventConstruction.goalCords);
   return (
     <Court>
       <ScatterChart

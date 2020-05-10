@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { setCourtCords } from "../EventPicker/eventConstruction";
+
 import {
   ReferenceDot,
   ReferenceLine,
@@ -14,7 +16,7 @@ import {
 } from "recharts";
 
 import styled from "styled-components";
-import { eventAddingActions } from "../../_actions";
+
 const Court = styled.div`
   margin: 10px;
 
@@ -25,13 +27,13 @@ export default function AdminCourtChart({ scale }) {
   const dispatch = useDispatch();
   const getCords = (e) => {
     dispatch(
-      eventAddingActions.setCourtCords({
+      setCourtCords({
         x: Math.round(e.xValue * 100) / 100,
         y: Math.round(e.yValue * 100) / 100,
       })
     );
   };
-  const cords = useSelector((state) => state.eventShape.courtCords);
+  const cords = useSelector((state) => state.eventConstruction.courtCords);
 
   return (
     <Court>
