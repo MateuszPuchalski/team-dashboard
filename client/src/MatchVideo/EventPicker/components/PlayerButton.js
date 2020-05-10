@@ -1,7 +1,8 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { useSpring, animated } from "react-spring";
-import { eventAddingActions } from "../../_actions";
+import { eventAddingActions } from "../../../_actions";
+import { setPlayer } from "../eventConstruction";
 import { useDispatch, useSelector } from "react-redux";
 
 const Wrapper = styled(animated.div)`
@@ -38,7 +39,8 @@ export default function PlayerButton({ playerInfo, id }) {
     <Wrapper
       style={props}
       onClick={() => {
-        dispatch(eventAddingActions.setPlayer(playerInfo));
+        dispatch(eventAddingActions.setPlayer(playerInfo)); // delete this
+        dispatch(setPlayer(playerInfo));
       }}
     >
       {playerInfo.avatar ? (

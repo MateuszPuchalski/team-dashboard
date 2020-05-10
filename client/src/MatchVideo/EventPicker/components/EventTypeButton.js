@@ -1,7 +1,8 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { useSpring, useTransition, animated, interpolate } from "react-spring";
-import { eventAddingActions } from "../../_actions";
+import { eventAddingActions } from "../../../_actions";
+import { setEvent, setEventDescription } from "../eventConstruction";
 import { useDispatch, useSelector } from "react-redux";
 
 const Wrapper = styled.div`
@@ -75,9 +76,7 @@ export default function EventTypeButton({ event, active, setActive }) {
               ? event[1].map((element, i) => (
                   <EventType
                     key={i}
-                    onClick={() =>
-                      dispatch(eventAddingActions.setEventType(element))
-                    }
+                    onClick={() => dispatch(setEventDescription(element))}
                   >
                     {element}
                   </EventType>
@@ -92,8 +91,7 @@ export default function EventTypeButton({ event, active, setActive }) {
         style={props}
         ref={ref}
         onClick={() => {
-          dispatch(eventAddingActions.setEventType(""));
-          dispatch(eventAddingActions.setEvent(event[0]));
+          dispatch(setEvent(event[0]));
           setActive(ref);
         }}
       >

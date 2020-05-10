@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { useSelector, useDispatch } from "react-redux";
-import { eventAddingActions } from "../../_actions";
+import { eventAddingActions } from "../../../_actions";
 
 const Wrapper = styled.div`
   background: ${(props) => props.theme.primary};

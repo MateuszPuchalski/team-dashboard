@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSpring, animated } from "react-spring";
 import PlayerPicker from "./PlayerPicker";
 import EventTypePicker from "./EventTypePicker";
-import CourtChart from "../Charts/CourtChart";
-import GoalChart from "../Charts/GoalChart";
+import CourtChart from "../../Charts/CourtChart";
+import GoalChart from "../../Charts/GoalChart";
 
 import EventConstructionCard from "./EventConstructionCard";
-import { eventAddingActions } from "../../_actions";
+import { eventAddingActions } from "../../../_actions";
 
 //TODO:
 // - Player Picker
@@ -77,9 +77,7 @@ const Mid = styled.div`
 `;
 
 export default function EventPicker(props) {
-  const dispatch = useDispatch();
-
-  const eventShape = useSelector((state) => state.eventShape);
+  const eventConstruction = useSelector((state) => state.eventConstruction);
   const match = useSelector((state) => state.eventShape.match);
 
   return (
@@ -88,23 +86,23 @@ export default function EventPicker(props) {
         <EventConstructionCard ytVideoRef={props.ytVideoRef} />
       </ConstructionCard>
       <Home>
-        {["Turnover", "Throw", "Penalty"].includes(eventShape.event) && (
+        {["Turnover", "Throw", "Penalty"].includes(eventConstruction.event) && (
           <PlayerPicker clubId={match.homeTeam._id} />
         )}
       </Home>
       <Mid>
-        {["Turnover", "Throw", "Penalty"].includes(eventShape.event) && (
+        {["Turnover", "Throw", "Penalty"].includes(eventConstruction.event) && (
           <CourtChart scale={10} />
         )}
 
-        {eventShape.event == "Throw" && <GoalChart scale={98} />}
+        {eventConstruction.event == "Throw" && <GoalChart scale={98} />}
       </Mid>
 
       <EventTypes>
         <EventTypePicker />
       </EventTypes>
       <Away>
-        {["Turnover", "Throw", "Penalty"].includes(eventShape.event) && (
+        {["Turnover", "Throw", "Penalty"].includes(eventConstruction.event) && (
           <PlayerPicker clubId={match.awayTeam._id} />
         )}
       </Away>
