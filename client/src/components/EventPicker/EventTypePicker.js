@@ -10,11 +10,12 @@ const Wrapper = styled.div`
 `;
 
 const eventTypes = [
-  ["Turnover", ["Catch", "Dribble", "Pass"]],
-  ["Throw", ["Over", "Under", "Jump"]],
-  ["Penalty", ["2min", "Yellow", "Red"]],
+  ["Turnover", ["Catch", "Dribble", "Pass", "Charge"]],
+  ["Throw", ["Over", "Under", "Jump", "7m"]],
+  ["Penalty", ["2min", "Yellow", "Red", "Blue"]],
+  ["Half Start"],
+  ["Half End"],
 ];
-const test = ["Turnver", "Throw", "Penalty"];
 
 export default function EventTypePicker() {
   const [active, setActive] = useState(null);
