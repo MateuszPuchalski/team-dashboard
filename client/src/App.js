@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   BrowserRouter as Router,
   Route,
   Link,
   useHistory,
 } from "react-router-dom";
-import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
 
 import Register from "./components/Login/Register";
 import Login from "./components/Login";
@@ -15,7 +13,7 @@ import Dashboard from "./components/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 
 import Admin from "./components/Admin/Admin";
-import AdminMatches from "./components/Admin/AdminMatches";
+import MatchVideo from "./MatchVideo/MatchVideo";
 import AdminPlayers from "./components/Admin/AdminPlayers";
 import EditAdminPlayers from "./components/Admin/EditAdminPlayers";
 import AdminSchowMatches from "./components/Admin/Matches/AdminSchowMatches";
@@ -24,13 +22,9 @@ import Sidebar from "./components/Sidebar";
 import ProfilePage from "./components/ProfilePage/ProfilePage";
 import ClubSettings from "./components/ClubSettings";
 
-import { setTestField } from "./_actions/test.actions";
-import EventPicker from "./components/EventPicker/EventPicker";
-
 export default function App(props) {
   return (
     <>
-      <Route path="/testing" component={EventPicker} />
       {/* <Route path="/admin" component={Sidebar} /> */}
       <PrivateRoute path={"/profile"}>
         <ProfilePage />
@@ -47,7 +41,7 @@ export default function App(props) {
       <Route exact path="/admin" component={Admin} />
       <Route exact path="/admin/club" component={ClubSettings} />
       <Route exact path="/admin/matches" component={AdminSchowMatches} />
-      <Route exact path="/admin/matches/:matchId" component={AdminMatches} />
+      <Route exact path="/admin/matches/:matchId" component={MatchVideo} />
       <Route exact path="/admin/players" component={AdminSchowPlayers} />
       <Route exact path="/admin/players/:playerId" component={AdminPlayers} />
       <Route
