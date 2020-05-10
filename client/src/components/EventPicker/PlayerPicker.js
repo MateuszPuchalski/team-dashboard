@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import faker from "faker";
+
 import PlayerButton from "./PlayerButton";
 
 const Wrapper = styled.div`
@@ -10,28 +10,27 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-export default function PlayerPicker({ side, active, setActive }) {
-  const players = useSelector((state) => {
-    if (side == "home") {
-      return state.eventShape.homePlayers;
-    }
-    if (side == "away") {
-      return state.eventShape.awayPlayers;
-    }
-  });
+const fetchPlayers = async (clubId) => {
+  return await (await fetch(`/api/players/club/${clubId}`)).json();
+};
+
+export default function PlayerPicker({ clubId }) {
+  const [players, setPlayers] = useState([]);
+
+  useEffect(() => {
+    fetchPlayers(clubId).then((data) => setPlayers(data));
+    console.log(clubId);
+  }, []);
+
   return (
     <Wrapper>
       {players
-        ? players.map((element, i) => {
+        ? players.map((element) => {
             return (
               <PlayerButton
                 playerInfo={element}
-                avatar={element.avatar}
-                key={i}
-                active={active}
-                setActive={setActive}
-                name={element.name}
-                nr={element.jerseyNumber}
+                key={element._id}
+                id={element._id}
               />
             );
           })
