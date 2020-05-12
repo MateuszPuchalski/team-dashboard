@@ -9,7 +9,6 @@ import {
 import Register from "./components/Login/Register";
 import Login from "./components/Login";
 import Login2 from "./components/Login/Login";
-import Dashboard from "./components/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 
 import Admin from "./components/Admin/Admin";
@@ -49,9 +48,6 @@ export default function App(props) {
         path="/admin/players/:playerId/edit"
         component={EditAdminPlayers}
       />
-      <PrivateRoute path={"/dashboard"}>
-        <Dashboard />
-      </PrivateRoute>
     </>
   );
 }
