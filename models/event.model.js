@@ -3,96 +3,19 @@ const Schema = mongoose.Schema;
 
 // Declare the Schema of the Mongo model
 var eventSchema = new Schema({
-  index: {
-    type: Number,
-    required: true
-  },
   matchId: {
     type: Schema.Types.ObjectId,
     ref: "Match",
-    required: true
   },
-  period: {
-    type: Number,
-    required: true
-  },
-  timestamp: {
-    type: Number,
-    required: true
-  },
-  type: {
-    type: String,
-    enum: [
-      "Throw",
-      "Pass",
-      "Half Start",
-      "Turnover",
-      "Half End",
-      "Bad Behaviour"
-    ],
-    required: true
-  },
-
-  team: {
-    type: Schema.Types.ObjectId,
-    ref: "Club",
-    required: true
-  },
+  type: String,
   player: {
     type: Schema.Types.ObjectId,
-    ref: "Player"
+    ref: "Player",
   },
-  location: {
-    type: Object
-  },
-  relatedEvents: {
-    type: Array
-  },
-
-  badBehaviour: {
-    type: String,
-    required: function() {
-      if (this.type === "Bad Behaviour") return true;
-    }
-  },
-  turnover: {
-    type: String,
-    required: function() {
-      if (this.type === "Turnover") return true;
-    }
-  },
-  throw: {
-    outcome: {
-      // Blocked, goal, post, saved ..
-      type: String,
-      required: function() {
-        if (this.type === "Throw") return true;
-      }
-    },
-
-    endLocation: {
-      type: Object,
-      required: function() {
-        if (this.type === "Throw") return true;
-      }
-    },
-
-    technique: {
-      //Jump Shot, Overarm, Underarm,
-      type: String,
-      required: function() {
-        if (this.type === "Throw") return true;
-      }
-    },
-
-    type: {
-      // Penalty,
-      type: String,
-      required: function() {
-        if (this.type === "Throw") return true;
-      }
-    }
-  }
+  timestamp: Number,
+  Throw: Object,
+  Turnover: Object,
+  Punishment: Object,
 });
 
 //Export the model
