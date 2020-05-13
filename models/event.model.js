@@ -7,15 +7,16 @@ var eventSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Match",
   },
+  location: Object,
   type: String,
   player: {
     type: Schema.Types.ObjectId,
     ref: "Player",
   },
   timestamp: Number,
-  Throw: Object,
-  Turnover: Object,
-  Punishment: Object,
+  throw: Object,
+  turnover: Object,
+  punishment: Object,
 });
 
 //Export the model
