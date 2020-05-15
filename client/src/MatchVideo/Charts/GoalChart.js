@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setGoalCords } from "../EventPicker/eventConstruction";
+import { setGoalCords } from "../EventPicker/eventConstructionDuck";
 
 import {
   ReferenceDot,
@@ -34,7 +34,10 @@ export default function AdminGoalChart({ scale }) {
     );
   };
   //change y to z
-  const cords = useSelector((state) => state.eventConstruction.goalCords);
+  const cords = useSelector(
+    (state) =>
+      state.eventConstruction.throw && state.eventConstruction.throw.endLocation
+  );
   return (
     <Court>
       <ScatterChart

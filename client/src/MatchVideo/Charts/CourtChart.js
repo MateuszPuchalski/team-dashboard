@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setCourtCords } from "../EventPicker/eventConstruction";
+import { setCourtCords } from "../EventPicker/eventConstructionDuck";
 
 import {
   ReferenceDot,
@@ -33,7 +33,7 @@ export default function AdminCourtChart({ scale }) {
       })
     );
   };
-  const cords = useSelector((state) => state.eventConstruction.courtCords);
+  const cords = useSelector((state) => state.eventConstruction.location);
 
   return (
     <Court>
