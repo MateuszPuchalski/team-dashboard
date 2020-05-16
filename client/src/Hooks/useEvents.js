@@ -9,8 +9,8 @@ export default function useEvents({ matchId = null, playerId = null }) {
 
     if (!matchId && !playerId) {
       fetch(`/api/events`)
-        .then(res => res.json())
-        .then(data => {
+        .then((res) => res.json())
+        .then((data) => {
           setEvents(data);
           setLoading(false);
         });
@@ -19,8 +19,8 @@ export default function useEvents({ matchId = null, playerId = null }) {
 
     if (matchId && playerId) {
       fetch(`/api/events/player/${playerId}/match/${matchId}/`)
-        .then(res => res.json())
-        .then(data => {
+        .then((res) => res.json())
+        .then((data) => {
           setEvents(data);
           setLoading(false);
         });
@@ -29,18 +29,19 @@ export default function useEvents({ matchId = null, playerId = null }) {
 
     if (matchId) {
       fetch(`/api/events/match/${matchId}`)
-        .then(res => res.json())
-        .then(data => {
+        .then((res) => res.json())
+        .then((data) => {
           setEvents(data);
           setLoading(false);
         });
+
       return;
     }
 
     if (playerId) {
       fetch(`/api/events/player/${playerId}`)
-        .then(res => res.json())
-        .then(data => {
+        .then((res) => res.json())
+        .then((data) => {
           setEvents(data);
           setLoading(false);
         });
