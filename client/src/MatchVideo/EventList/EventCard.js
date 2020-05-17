@@ -9,8 +9,6 @@ const Event = styled.div`
   justify-content: space-between;
 
   &:hover {
-    color: black;
-    background: whitesmoke;
     cursor: pointer;
   }
 `;
@@ -19,6 +17,9 @@ const Timestamp = styled.div`
   align-items: center;
   justify-content: center;
   width: 20%;
+  ${Event}:hover & {
+    transform: scale(1.1);
+  }
 `;
 const EventIcon = styled.div`
   display: flex;
@@ -27,12 +28,18 @@ const EventIcon = styled.div`
   img {
     height: 35px;
   }
+  ${Event}:hover & {
+    transform: scale(1.1);
+  }
 `;
 
 const EventDescription = styled.div`
   width: 60%;
   .type {
     font-weight: lighter;
+  }
+  ${Event}:hover & {
+    transform: scale(1.1);
   }
 `;
 // #4d9f0c
@@ -48,15 +55,15 @@ const TimelineLine = styled.div`
 `;
 const wichIcon = (data) => {
   switch (data.type) {
-    case "Half Start":
+    case "Half Start" || "half start":
       return <img src={process.env.PUBLIC_URL + "/whistle.svg"} />;
       break;
-    case "Half End":
+    case "Half End" || "half end":
       return <img src={process.env.PUBLIC_URL + "/whistle.svg"} />;
       break;
-    case "Throw":
+    case "Throw" || "throw":
       switch (data.throw.outcome) {
-        case "Saved":
+        case "Saved" || "saved":
           return <img src={process.env.PUBLIC_URL + "/goalpostsquare.svg"} />;
           break;
 
@@ -65,15 +72,15 @@ const wichIcon = (data) => {
           break;
       }
 
-    case "Bad Behaviour":
+    case "Bad Behaviour" || "punishment":
       switch (data.badBehaviour) {
-        case "Yellow Card":
+        case "Yellow Card" || "yellow":
           return <img src={process.env.PUBLIC_URL + "/yellow-card1.svg"} />;
           break;
-        case "Red Card":
+        case "Red Card" || "red":
           return <img src={process.env.PUBLIC_URL + "/red-card.svg"} />;
           break;
-        case "Blue Card":
+        case "Blue Card" || "blue":
           return <img src={process.env.PUBLIC_URL + "/blue-card.svg"} />;
           break;
         case "2min":
@@ -84,7 +91,7 @@ const wichIcon = (data) => {
           break;
       }
       break;
-    case "Turnover":
+    case "Turnover" || "turnover":
       switch (data.turnover) {
         case "Pass":
           return "Pass";
