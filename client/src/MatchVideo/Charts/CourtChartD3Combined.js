@@ -47,6 +47,7 @@ export default function GoalChartD3Declarative() {
           data.filter(
             (event) =>
               event.type == "Throw" &&
+              event.location &&
               event.throw &&
               event.throw.outcome != "7m" &&
               event.throw.outcome != "Blocked"
@@ -58,60 +59,215 @@ export default function GoalChartD3Declarative() {
   useEffect(() => {
     const filtered = throws.filter((item) => {
       return (
-        item.throw.endLocation[0].y < point.y + 0.5 &&
-        item.throw.endLocation[0].y > point.y - 0.5 &&
-        item.throw.endLocation[0].z < point.z + 0.5 &&
-        item.throw.endLocation[0].z > point.z - 0.5
+        item.location[0].y < point.y + 0.5 &&
+        item.location[0].y > point.y - 0.5 &&
+        item.location[0].z < point.z + 0.5 &&
+        item.location[0].z > point.z - 0.5
       );
     });
     setFilteredThrows(filtered);
   }, [point]);
 
-  const draw = () => {
+  const draw = (data) => {
+    console.log({ drawData: data });
     const svg = d3.select(svgRef.current);
-    // svg.on("mousemove", () => {
-    //   const [x, y] = d3.mouse(svgRef.current);
-    //   setPoint({ y: yAxis.invert(y), x: xAxis.invert(x) });
-    // });
 
-    // const circle = svg.selectAll("circle").data(data, (d) => d._id);
-
-    // circle
-    //   .enter()
-    //   .append("circle")
-
-    //   .attr("cx", (d) => xAxis(d.location[0].x))
-    //   .attr("cy", (d) => yAxis(d.location[0].y))
-    //   .attr("r", 0)
-    //   .transition()
-    //   .duration(300)
-    //   .attr("r", 9.5)
-    //   .style("fill", "rgb(100,100,1)");
-    const data = [
-      { x: 0, y: 0 },
-      { x: 500, y: 0 },
-      { x: 500, y: 250 },
-    ];
-
-    const group = svg.append("g");
-
-    // circle.exit().transition().duration(100).attr("r", 0).remove();
     const line = d3
       .line()
-      .x((d) => d.x)
-      .y((d) => d.y);
-    line.closePath();
+      .x((d) => xAxis(d.x))
+      .y((d) => yAxis(d.y));
 
-    group
+    const courtOutlineData = [
+      { x: 0, y: 0 },
+      { x: 40, y: 0 },
+      { x: 40, y: 20 },
+      { x: 0, y: 20 },
+      { x: 0, y: 0 },
+    ];
+    const courtMidLineData = [
+      { x: 20, y: 0 },
+      { x: 20, y: 20 },
+    ];
+    const sevenLineLeftData = [
+      { x: 7, y: 9.5 },
+      { x: 7, y: 10.5 },
+    ];
+    const sevenLineRightData = [
+      { x: 33, y: 9.5 },
+      { x: 33, y: 10.5 },
+    ];
+    const fourLineLeftData = [
+      { x: 4, y: 9.75 },
+      { x: 4, y: 10.25 },
+    ];
+    const fourLineRightData = [
+      { x: 36, y: 9.75 },
+      { x: 36, y: 10.25 },
+    ];
+    //test
+    const nineTestLineData = [
+      { x: 3, y: 0 },
+      { x: 3, y: 20 },
+    ];
+    //
+    const sixLineLeftData = d3.path();
+    sixLineLeftData.moveTo(0, yAxis(2.5));
+    sixLineLeftData.quadraticCurveTo(
+      xAxis(6),
+      yAxis(2.5),
+      xAxis(6),
+      yAxis(8.5)
+    );
+    sixLineLeftData.lineTo(xAxis(6), yAxis(11.5));
+    sixLineLeftData.quadraticCurveTo(
+      xAxis(6),
+      yAxis(17.5),
+      xAxis(0),
+      yAxis(17.5)
+    );
+    // sixLineLeftData.closePath();
+
+    const sixLineRightData = d3.path();
+    sixLineRightData.moveTo(xAxis(40), yAxis(2.5));
+    sixLineRightData.quadraticCurveTo(
+      xAxis(34),
+      yAxis(2.5),
+      xAxis(34),
+      yAxis(8.5)
+    );
+    sixLineRightData.lineTo(xAxis(34), yAxis(11.5));
+    sixLineRightData.quadraticCurveTo(
+      xAxis(34),
+      yAxis(17.5),
+      xAxis(40),
+      yAxis(17.5)
+    );
+    // sixLineRightData.closePath();
+
+    const nineLineLeftData = d3.path();
+    nineLineLeftData.moveTo(xAxis(3), yAxis(0));
+    nineLineLeftData.quadraticCurveTo(xAxis(9), yAxis(0), xAxis(9), yAxis(8.5));
+    nineLineLeftData.lineTo(xAxis(9), yAxis(11.5));
+    nineLineLeftData.quadraticCurveTo(xAxis(9), yAxis(20), xAxis(3), yAxis(20));
+
+    const nineLineRightData = d3.path();
+    nineLineRightData.moveTo(xAxis(37), yAxis(0));
+    nineLineRightData.quadraticCurveTo(
+      xAxis(31),
+      yAxis(0),
+      xAxis(31),
+      yAxis(8.5)
+    );
+    nineLineRightData.lineTo(xAxis(31), yAxis(11.5));
+    nineLineRightData.quadraticCurveTo(
+      xAxis(31),
+      yAxis(20),
+      xAxis(37),
+      yAxis(20)
+    );
+
+    const court = svg.append("g").attr("id", "court");
+    const courtOutline = court.append("g").attr("id", "courtOutline");
+    const courtMidLine = court.append("g").attr("id", "courtMidLine");
+    const sevenLineLeft = court.append("g").attr("id", "sevenLineLeft");
+    const sevenLineRight = court.append("g").attr("id", "sevenLineRight");
+    const sixLineLeft = court.append("g").attr("id", "sixLineLeft");
+    const sixLineRight = court.append("g").attr("id", "sixLineRight");
+    const fourLineLeft = court.append("g").attr("id", "fourLineLeft");
+    const fourLineRight = court.append("g").attr("id", "fourLineRight");
+    const nineLineLeft = court.append("g").attr("id", "nineLineLeft");
+    const nineLineRight = court.append("g").attr("id", "nineLineRight");
+
+    const arcBot = d3.path();
+    arcBot.arc(0, yAxis(8.5), xAxis(9), 0, Math.PI * 2);
+    const arcTop = d3.path();
+    arcTop.arc(0, yAxis(11.5), xAxis(9), 0, Math.PI * 2);
+    // path.closePath();
+
+    // .lineTo(xAxis(20), 0);
+
+    courtOutline
       .selectAll("path")
-      .data([data])
+      .data([courtOutlineData])
       .enter()
       .append("path")
       .attr("d", line)
-      .attr("fill", "none")
+      .attr("fill", "rgba(231,111,222,0.5)")
       .attr("stroke", "blue");
+    courtMidLine
+      .selectAll("path")
+      .data([courtMidLineData])
+      .enter()
+      .append("path")
+      .attr("d", line)
+      .attr("stroke", "blue");
+    sevenLineLeft
+      .selectAll("path")
+      .data([sevenLineLeftData])
+      .enter()
+      .append("path")
+      .attr("d", line)
+      .attr("stroke", "blue");
+    sevenLineRight
+      .selectAll("path")
+      .data([sevenLineRightData])
+      .enter()
+      .append("path")
+      .attr("d", line)
+      .attr("stroke", "blue");
+    sixLineLeft
+      .append("path")
+      .attr("d", sixLineLeftData)
+      .attr("fill", "rgba(231,111,222,0.5)")
+      .attr("stroke", "blue");
+    sixLineRight
+      .append("path")
+      .attr("d", sixLineRightData)
+      .attr("fill", "rgba(231,111,222,0.5)")
+      .attr("stroke", "blue");
+    fourLineLeft
+      .selectAll("path")
+      .data([fourLineLeftData])
+      .enter()
+      .append("path")
+      .attr("d", line)
+      .attr("stroke", "blue");
+    fourLineRight
+      .selectAll("path")
+      .data([fourLineRightData])
+      .enter()
+      .append("path")
+      .attr("d", line)
+      .attr("stroke", "blue");
+    nineLineLeft
+      .append("path")
+      .attr("d", nineLineLeftData)
+      .attr("fill", "none")
+      .attr("stroke-dasharray", "5,5")
+      .attr("stroke", "blue");
+    nineLineRight
+      .append("path")
+      .attr("d", nineLineRightData)
+      .attr("fill", "none")
+      .attr("stroke-dasharray", "5,5")
+      .attr("stroke", "blue");
+
+    const circle = svg.selectAll("circle").data(data, (d) => d._id);
+
+    circle
+      .enter()
+      .append("circle")
+      .attr("cx", (d) => xAxis(d.location[0].x) || xAxis(d.location.x))
+      .attr("cy", (d) => yAxis(d.location[0].y) || yAxis(d.location.y))
+      .attr("r", 0)
+      .transition()
+      .duration(300)
+      .attr("r", 2)
+      .style("fill", "rgba(0,0,255,1)");
+
+    circle.exit().transition().duration(100).attr("r", 0).remove();
   };
-  useEffect(() => draw(), []);
+  useEffect(() => draw(throws), [throws]);
 
   return (
     <Wrapper>
@@ -121,6 +277,15 @@ export default function GoalChartD3Declarative() {
         height={height}
         style={{ background: "pink" }}
       ></svg>
+      <button
+        onClick={() =>
+          playerId == "5e3606a51dba6b0ac451eb42"
+            ? setPlayerId("5e36cd76afad472cc88b643f")
+            : setPlayerId("5e3606a51dba6b0ac451eb42")
+        }
+      >
+        Przemek
+      </button>
     </Wrapper>
   );
 }
