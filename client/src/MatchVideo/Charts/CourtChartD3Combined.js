@@ -218,7 +218,7 @@ export default function GoalChartD3Declarative({ playerId, setPoint }) {
       .attr("stroke", "blue");
   };
 
-  const drawThrows = (data) => {
+  const drawThrowDistribution = (data) => {
     const svg = d3.select(svgRef.current);
     d3.select("#throwLocation").remove();
 
@@ -259,8 +259,9 @@ export default function GoalChartD3Declarative({ playerId, setPoint }) {
     drawCourt();
     searchCircle();
   }, []);
+
   useEffect(() => {
-    drawThrows(throws);
+    drawThrowDistribution(throws);
   }, [throws]);
 
   return (
