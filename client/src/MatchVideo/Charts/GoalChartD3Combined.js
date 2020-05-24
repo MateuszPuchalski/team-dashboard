@@ -14,17 +14,17 @@ const Range = styled.div`
   }
 `;
 
-const width = 500;
-const height = 300;
-
-const zAxis = d3.scaleLinear().domain([0, 3]).range([height, 0]);
-const yAxis = d3.scaleLinear().domain([7.5, 12.5]).range([0, width]);
-
 export default function GoalChartD3Declarative({ throws }) {
   const svgRef = useRef();
   const [contoursToggle, toggleContours] = useState(true);
-  const [bandwidth, setBandwidth] = useState(15);
-  const [thresholds, setThresholds] = useState(20);
+  const [bandwidth, setBandwidth] = useState(20);
+  const [thresholds, setThresholds] = useState(24);
+
+  const width = 500;
+  const height = 300;
+
+  const zAxis = d3.scaleLinear().domain([0, 3]).range([height, 0]);
+  const yDataScale = d3.scaleLinear().domain([7.5, 12.5]).range([0, width]);
 
   const drawThrowPoints = (data) => {
     const svg = d3.select(svgRef.current);
@@ -35,7 +35,7 @@ export default function GoalChartD3Declarative({ throws }) {
       circle
         .enter()
         .append("circle")
-        .attr("cx", (d) => yAxis(d.throw.endLocation[0].y))
+        .attr("cx", (d) => yDataScale(d.throw.endLocation[0].y))
         .attr("cy", (d) => zAxis(d.throw.endLocation[0].z))
         .attr("r", 0)
         .transition()
@@ -53,7 +53,7 @@ export default function GoalChartD3Declarative({ throws }) {
     if (contoursToggle) {
       const contours = d3
         .contourDensity()
-        .x((d) => yAxis(d.throw.endLocation[0].y))
+        .x((d) => yDataScale(d.throw.endLocation[0].y))
         .y((d) => zAxis(d.throw.endLocation[0].z))
         .size([width, height])
         .thresholds(thresholds)
@@ -100,10 +100,10 @@ export default function GoalChartD3Declarative({ throws }) {
         <g>
           <rect
             width={318}
-            height={208}
+            height={zAxis(0)}
             fill="rgb(218, 68, 83)"
             x={width / 2 - 316 / 2}
-            y={height - 208}
+            y={zAxis(2.08)}
           />
           <rect
             width={300}
@@ -120,7 +120,7 @@ export default function GoalChartD3Declarative({ throws }) {
       >
         CONTOURS
       </button>
-      <Range>
+      {/* <Range>
         Bandwidth: {bandwidth}
         <input
           type="range"
@@ -143,7 +143,7 @@ export default function GoalChartD3Declarative({ throws }) {
             setThresholds(e.target.value);
           }}
         />
-      </Range>
+      </Range> */}
     </Wrapper>
   );
 }
