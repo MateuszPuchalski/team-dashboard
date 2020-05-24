@@ -4,50 +4,19 @@ import styled from "styled-components";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 50px 0 0 50px;
 `;
 
-const generateGoalData = (n) => {
-  const data = [];
-  for (let i = 0; i < n; i++) {
-    data.push({
-      x: d3.randomUniform(0, 40)(),
-      y: d3.randomUniform(0, 20)(),
-    });
-  }
-  return data;
-};
-// przemek: 5e36cd76afad472cc88b643f
 const width = 500;
 const height = 250;
 const xAxis = d3.scaleLinear().domain([0, 40]).range([0, width]);
 const yAxis = d3.scaleLinear().domain([0, 20]).range([height, 0]);
 
-export default function GoalChartD3Declarative({ playerId, setPoint }) {
+export default function GoalChartD3Declarative({
+  throws,
+  setPoint,
+  setSection,
+}) {
   const svgRef = useRef();
-  const [events, setEvents] = useState([]);
-  const [throws, setThrows] = useState([]);
-
-  const [filteredThrows, setFilteredThrows] = useState([]);
-
-  useEffect(() => {
-    setEvents([]);
-    fetch(`/api/events/player/${playerId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setEvents(data);
-        setThrows(
-          data.filter(
-            (event) =>
-              event.type == "Throw" &&
-              event.location &&
-              event.throw &&
-              event.throw.outcome != "7m" &&
-              event.throw.outcome != "Blocked"
-          )
-        );
-      });
-  }, [playerId]);
 
   const drawCourt = () => {
     const svg = d3.select(svgRef.current);
@@ -157,70 +126,70 @@ export default function GoalChartD3Declarative({ playerId, setPoint }) {
       .enter()
       .append("path")
       .attr("d", line)
-      .attr("fill", "rgba(231,111,222,0.5)")
-      .attr("stroke", "blue");
+      .attr("fill", "rgb(218, 68, 83)")
+      .attr("stroke", "white");
     courtMidLine
       .selectAll("path")
       .data([courtMidLineData])
       .enter()
       .append("path")
       .attr("d", line)
-      .attr("stroke", "blue");
+      .attr("stroke", "white");
     sevenLineLeft
       .selectAll("path")
       .data([sevenLineLeftData])
       .enter()
       .append("path")
       .attr("d", line)
-      .attr("stroke", "blue");
+      .attr("stroke", "white");
     sevenLineRight
       .selectAll("path")
       .data([sevenLineRightData])
       .enter()
       .append("path")
       .attr("d", line)
-      .attr("stroke", "blue");
+      .attr("stroke", "white");
     sixLineLeft
       .append("path")
       .attr("d", sixLineLeftData)
-      .attr("fill", "rgba(231,111,222,0.5)")
-      .attr("stroke", "blue");
+      .attr("fill", "rgb(137, 33, 107)")
+      .attr("stroke", "white");
     sixLineRight
       .append("path")
       .attr("d", sixLineRightData)
-      .attr("fill", "rgba(231,111,222,0.5)")
-      .attr("stroke", "blue");
+      .attr("fill", "rgb(137, 33, 107)")
+      .attr("stroke", "white");
     fourLineLeft
       .selectAll("path")
       .data([fourLineLeftData])
       .enter()
       .append("path")
       .attr("d", line)
-      .attr("stroke", "blue");
+      .attr("stroke", "white");
     fourLineRight
       .selectAll("path")
       .data([fourLineRightData])
       .enter()
       .append("path")
       .attr("d", line)
-      .attr("stroke", "blue");
+      .attr("stroke", "white");
     nineLineLeft
       .append("path")
       .attr("d", nineLineLeftData)
       .attr("fill", "none")
       .attr("stroke-dasharray", "5,5")
-      .attr("stroke", "blue");
+      .attr("stroke", "white");
     nineLineRight
       .append("path")
       .attr("d", nineLineRightData)
       .attr("fill", "none")
       .attr("stroke-dasharray", "5,5")
-      .attr("stroke", "blue");
+      .attr("stroke", "white");
   };
 
   const drawThrowDistribution = (data) => {
     const svg = d3.select(svgRef.current);
-    d3.select("#throwLocation").remove();
+    svg.select("#throwLocation").remove();
 
     const circles = svg.append("g").attr("id", "throwLocation");
     const circle = circles.selectAll("circle").data(data, (d) => d._id);
@@ -235,7 +204,7 @@ export default function GoalChartD3Declarative({ playerId, setPoint }) {
       .transition()
       .duration(300)
       .attr("r", 2)
-      .style("fill", "rgba(0,0,255,1)");
+      .style("fill", "black");
     circle.exit().transition().duration(100).attr("r", 0).remove();
   };
 
@@ -255,9 +224,32 @@ export default function GoalChartD3Declarative({ playerId, setPoint }) {
     });
   };
 
+  const updateChart = () => {
+    const [[x0, y0], [x1, y1]] = d3.event.selection;
+    setSection([
+      [xAxis.invert(x0), yAxis.invert(y0)],
+      [xAxis.invert(x1), yAxis.invert(y1)],
+    ]);
+  };
+
+  const selectCourtSection = () => {
+    const svg = d3.select(svgRef.current);
+
+    svg.call(
+      d3
+        .brush() // Add the brush feature using the d3.brush function
+        .extent([
+          [0, 0],
+          [width, height],
+        ]) // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
+        .on("start brush", updateChart) // Each time the brush selection changes, trigger the 'updateChart' function
+    );
+  };
+
   useEffect(() => {
     drawCourt();
-    searchCircle();
+    selectCourtSection();
+    // searchCircle();
   }, []);
 
   useEffect(() => {
