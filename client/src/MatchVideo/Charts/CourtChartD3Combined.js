@@ -208,22 +208,6 @@ export default function GoalChartD3Declarative({
     circle.exit().transition().duration(100).attr("r", 0).remove();
   };
 
-  const searchCircle = () => {
-    const svg = d3.select(svgRef.current);
-    const searchCircle = svg
-      .append("g")
-      .attr("id", "searchCircle")
-      .append("circle")
-      .attr("r", xAxis(2))
-      .attr("fill", "rgba(231,111,222,0.5)");
-
-    svg.on("mousemove", () => {
-      const [x, y] = d3.mouse(svgRef.current);
-      searchCircle.attr("cx", x).attr("cy", y);
-      setPoint({ x: xAxis.invert(x), y: yAxis.invert(y) });
-    });
-  };
-
   const updateChart = () => {
     const [[x0, y0], [x1, y1]] = d3.event.selection;
     setSection([
