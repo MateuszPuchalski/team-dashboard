@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 export default function useEvents({ matchId = null, playerId = null }) {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  console.log();
   useEffect(() => {
     setLoading(true);
 
@@ -47,7 +46,7 @@ export default function useEvents({ matchId = null, playerId = null }) {
         });
       return;
     }
-  }, []);
+  }, [matchId, playerId]);
 
   return [loading, events];
 }
