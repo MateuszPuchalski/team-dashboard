@@ -15,7 +15,6 @@ import {
 } from "recharts";
 
 import styled from "styled-components";
-import { eventAddingActions } from "../../_actions";
 
 const Court = styled.div`
   margin: 10px;
