@@ -37,7 +37,6 @@ const Events = styled.div`
 
 export default function EventList({ matchId, ytVideoRef }) {
   const [loadingEvent, events] = useEvents({ matchId: matchId });
-  const [loadingMatch, match] = useMatches(matchId);
   return (
     <Events>
       {!loadingEvent ? (
