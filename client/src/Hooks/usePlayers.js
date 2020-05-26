@@ -1,27 +1,25 @@
 import React, { useState, useEffect } from "react";
 
-export default function usePlayers(id = null) {
-  const [players, setPlayers] = useState();
-  const [loading, setLoading] = useState();
+export default function usePlayers(clubId) {
+  const [players, setPlayers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
-    if (id) {
-      fetch(`/api/players/${id}`)
-        .then(res => res.json())
-        .then(data => {
-          setPlayers(data);
-          setLoading(false);
-        });
-      return;
-    }
-    fetch(`/api/players`)
-      .then(res => res.json())
-      .then(data => {
-        setPlayers(data);
+    const fetchPlayers = async () => {
+      setLoading(true);
+      try {
+        const players = await (
+          await fetch(`/api/players/club/${clubId}`)
+        ).json();
+        console.log(players);
+        setPlayers(players);
         setLoading(false);
-      });
-  }, []);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchPlayers();
+  }, [clubId]);
 
   return [loading, players];
 }
