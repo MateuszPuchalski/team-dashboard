@@ -53,7 +53,7 @@ app.use("/api/matches", matchesRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/events", eventRouter);
-
+console.log({ NODE_ENV: process.env.NODE_ENV });
 if (process.env.NODE_ENV === "production") {
   // Set static folder
   app.use(express.static("client/build"));

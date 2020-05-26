@@ -49,6 +49,7 @@
       "last 1 safari version"
     ]
   },
+  "proxy": "http://localhost:5000",
   "devDependencies": {
     "faker": "^4.1.0",
     "stylelint": "^12.0.1",
