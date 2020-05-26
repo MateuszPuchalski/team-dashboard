@@ -20,6 +20,7 @@ import AdminSchowPlayers from "./components/Admin/Players/AdminSchowPlayers";
 import Sidebar from "./components/Sidebar";
 import ProfilePage from "./components/ProfilePage/ProfilePage";
 import ClubSettings from "./components/ClubSettings";
+import ThrowAnalysis from "./ThrowAnalysis/ThrowAnalysis";
 
 export default function App(props) {
   return (
@@ -37,6 +38,10 @@ export default function App(props) {
         <Login />
       </Route>
       <Route exact path="/register" component={Register} />
+      <Route exact path="/testing">
+        <ThrowAnalysis />
+      </Route>
+
       <Route exact path="/admin" component={Admin} />
       <Route exact path="/admin/club" component={ClubSettings} />
       <Route exact path="/admin/matches" component={AdminSchowMatches} />
