@@ -8,11 +8,9 @@ export default function usePlayers(clubId) {
     const fetchPlayers = async () => {
       setLoading(true);
       try {
-        const players = await (
-          await fetch(`/api/players/club/${clubId}`)
-        ).json();
-        console.log(players);
-        setPlayers(players);
+        const data = await (await fetch(`/api/players/club/${clubId}`)).json();
+        console.log(data);
+        setPlayers(data);
         setLoading(false);
       } catch (error) {
         console.error(error);
