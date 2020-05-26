@@ -8,7 +8,6 @@ import CourtChart from "../../Charts/CourtChart";
 import GoalChart from "../../Charts/GoalChart";
 
 import EventConstructionCard from "./EventConstructionCard";
-import { eventAddingActions } from "../../../_actions";
 
 //TODO:
 // - Player Picker
@@ -78,7 +77,7 @@ const Mid = styled.div`
 
 export default function EventPicker(props) {
   const eventConstruction = useSelector((state) => state.eventConstruction);
-  const match = useSelector((state) => state.eventShape.match);
+  const match = useSelector((state) => state.matchVideo.match);
 
   return (
     <Wrapper>
@@ -86,25 +85,25 @@ export default function EventPicker(props) {
         <EventConstructionCard ytVideoRef={props.ytVideoRef} />
       </ConstructionCard>
       <Home>
-        {["Turnover", "Throw", "Penalty"].includes(eventConstruction.event) && (
-          <PlayerPicker clubId={match.homeTeam._id} />
-        )}
+        {["turnover", "throw", "punishment"].includes(
+          eventConstruction.type
+        ) && <PlayerPicker clubId={match.homeTeam._id} />}
       </Home>
       <Mid>
-        {["Turnover", "Throw", "Penalty"].includes(eventConstruction.event) && (
-          <CourtChart scale={10} />
-        )}
+        {["turnover", "throw", "punishment"].includes(
+          eventConstruction.type
+        ) && <CourtChart scale={10} />}
 
-        {eventConstruction.event == "Throw" && <GoalChart scale={98} />}
+        {eventConstruction.type == "throw" && <GoalChart scale={98} />}
       </Mid>
 
       <EventTypes>
         <EventTypePicker />
       </EventTypes>
       <Away>
-        {["Turnover", "Throw", "Penalty"].includes(eventConstruction.event) && (
-          <PlayerPicker clubId={match.awayTeam._id} />
-        )}
+        {["turnover", "throw", "punishment"].includes(
+          eventConstruction.type
+        ) && <PlayerPicker clubId={match.awayTeam._id} />}
       </Away>
     </Wrapper>
   );
