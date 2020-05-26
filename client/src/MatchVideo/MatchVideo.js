@@ -5,10 +5,10 @@ import { useDispatch } from "react-redux";
 import Video from "./Video";
 import EventList from "./EventList/EventList";
 
-import EventPicker from "./EventPicker/EventPicker";
+import EventPicker from "./EventPicker/components/EventPicker";
 
 import useMatches from "../Hooks/useMatches";
-
+import { setActiveMatch } from "./matchVideoDuck";
 import { eventAddingActions } from "../_actions";
 
 const Wrapper = styled.div`
@@ -53,9 +53,9 @@ export default function MatchVideo() {
   const [toggle, set] = useState(false);
   const [matchLoading, match] = useMatches(matchId);
 
-  dispatch(eventAddingActions.getMatch(matchId));
+  dispatch(setActiveMatch(match));
   const ytVideoRef = useRef(null);
-
+  const vidRef = useRef(null);
   if (match) {
     return (
       <>
@@ -67,8 +67,15 @@ export default function MatchVideo() {
           <ShowEvent>
             <EventList ytVideoRef={ytVideoRef} matchId={matchId} />
           </ShowEvent>
-          <Vid>
-            <Video ytVideoRef={ytVideoRef} ytId={match.ytId} />
+          <Vid ref={vidRef}>
+            {vidRef.current && (
+              <Video
+                ytVideoRef={ytVideoRef}
+                ytId={match.ytId}
+                vidRef={vidRef}
+              />
+            )}
+
             {toggle && <EventPicker ytVideoRef={ytVideoRef} />}
           </Vid>
         </Wrapper>
