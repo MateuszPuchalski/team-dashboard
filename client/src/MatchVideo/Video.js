@@ -10,8 +10,23 @@ const Wrapper = styled.div`
   background: rgba(255, 255, 255, 0.4);
 `;
 
-export default function Video({ ytId, ytVideoRef }) {
-  const [dimensions, setDimensions] = useState({ width: 1300, height: 900 });
+export default function Video({ ytId, ytVideoRef, vidRef }) {
+  const [dimensions, setDimensions] = useState({
+    width: vidRef.current.clientWidth,
+    height: vidRef.current.clientHeight,
+  });
+
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      setDimensions({
+        width: vidRef.current.clientWidth,
+        height: vidRef.current.clientHeight,
+      });
+    });
+    return () => {
+      window.removeEventListener("resize");
+    };
+  }, []);
 
   return (
     <Wrapper>
