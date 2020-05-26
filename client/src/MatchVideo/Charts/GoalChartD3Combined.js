@@ -18,13 +18,15 @@ export default function GoalChartD3Declarative({ throws }) {
   const svgRef = useRef();
   const [contoursToggle, toggleContours] = useState(true);
   const [bandwidth, setBandwidth] = useState(20);
+  const [weight, setWeight] = useState(10);
   const [thresholds, setThresholds] = useState(24);
 
   const width = 500;
-  const height = 300;
+  const height = width * 0.6;
 
   const zAxis = d3.scaleLinear().domain([0, 3]).range([height, 0]);
   const yDataScale = d3.scaleLinear().domain([7.5, 12.5]).range([0, width]);
+  const yAxis = d3.scaleLinear().domain([0, 5]).range([0, width]);
 
   const drawThrowPoints = (data) => {
     const svg = d3.select(svgRef.current);
@@ -40,7 +42,7 @@ export default function GoalChartD3Declarative({ throws }) {
         .attr("r", 0)
         .transition()
         .duration(300)
-        .attr("r", 9.5)
+        .attr("r", yAxis(0.085))
         .style("fill", "rgba(0,0,255,0.8)");
 
       circle.exit().transition().duration(100).attr("r", 0).remove();
@@ -85,7 +87,7 @@ export default function GoalChartD3Declarative({ throws }) {
   useEffect(() => drawThrowPoints(throws), [throws, contoursToggle]);
   useEffect(() => {
     drawContours(throws);
-  }, [throws, bandwidth, thresholds, contoursToggle]);
+  }, [throws, bandwidth, thresholds, contoursToggle, weight]);
 
   return (
     <Wrapper>
@@ -99,18 +101,18 @@ export default function GoalChartD3Declarative({ throws }) {
       >
         <g>
           <rect
-            width={318}
+            width={yAxis(3.16)}
             height={zAxis(0)}
             fill="rgb(218, 68, 83)"
-            x={width / 2 - 316 / 2}
+            x={width / 2 - yAxis(3.16) / 2}
             y={zAxis(2.08)}
           />
           <rect
-            width={300}
-            height={200}
+            width={yAxis(3)}
+            height={zAxis(1)}
             fill="rgba(255,255,255,0.1)"
-            x={width / 2 - 300 / 2}
-            y={height - 200}
+            x={width / 2 - yAxis(3) / 2}
+            y={zAxis(2)}
           />
         </g>
       </svg>
@@ -130,6 +132,17 @@ export default function GoalChartD3Declarative({ throws }) {
           value={bandwidth}
           onChange={(e) => {
             setBandwidth(e.target.value);
+          }}
+        />
+        Weight: {weight}
+        <input
+          type="range"
+          min="0"
+          max="100"
+          step="1"
+          value={weight}
+          onChange={(e) => {
+            setWeight(e.target.value);
           }}
         />
         Thresholds: {thresholds}

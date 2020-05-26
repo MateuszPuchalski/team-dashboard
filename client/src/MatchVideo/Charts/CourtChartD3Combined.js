@@ -11,11 +11,10 @@ const height = 250;
 const xAxis = d3.scaleLinear().domain([0, 40]).range([0, width]);
 const yAxis = d3.scaleLinear().domain([0, 20]).range([height, 0]);
 
-export default function GoalChartD3Declarative({
-  throws,
-  setPoint,
-  setSection,
-}) {
+//TODO:
+//  Change data on player change
+
+export default function GoalChartD3Declarative({ throws, setSection }) {
   const svgRef = useRef();
 
   const drawCourt = () => {
@@ -233,7 +232,6 @@ export default function GoalChartD3Declarative({
   useEffect(() => {
     drawCourt();
     selectCourtSection();
-    // searchCircle();
   }, []);
 
   useEffect(() => {
