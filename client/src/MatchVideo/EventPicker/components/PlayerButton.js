@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { useSpring, animated } from "react-spring";
 import { eventAddingActions } from "../../../_actions";
-import { setPlayer } from "../eventConstruction";
+import { setPlayer } from "../eventConstructionDuck";
 import { useDispatch, useSelector } from "react-redux";
 
 const Wrapper = styled(animated.div)`
@@ -26,8 +26,7 @@ export default function PlayerButton({ playerInfo, id }) {
   const dispatch = useDispatch();
 
   const selectedPlayerId = useSelector(
-    (state) =>
-      state.eventShape && state.eventShape.player && state.eventShape.player._id
+    (state) => state.eventConstruction && state.eventConstruction.player
   );
   const props = useSpring({
     background:
@@ -39,8 +38,7 @@ export default function PlayerButton({ playerInfo, id }) {
     <Wrapper
       style={props}
       onClick={() => {
-        dispatch(eventAddingActions.setPlayer(playerInfo)); // delete this
-        dispatch(setPlayer(playerInfo));
+        dispatch(setPlayer(playerInfo._id));
       }}
     >
       {playerInfo.avatar ? (

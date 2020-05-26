@@ -7,8 +7,21 @@ export const eventAddingActions = {
   getPlayers,
   setGoalCords,
   setCourtCords,
+  addEvent,
 };
-
+function addEvent(eventShape) {
+  return (dispatch) => {
+    fetch(`/api/events/add`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+      body: JSON.stringify(eventShape),
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data));
+  };
+}
 function setPlayer(player) {
   return { type: eventAddingConstants.SET_PLAYER, player };
 }

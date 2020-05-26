@@ -11,7 +11,6 @@ const Wrapper = styled.div`
 `;
 
 export default function AdminMatchVideo({ ytId, ytVideoRef }) {
-  const [currTime, setCurrTime] = useState();
   const [dimensions, setDimensions] = useState({ width: 1300, height: 900 });
 
   return (

@@ -1,8 +1,8 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { useSpring, useTransition, animated, interpolate } from "react-spring";
-import { eventAddingActions } from "../../../_actions";
-import { setEvent, setEventDescription } from "../eventConstruction";
+
+import { setEvent, setEventDescription } from "../eventConstructionDuck";
 import { useDispatch, useSelector } from "react-redux";
 
 const Wrapper = styled.div`
@@ -91,6 +91,7 @@ export default function EventTypeButton({ event, active, setActive }) {
         style={props}
         ref={ref}
         onClick={() => {
+          console.log({ event0: event[0] });
           dispatch(setEvent(event[0]));
           setActive(ref);
         }}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
@@ -8,7 +8,6 @@ import EventList from "../EventList";
 import EventPicker from "../EventPicker/EventPicker";
 
 import useMatches from "../../Hooks/useMatches";
-import useEvents from "../../Hooks/useEvents";
 
 import { eventAddingActions } from "../../_actions";
 
@@ -20,7 +19,7 @@ const Video = styled.div`
   position: relative;
   width: 100%;
   height: 100vh;
-  overflow-y: scroll;
+  overflow-y: hidden;
   overflow-x: hidden;
   background: rgba(255, 255, 255, 0.4);
 `;
@@ -38,12 +37,14 @@ const ShowEvent = styled.div`
 `;
 const Toggle = styled.img`
   position: absolute;
-  top: 80%;
-  left:80%;
+
   height: 35px;
   border-radius: 100%;
-  background: radial-gradient(circle,rgba(0,180,255,1) 50%,rgba(84,101,213,1) 100%);
-}
+  background: radial-gradient(
+    circle,
+    rgba(0, 180, 255, 1) 50%,
+    rgba(84, 101, 213, 1) 100%
+  );
 `;
 
 export default function AdminMatches() {
@@ -51,33 +52,24 @@ export default function AdminMatches() {
   const { matchId } = useParams();
   const [toggle, set] = useState(false);
   const [matchLoading, match] = useMatches(matchId);
-  const [eventsLoading, events] = useEvents({ matchId: matchId });
+
   dispatch(eventAddingActions.getMatch(matchId));
   const ytVideoRef = useRef(null);
-  console.log({ ytvidep: ytVideoRef });
 
   if (match) {
     return (
       <>
         <Wrapper>
-          <AddEvent></AddEvent>
+          <Toggle
+            src={process.env.PUBLIC_URL + "/toggleadd.svg"}
+            onClick={() => set(!toggle)}
+          />
           <ShowEvent>
-            <EventList matchId={matchId} />
+            <EventList ytVideoRef={ytVideoRef} matchId={matchId} />
           </ShowEvent>
           <Video>
-            <AdminMatchVideo
-              events={events}
-              ytVideoRef={ytVideoRef}
-              ytId={match.ytId}
-            />
-            {toggle ? (
-              <EventPicker ytVideoRef={ytVideoRef} />
-            ) : (
-              <Toggle
-                src={process.env.PUBLIC_URL + "/toggleadd.svg"}
-                onClick={() => set(true)}
-              />
-            )}
+            <AdminMatchVideo ytVideoRef={ytVideoRef} ytId={match.ytId} />
+            {toggle && <EventPicker ytVideoRef={ytVideoRef} />}
           </Video>
         </Wrapper>
       </>

@@ -19,7 +19,6 @@ export default function PlayerPicker({ clubId }) {
 
   useEffect(() => {
     fetchPlayers(clubId).then((data) => setPlayers(data));
-    console.log(clubId);
   }, []);
 
   return (
