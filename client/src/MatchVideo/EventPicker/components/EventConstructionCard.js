@@ -2,8 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { useSelector, useDispatch } from "react-redux";
-import { eventAddingActions } from "../../../_actions";
-
+import { addEvent } from "../eventConstructionDuck";
 const Wrapper = styled.div`
   background: ${(props) => props.theme.primary};
   box-sizing: content-box;
@@ -18,41 +17,30 @@ const Wrapper = styled.div`
     height: 55px;
   }
 `;
-const Add = styled.img`
-  height: 35px;
-  border-radius: 100%;
-  background: radial-gradient(circle,rgba(0,180,255,1) 50%,rgba(84,101,213,1) 100%);
-}
-`;
 
 // Math.round(
 //   props.ytVideoRef.current.internalPlayer.getCurrentTime() * 100
 // ) / 100
-export default function EventConstructionCard(props) {
+export default function EventConstructionCard({ ytVideoRef }) {
   const dispatch = useDispatch();
-  const eventShape = useSelector((state) => state.eventShape);
+  const eventConstruction = useSelector((state) => state.eventConstruction);
+  const matchId = useSelector((state) => state.matchVideo.match._id);
+  const onSubmit = async () => {
+    const timestamp = await ytVideoRef.current.internalPlayer.getCurrentTime();
 
+    dispatch(
+      addEvent({
+        matchId: matchId,
+        timestamp: timestamp,
+        ...eventConstruction,
+      })
+    );
+  };
   return (
     <Wrapper>
-      <Add
-        src={process.env.PUBLIC_URL + "/toggleadd.svg"}
-        onClick={async () => {
-          dispatch(
-            eventAddingActions.addEvent({
-              matchId: eventShape.match._id,
-              type: eventShape.type,
-              team: eventShape.player.currentClub._id,
-              location: eventShape.courtCords,
-              timestamp: 100,
-            })
-          );
-        }}
-      />
-
-      <h3>{eventShape.event}</h3>
-      <h4>{eventShape.eventType}</h4>
-      <img src={eventShape.player && eventShape.player.avatar} />
-      <h3>{eventShape.player && eventShape.player.name}</h3>
+      <div onClick={() => onSubmit()}>
+        <h1>ADD</h1>
+      </div>
     </Wrapper>
   );
 }
