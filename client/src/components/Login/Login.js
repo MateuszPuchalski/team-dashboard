@@ -7,6 +7,7 @@ import { useSpring, animated, interpolate } from "react-spring";
 import TextMovingButton from "../TextMovingButton";
 import LoginComp from "./LoginComp";
 import RegisterComp from "./RegisterComp";
+
 const StyledLink = styled(Link)`
   color: black;
   text-decoration: none;
@@ -107,6 +108,12 @@ export default function Login() {
   );
   return (
     <Page>
+      <StyledLink
+        to="/testing"
+        style={{ position: "absolute", left: "10px", top: "10px" }}
+      >
+        TESTING
+      </StyledLink>
       <Wrapper>
         <FormWrapper>
           <h1>{form} to Dash.</h1>
