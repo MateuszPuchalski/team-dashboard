@@ -8,7 +8,6 @@ import ClubsList from "./ClubsList";
 import useEvents from "../../Hooks/useEvents";
 const Wrapper = styled.div`
   background: rgba(0, 0, 0, 0.1);
-  margin: 10px;
   position: relative;
 `;
 
