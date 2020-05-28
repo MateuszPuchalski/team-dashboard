@@ -5,6 +5,9 @@ import styled from "styled-components";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+
+  margin: 0 10px;
 `;
 
 const Range = styled.div`
@@ -17,6 +20,8 @@ const ContourToggle = styled.div`
   margin: 20px;
   display: flex;
   justify-content: center;
+  box-shadow: 11px 10px 30px -8px rgba(0, 0, 0, 0.75);
+
   &:hover {
     cursor: pointer;
     background: rgba(0, 0, 0, 0.1);
