@@ -80,23 +80,27 @@ export default function ChartAnalysis() {
   }, [playerId]);
 
   useEffect(() => {
-    toggleClubDropdown(!playerDropdown);
+    toggleClubDropdown(!clubDropdown);
   }, [clubId]);
 
   return (
     <Wrapper>
       {/* hack */}
-      <Header
-        onClick={() => {
-          togglePlayerDropdown(!playerDropdown);
-        }}
-      >
-        <Player>
+      <Header>
+        <Player
+          onClick={() => {
+            togglePlayerDropdown(!playerDropdown);
+          }}
+        >
           {playerId.avatar && <Avatar src={playerId.avatar} />}
           {playerId.name}
           <Arrow src={process.env.PUBLIC_URL + "/down-arrow.svg"} />
         </Player>
-        <Club>
+        <Club
+          onClick={() => {
+            toggleClubDropdown(!clubDropdown);
+          }}
+        >
           <Arrow src={process.env.PUBLIC_URL + "/down-arrow.svg"} />
           {clubId.name}
           {clubId.logo && <Avatar src={clubId.logo} />}
