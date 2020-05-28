@@ -4,20 +4,33 @@ import styled from "styled-components";
 import useClubs from "../../Hooks/useClubs";
 
 const ClubsWrapper = styled.div`
-  display: grid;
-  justify-items: center;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+  position: absolute;
+  background: whitesmoke;
+  width: 300px;
+  top: 20px;
+  right: 20px;
+  padding: 10px;
+  box-shadow: 11px 10px 30px -8px rgba(0, 0, 0, 0.75);
+  border-radius: 5px;
 `;
 
 const Club = styled.div`
+  display: flex;
+  justify-content: flex-end;
+
+  width: 100%;
   padding: 5px;
+  align-items: center;
   img {
     height: 33px;
   }
   &:hover {
     cursor: pointer;
-    transform: scale(1.33);
+    background: rgba(255, 255, 255);
   }
 `;
 
@@ -34,9 +47,10 @@ export default function PlayersList({ selectClub }) {
             <Club
               key={i}
               onClick={() => {
-                selectClub(item._id);
+                selectClub(item);
               }}
             >
+              {item.name}
               <img src={item.logo} />
             </Club>
           );

@@ -13,6 +13,15 @@ const Range = styled.div`
     width: 100%;
   }
 `;
+const ContourToggle = styled.div`
+  margin: 20px;
+  display: flex;
+  justify-content: center;
+  &:hover {
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.1);
+  }
+`;
 
 export default function GoalChartD3Declarative({ throws }) {
   const svgRef = useRef();
@@ -23,26 +32,10 @@ export default function GoalChartD3Declarative({ throws }) {
 
   // const width = window.innerWidth < 600 ? window.innerWidth : 600;
   // const height = width * 0.6;
-  const [width, setWidth] = useState(
-    window.screen.width < 500 ? window.screen.width : 500
-  );
-  const [height, setHeight] = useState(
-    window.screen.width < 500 ? window.screen.width * 0.6 : 500 * 0.6
-  );
+  const [width, height] = [500, 300];
   const zAxis = d3.scaleLinear().domain([0, 3]).range([height, 0]);
   const yDataScale = d3.scaleLinear().domain([7.5, 12.5]).range([0, width]);
   const yAxis = d3.scaleLinear().domain([0, 5]).range([0, width]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWidth(window.screen.width < 500 ? window.screen.width : 500);
-      setHeight(window.screen.width < 500 ? window.screen.width / 2 : 500 / 2);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  });
 
   const drawThrowPoints = (data) => {
     const svg = d3.select(svgRef.current);
@@ -137,12 +130,12 @@ export default function GoalChartD3Declarative({ throws }) {
           />
         </g>
       </svg>
-      <button
-        style={contoursToggle ? { color: "green" } : { color: "red" }}
+      <ContourToggle
         onClick={() => toggleContours(!contoursToggle)}
+        style={contoursToggle ? { color: "green" } : { color: "red" }}
       >
-        CONTOURS
-      </button>
+        <h3>CONTOUR</h3>
+      </ContourToggle>
       {/* <Range>
         Bandwidth: {bandwidth}
         <input

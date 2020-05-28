@@ -6,28 +6,50 @@ import PlayersList from "./PlayersList";
 import ClubsList from "./ClubsList";
 
 import useEvents from "../../Hooks/useEvents";
-
 const Wrapper = styled.div`
   background: rgba(0, 0, 0, 0.1);
   margin: 10px;
+  position: relative;
 `;
 
-const PlayerDropdownWrapper = styled.div`
-  position: absolute;
-  background: "whitesmoke";
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  cursor: pointer;
+`;
+
+const Player = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+const Club = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Avatar = styled.img`
+  width: 33px;
+  margin: 0 5px;
+`;
+const Arrow = styled.img`
+  width: 15px;
+  margin: 0 5px;
 `;
 
 export default function ChartAnalysis() {
-  const [clubId, setClubId] = useState("5e259ca1c60ff01770db40ff");
+  const [clubId, setClubId] = useState({ name: "Choose Club" });
   const [playerId, setPlayerId] = useState({
-    name: "Mateusz Puchalski",
-    _id: "5e3606a51dba6b0ac451eb42",
+    name: "Choose Player",
   });
   const [loadingEvents, events] = useEvents({ playerId: playerId._id });
   const [throws, setThrows] = useState([]);
   const [section, setSection] = useState([[], []]);
   const [filteredThrows, setFilteredThrows] = useState([]);
   const [playerDropdown, togglePlayerDropdown] = useState(false);
+  const [clubDropdown, toggleClubDropdown] = useState(false);
 
   useEffect(() => {
     const filteredData = events.filter(
@@ -54,16 +76,33 @@ export default function ChartAnalysis() {
     setFilteredThrows(filtered);
   }, [section, throws]);
 
+  useEffect(() => {
+    togglePlayerDropdown(!playerDropdown);
+  }, [playerId]);
+
+  useEffect(() => {
+    toggleClubDropdown(!playerDropdown);
+  }, [clubId]);
+
   return (
     <Wrapper>
       {/* hack */}
-      <div
+      <Header
         onClick={() => {
           togglePlayerDropdown(!playerDropdown);
         }}
       >
-        {playerId.name}
-      </div>
+        <Player>
+          {playerId.avatar && <Avatar src={playerId.avatar} />}
+          {playerId.name}
+          <Arrow src={process.env.PUBLIC_URL + "/down-arrow.svg"} />
+        </Player>
+        <Club>
+          <Arrow src={process.env.PUBLIC_URL + "/down-arrow.svg"} />
+          {clubId.name}
+          {clubId.logo && <Avatar src={clubId.logo} />}
+        </Club>
+      </Header>
 
       {playerDropdown && (
         <PlayersList clubId={clubId} selectPlayer={setPlayerId} />
@@ -75,7 +114,7 @@ export default function ChartAnalysis() {
         <GoalChartD3Combined throws={filteredThrows} />
       )}
       <CourtChartD3Combined throws={throws} setSection={setSection} />
-      <ClubsList selectClub={setClubId} />
+      {clubDropdown && <ClubsList selectClub={setClubId} />}
     </Wrapper>
   );
 }

@@ -21,9 +21,9 @@ export default function ThrowAnalysis() {
         <ChartAnalysis key={`throwAnalysis${i}`} />
       ))}
 
-      <AddChartButton onClick={() => setChartCount(chartCount + 1)}>
+      {/* <AddChartButton onClick={() => setChartCount(chartCount + 1)}>
         ADD
-      </AddChartButton>
+      </AddChartButton> */}
     </Wrapper>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import * as d3 from "d3";
 import styled from "styled-components";
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -9,25 +10,11 @@ const Wrapper = styled.div`
 export default function CourtChartD3Declarative({ throws, setSection }) {
   const svgRef = useRef();
   console.log(window.screen.width);
-  const [width, setWidth] = useState(
-    window.screen.width < 500 ? window.screen.width : 500
-  );
-  const [height, setHeight] = useState(width * 0.5);
+
+  const [width, height] = [500, 250];
+
   const xAxis = d3.scaleLinear().domain([0, 40]).range([0, width]);
   const yAxis = d3.scaleLinear().domain([0, 20]).range([height, 0]);
-
-  console.log("BOOOM!");
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWidth(window.screen.width < 500 ? window.screen.width : 500);
-      setHeight(window.screen.width < 500 ? window.screen.width / 2 : 500 / 2);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  });
 
   const drawCourt = () => {
     const svg = d3.select(svgRef.current);

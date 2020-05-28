@@ -8,6 +8,14 @@ const PlayersWrapper = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   align-items: stretch;
+  position: absolute;
+  background: whitesmoke;
+  width: 300px;
+  top: 20px;
+  left: 20px;
+  padding: 10px;
+  box-shadow: 11px 10px 30px -8px rgba(0, 0, 0, 0.75);
+  border-radius: 5px;
 `;
 
 const Player = styled.div`
@@ -25,7 +33,7 @@ const Player = styled.div`
 `;
 
 export default function PlayersList({ selectPlayer, clubId }) {
-  const [playersLoading, players] = usePlayers(clubId);
+  const [playersLoading, players] = usePlayers(clubId._id);
 
   return (
     <PlayersWrapper>
