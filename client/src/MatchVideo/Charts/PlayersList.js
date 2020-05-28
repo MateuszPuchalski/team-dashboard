@@ -8,8 +8,6 @@ const PlayersWrapper = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   align-items: stretch;
-  margin: 10px 0;
-  width: 500px;
 `;
 
 const Player = styled.div`

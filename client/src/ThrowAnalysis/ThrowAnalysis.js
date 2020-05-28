@@ -4,7 +4,12 @@ import ChartAnalysis from "../MatchVideo/Charts/ChartAnalysis";
 
 const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
+`;
+
+const AddChartButton = styled.button`
+  margin: 10px;
+  height: 500px;
 `;
 
 export default function ThrowAnalysis() {
@@ -16,7 +21,9 @@ export default function ThrowAnalysis() {
         <ChartAnalysis key={`throwAnalysis${i}`} />
       ))}
 
-      <button onClick={() => setChartCount(chartCount + 1)}>ADD</button>
+      <AddChartButton onClick={() => setChartCount(chartCount + 1)}>
+        ADD
+      </AddChartButton>
     </Wrapper>
   );
 }

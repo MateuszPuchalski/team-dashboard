@@ -21,12 +21,28 @@ export default function GoalChartD3Declarative({ throws }) {
   const [weight, setWeight] = useState(10);
   const [thresholds, setThresholds] = useState(24);
 
-  const width = 500;
-  const height = width * 0.6;
-
+  // const width = window.innerWidth < 600 ? window.innerWidth : 600;
+  // const height = width * 0.6;
+  const [width, setWidth] = useState(
+    window.screen.width < 500 ? window.screen.width : 500
+  );
+  const [height, setHeight] = useState(
+    window.screen.width < 500 ? window.screen.width * 0.6 : 500 * 0.6
+  );
   const zAxis = d3.scaleLinear().domain([0, 3]).range([height, 0]);
   const yDataScale = d3.scaleLinear().domain([7.5, 12.5]).range([0, width]);
   const yAxis = d3.scaleLinear().domain([0, 5]).range([0, width]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.screen.width < 500 ? window.screen.width : 500);
+      setHeight(window.screen.width < 500 ? window.screen.width / 2 : 500 / 2);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  });
 
   const drawThrowPoints = (data) => {
     const svg = d3.select(svgRef.current);
@@ -84,10 +100,15 @@ export default function GoalChartD3Declarative({ throws }) {
     }
   };
 
-  useEffect(() => drawThrowPoints(throws), [throws, contoursToggle]);
+  useEffect(() => drawThrowPoints(throws), [
+    throws,
+    contoursToggle,
+    width,
+    height,
+  ]);
   useEffect(() => {
     drawContours(throws);
-  }, [throws, bandwidth, thresholds, contoursToggle, weight]);
+  }, [throws, bandwidth, thresholds, contoursToggle, weight, width, height]);
 
   return (
     <Wrapper>

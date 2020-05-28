@@ -4,8 +4,6 @@ import styled from "styled-components";
 import useClubs from "../../Hooks/useClubs";
 
 const ClubsWrapper = styled.div`
-  width: 500px;
-  margin: 10px 0;
   display: grid;
   justify-items: center;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;

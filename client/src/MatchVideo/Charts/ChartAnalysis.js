@@ -8,8 +8,13 @@ import ClubsList from "./ClubsList";
 import useEvents from "../../Hooks/useEvents";
 
 const Wrapper = styled.div`
-  margin: 10px;
   background: rgba(0, 0, 0, 0.1);
+  margin: 10px;
+`;
+
+const PlayerDropdownWrapper = styled.div`
+  position: absolute;
+  background: "whitesmoke";
 `;
 
 export default function ChartAnalysis() {
@@ -22,6 +27,7 @@ export default function ChartAnalysis() {
   const [throws, setThrows] = useState([]);
   const [section, setSection] = useState([[], []]);
   const [filteredThrows, setFilteredThrows] = useState([]);
+  const [playerDropdown, togglePlayerDropdown] = useState(false);
 
   useEffect(() => {
     const filteredData = events.filter(
@@ -51,14 +57,24 @@ export default function ChartAnalysis() {
   return (
     <Wrapper>
       {/* hack */}
-      <h1>{playerId.name}</h1>
+      <div
+        onClick={() => {
+          togglePlayerDropdown(!playerDropdown);
+        }}
+      >
+        {playerId.name}
+      </div>
+
+      {playerDropdown && (
+        <PlayersList clubId={clubId} selectPlayer={setPlayerId} />
+      )}
+
       {section[0][0] == section[1][0] ? (
         <GoalChartD3Combined throws={throws} />
       ) : (
         <GoalChartD3Combined throws={filteredThrows} />
       )}
       <CourtChartD3Combined throws={throws} setSection={setSection} />
-      <PlayersList clubId={clubId} selectPlayer={setPlayerId} />
       <ClubsList selectClub={setClubId} />
     </Wrapper>
   );
