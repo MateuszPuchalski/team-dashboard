@@ -9,6 +9,7 @@ import LoginComp from "./LoginComp";
 import RegisterComp from "./RegisterComp";
 
 const StyledLink = styled(Link)`
+  z-index: 100;
   color: black;
   text-decoration: none;
 `;
@@ -19,8 +20,7 @@ const Page = styled.div`
     rgba(254, 95, 100, 1) 0%,
     rgba(250, 25, 154, 1) 100%
   );
-  width: 100vw;
-  height: 100vh;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -112,7 +112,7 @@ export default function Login() {
         to="/testing"
         style={{ position: "absolute", left: "10px", top: "10px" }}
       >
-        TESTING
+        <TextMovingButton text="TESTING" loading={false} />
       </StyledLink>
       <Wrapper>
         <FormWrapper>
