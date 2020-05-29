@@ -10,7 +10,6 @@ const Wrapper = styled.div`
 
 export default function CourtChartD3Declarative({ throws, setSection }) {
   const svgRef = useRef();
-  console.log(window.screen.width);
 
   const [width, height] = [500, 250];
 

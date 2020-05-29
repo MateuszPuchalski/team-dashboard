@@ -34,7 +34,7 @@ const Club = styled.div`
   }
 `;
 
-export default function PlayersList({ selectClub }) {
+export default function PlayersList({ dropdown, toggle, selectClub }) {
   const [clubsLoading, clubs] = useClubs();
 
   return (
@@ -48,6 +48,7 @@ export default function PlayersList({ selectClub }) {
               key={i}
               onClick={() => {
                 selectClub(item);
+                toggle(!dropdown);
               }}
             >
               {item.name}

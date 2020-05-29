@@ -32,7 +32,12 @@ const Player = styled.div`
   }
 `;
 
-export default function PlayersList({ selectPlayer, clubId }) {
+export default function PlayersList({
+  toggle,
+  dropdown,
+  selectPlayer,
+  clubId,
+}) {
   const [playersLoading, players] = usePlayers(clubId._id);
 
   return (
@@ -46,6 +51,7 @@ export default function PlayersList({ selectPlayer, clubId }) {
               key={i}
               onClick={() => {
                 selectPlayer(item);
+                toggle(!dropdown);
               }}
             >
               {item.avatar && <img src={item.avatar} />}

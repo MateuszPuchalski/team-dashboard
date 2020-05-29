@@ -76,16 +76,11 @@ export default function ChartAnalysis() {
   }, [section, throws]);
 
   useEffect(() => {
-    togglePlayerDropdown(!playerDropdown);
-  }, [playerId]);
-
-  useEffect(() => {
-    toggleClubDropdown(!clubDropdown);
+    setPlayerId({ name: "Choose Player" });
   }, [clubId]);
 
   return (
     <Wrapper>
-      {/* hack */}
       <Header>
         <Player
           onClick={() => {
@@ -108,7 +103,12 @@ export default function ChartAnalysis() {
       </Header>
 
       {playerDropdown && (
-        <PlayersList clubId={clubId} selectPlayer={setPlayerId} />
+        <PlayersList
+          dropdown={playerDropdown}
+          toggle={togglePlayerDropdown}
+          clubId={clubId}
+          selectPlayer={setPlayerId}
+        />
       )}
 
       {section[0][0] == section[1][0] ? (
@@ -117,7 +117,13 @@ export default function ChartAnalysis() {
         <GoalChartD3Combined throws={filteredThrows} />
       )}
       <CourtChartD3Combined throws={throws} setSection={setSection} />
-      {clubDropdown && <ClubsList selectClub={setClubId} />}
+      {clubDropdown && (
+        <ClubsList
+          dropdown={clubDropdown}
+          toggle={toggleClubDropdown}
+          selectClub={setClubId}
+        />
+      )}
     </Wrapper>
   );
 }
