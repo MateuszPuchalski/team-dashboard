@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import CourtChartD3Combined from "./CourtChartD3Combined";
 import GoalChartD3Combined from "./GoalChartD3Combined";
@@ -9,6 +9,10 @@ import useEvents from "../../Hooks/useEvents";
 const Wrapper = styled.div`
   background: rgba(0, 0, 0, 0.1);
   position: relative;
+
+  @media (max-width: 768px) {
+    margin-bottom: 10px;
+  }
 `;
 
 const Header = styled.div`
@@ -39,6 +43,7 @@ const Arrow = styled.img`
 `;
 
 export default function ChartAnalysis() {
+  const [rect, ref] = useClientRect();
   const [clubId, setClubId] = useState({ name: "Choose Club" });
   const [playerId, setPlayerId] = useState({
     name: "Choose Player",
@@ -71,16 +76,14 @@ export default function ChartAnalysis() {
         item.location[0].y >= y1
       );
     });
-    console.log(filtered);
     setFilteredThrows(filtered);
   }, [section, throws]);
 
   useEffect(() => {
     setPlayerId({ name: "Choose Player" });
   }, [clubId]);
-
   return (
-    <Wrapper>
+    <Wrapper ref={ref}>
       <Header>
         <Player
           onClick={() => {
@@ -111,12 +114,19 @@ export default function ChartAnalysis() {
         />
       )}
 
-      {section[0][0] == section[1][0] ? (
-        <GoalChartD3Combined throws={throws} />
-      ) : (
-        <GoalChartD3Combined throws={filteredThrows} />
+      {section[0][0] == section[1][0]
+        ? rect !== null && <GoalChartD3Combined parent={rect} throws={throws} />
+        : rect !== null && (
+            <GoalChartD3Combined parent={rect} throws={filteredThrows} />
+          )}
+
+      {rect !== null && (
+        <CourtChartD3Combined
+          parent={rect}
+          throws={throws}
+          setSection={setSection}
+        />
       )}
-      <CourtChartD3Combined throws={throws} setSection={setSection} />
       {clubDropdown && (
         <ClubsList
           dropdown={clubDropdown}
@@ -126,4 +136,14 @@ export default function ChartAnalysis() {
       )}
     </Wrapper>
   );
+}
+
+function useClientRect() {
+  const [rect, setRect] = useState(null);
+  const ref = useCallback((node) => {
+    if (node !== null) {
+      setRect(node.getBoundingClientRect());
+    }
+  }, []);
+  return [rect, ref];
 }
