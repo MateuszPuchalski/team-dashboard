@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
-
+import { useQuery, gql } from "@apollo/client";
 import usePlayers from "../../Hooks/usePlayers";
 
 const PlayersWrapper = styled.div`
@@ -32,20 +32,36 @@ const Player = styled.div`
   }
 `;
 
+const CLUB_PLAYERS = gql`
+  query($clubId: String!) {
+    playerByClub(clubId: $clubId) {
+      name
+      avatar
+    }
+  }
+`;
+
 export default function PlayersList({
   toggle,
   dropdown,
   selectPlayer,
   clubId,
 }) {
-  const [playersLoading, players] = usePlayers(clubId._id);
+  // const [playersLoading, players] = usePlayers(clubId._id);
+  const { loading, error, data } = useQuery(CLUB_PLAYERS, {
+    variables: { clubId: clubId },
+  });
+
+  useEffect(() => {
+    console.log({ data: data, error: error, loading: loading });
+  }, [data, error]);
 
   return (
     <PlayersWrapper>
-      {playersLoading ? (
+      {loading ? (
         <h3>LOADING...</h3>
       ) : (
-        players.map((item, i) => {
+        data.playerByClub.map((item, i) => {
           return (
             <Player
               key={i}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { useQuery, gql } from "@apollo/client";
 
 import { Link, useRouteMatch, useLocation } from "react-router-dom";
 
@@ -20,23 +21,44 @@ const Wrapper = styled.div`
   padding: 10px;
 `;
 
+const MATCHES = gql`
+  query {
+    matchMany {
+      id
+      date
+      homeTeam {
+        name
+        logo
+      }
+      awayTeam {
+        name
+        logo
+      }
+      homeScore
+      awayScore
+      ytId
+    }
+  }
+`;
+
 export default function AdminSchowMatches() {
   const location = useLocation();
   const [matchesLoading, matches] = useMatches();
+  const { loading, error, data } = useQuery(MATCHES);
+
+  if (loading) return <h3>LOADING...</h3>;
 
   return (
     <Wrapper>
-      {matches
-        ? matches.map(match =>
-            match.ytId ? (
-              <StyledLink to={`matches/${match._id}`}>
-                <MatchCard match={match} />
-              </StyledLink>
-            ) : (
-              <MatchCard match={match} />
-            )
-          )
-        : null}
+      {data.matchMany.map((match) =>
+        match.ytId ? (
+          <StyledLink to={`matches/${match.id}`}>
+            <MatchCard match={match} />
+          </StyledLink>
+        ) : (
+          <MatchCard match={match} />
+        )
+      )}
     </Wrapper>
   );
 }
