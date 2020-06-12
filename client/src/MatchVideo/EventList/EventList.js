@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import useEvents from "../../Hooks/useEvents";
 import useMatches from "../../Hooks/useMatches";
+import { useQuery, gql } from "@apollo/client";
 
 import EventCard from "./EventCard";
 const textPrimary = "white";
@@ -35,17 +36,47 @@ const Events = styled.div`
   }
 `;
 
+const EVENTS = gql`
+  query($matchId: String!) {
+    eventByMatch(matchId: $matchId) {
+      type
+      timestamp
+      ... on ThrowEvent {
+        player {
+          name
+        }
+        throw {
+          outcome
+          endLocation
+        }
+      }
+      ... on TurnoverEvent {
+        turnover {
+          type
+        }
+      }
+      ... on PunishmentEvent {
+        punishment {
+          type
+        }
+      }
+    }
+  }
+`;
+
 export default function EventList({ matchId, ytVideoRef }) {
-  const [loadingEvent, events] = useEvents({ matchId: matchId });
+  const { loading, error, data } = useQuery(EVENTS, {
+    variables: {
+      matchId: matchId,
+    },
+  });
+
+  if (loading) return <h3>LOADING...</h3>;
   return (
     <Events>
-      {!loadingEvent ? (
-        events.map((event) => {
-          return <EventCard eventData={event} ytVideoRef={ytVideoRef} />;
-        })
-      ) : (
-        <h3>LOADING...</h3>
-      )}
+      {data.eventByMatch.map((event) => {
+        return <EventCard eventData={event} ytVideoRef={ytVideoRef} />;
+      })}
     </Events>
   );
 }
