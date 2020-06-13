@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 
 import YouTube from "react-youtube";
 
@@ -11,9 +11,11 @@ const Wrapper = styled.div`
 `;
 
 export default function Video({ ytId, ytVideoRef, vidRef }) {
+  const [rect, ref] = useClientRect();
+
   const [dimensions, setDimensions] = useState({
-    width: vidRef.current.clientWidth,
-    height: vidRef.current.clientHeight,
+    width: 0,
+    height: 0,
   });
 
   useEffect(() => {
@@ -29,15 +31,27 @@ export default function Video({ ytId, ytVideoRef, vidRef }) {
   }, []);
 
   return (
-    <Wrapper>
-      <YouTube
-        ref={ytVideoRef}
-        opts={{
-          width: dimensions.width,
-          height: dimensions.height,
-        }}
-        videoId={ytId}
-      />
+    <Wrapper ref={ref}>
+      {rect && (
+        <YouTube
+          ref={ytVideoRef}
+          opts={{
+            width: rect.width,
+            height: rect.height,
+          }}
+          videoId={ytId}
+        />
+      )}
     </Wrapper>
   );
+}
+
+function useClientRect() {
+  const [rect, setRect] = useState(null);
+  const ref = useCallback((node) => {
+    if (node !== null) {
+      setRect(node.getBoundingClientRect());
+    }
+  }, []);
+  return [rect, ref];
 }
