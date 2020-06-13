@@ -4,8 +4,6 @@ import { useQuery, gql } from "@apollo/client";
 
 import { Link, useRouteMatch, useLocation } from "react-router-dom";
 
-import useMatches from "../../../Hooks/useMatches";
-
 import MatchCard from "../../MatchCard";
 
 const StyledLink = styled(Link)`
@@ -43,7 +41,6 @@ const MATCHES = gql`
 
 export default function AdminSchowMatches() {
   const location = useLocation();
-  const [matchesLoading, matches] = useMatches();
   const { loading, error, data } = useQuery(MATCHES);
 
   if (loading) return <h3>LOADING...</h3>;
