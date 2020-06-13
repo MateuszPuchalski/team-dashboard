@@ -1,15 +1,13 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
 import Video from "./Video";
 import EventList from "./EventList/EventList";
+import { useQuery, gql } from "@apollo/client";
 
 import EventPicker from "./EventPicker/components/EventPicker";
 
 import useMatches from "../Hooks/useMatches";
-import { setActiveMatch } from "./matchVideoDuck";
-import { eventAddingActions } from "../_actions";
 
 const Wrapper = styled.div`
   display: flex;
@@ -47,41 +45,54 @@ const Toggle = styled.img`
   );
 `;
 
+const MATCH = gql`
+  query($matchId: String!) {
+    matchById(matchId: $matchId) {
+      ytId
+      homeTeam {
+        id
+      }
+      awayTeam {
+        id
+      }
+    }
+  }
+`;
+
 export default function MatchVideo() {
-  const dispatch = useDispatch();
   const { matchId } = useParams();
   const [toggle, set] = useState(false);
-  const [matchLoading, match] = useMatches(matchId);
-
-  dispatch(setActiveMatch(match));
+  const { loading, error, data } = useQuery(MATCH, {
+    variables: {
+      matchId: matchId,
+    },
+  });
   const ytVideoRef = useRef(null);
   const vidRef = useRef(null);
-  if (match) {
-    return (
-      <>
-        <Wrapper>
-          <Toggle
-            src={process.env.PUBLIC_URL + "/toggleadd.svg"}
-            onClick={() => set(!toggle)}
-          />
-          <ShowEvent>
-            <EventList ytVideoRef={ytVideoRef} matchId={matchId} />
-          </ShowEvent>
-          <Vid ref={vidRef}>
-            {vidRef.current && (
-              <Video
-                ytVideoRef={ytVideoRef}
-                ytId={match.ytId}
-                vidRef={vidRef}
-              />
-            )}
 
-            {toggle && <EventPicker ytVideoRef={ytVideoRef} />}
-          </Vid>
-        </Wrapper>
-      </>
-    );
-  } else {
-    return <h3>LOADING...</h3>;
-  }
+  if (loading) return <h3>LOADING!!</h3>;
+  if (error) return <h3>ERROR!! {error.message}</h3>;
+
+  return (
+    <>
+      <Wrapper>
+        <Toggle
+          src={process.env.PUBLIC_URL + "/toggleadd.svg"}
+          onClick={() => set(!toggle)}
+        />
+        <ShowEvent>
+          <EventList ytVideoRef={ytVideoRef} matchId={matchId} />
+        </ShowEvent>
+        <Vid ref={vidRef}>
+          <Video
+            ytVideoRef={ytVideoRef}
+            ytId={data.matchById.ytId}
+            vidRef={vidRef}
+          />
+
+          {toggle && <EventPicker ytVideoRef={ytVideoRef} />}
+        </Vid>
+      </Wrapper>
+    </>
+  );
 }
