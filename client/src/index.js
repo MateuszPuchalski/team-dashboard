@@ -4,11 +4,20 @@ import { Provider } from "react-redux";
 import { store } from "./_helpers";
 import { Router } from "react-router-dom";
 import { history } from "./_helpers";
+import { ApolloProvider } from "@apollo/client";
+import { ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
 import "./index.css";
 import "./normalize.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { ThemeProvider } from "styled-components";
+const link = new HttpLink({
+  uri: "/",
+});
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link,
+});
 
 const theme = {
   bg:
@@ -18,13 +27,15 @@ const theme = {
   boxShadow: "0px 0px 50px 0px rgba(0, 0, 0, 0.2)",
 };
 ReactDOM.render(
-  <Provider store={store}>
-    <Router history={history}>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
-    </Router>
-  </Provider>,
+  <ApolloProvider client={client}>
+    <Provider store={store}>
+      <Router history={history}>
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
+      </Router>
+    </Provider>
+  </ApolloProvider>,
   document.getElementById("root")
 );
 
