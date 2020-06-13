@@ -27,6 +27,10 @@ const Throw = Event.discriminator(
       type: Schema.Types.ObjectId,
       ref: "Player",
     },
+    team: {
+      type: Schema.Types.ObjectId,
+      ref: "Club",
+    },
     location: [Number],
     throw: {
       endLocation: [Number],
@@ -46,6 +50,10 @@ const Turnover = Event.discriminator(
       type: Schema.Types.ObjectId,
       ref: "Player",
     },
+    team: {
+      type: Schema.Types.ObjectId,
+      ref: "Club",
+    },
     location: [Number],
     turnover: { type: { type: String, enum: ["Pass", "Catch", "Dribble"] } },
   })
@@ -57,6 +65,10 @@ const Punishment = Event.discriminator(
     player: {
       type: Schema.Types.ObjectId,
       ref: "Player",
+    },
+    team: {
+      type: Schema.Types.ObjectId,
+      ref: "Club",
     },
     location: [Number],
     punishment: {
