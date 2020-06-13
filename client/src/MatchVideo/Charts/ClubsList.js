@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useQuery, gql } from "@apollo/client";
 
 import useClubs from "../../Hooks/useClubs";
 
@@ -34,15 +35,26 @@ const Club = styled.div`
   }
 `;
 
-export default function PlayersList({ dropdown, toggle, selectClub }) {
-  const [clubsLoading, clubs] = useClubs();
+const CLUBS = gql`
+  query {
+    clubMany {
+      id
+      name
+      logo
+    }
+  }
+`;
 
+export default function PlayersList({ dropdown, toggle, selectClub }) {
+  // const [clubsLoading, clubs] = useClubs();
+  const { loading, error, data } = useQuery(CLUBS);
   return (
     <ClubsWrapper>
-      {clubsLoading ? (
+      {loading ? (
         <h3>LOADING...</h3>
       ) : (
-        clubs.map((item, i) => {
+        data.clubMany.map((item, i) => {
+          console.log(item);
           return (
             <Club
               key={i}
