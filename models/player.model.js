@@ -5,12 +5,13 @@ const playerSchema = new Schema(
   {
     name: { type: String, required: true },
     currentClub: { type: Schema.Types.ObjectId, ref: "Club" }, // add refrence to club model
-    position: { type: String },
-    weight: { type: Number },
-    height: { type: Number },
-    jerseyNumber: { type: Number },
-    date: { type: Date },
-    addBy: { type: Schema.Types.ObjectId, ref: "User" }
+    position: String,
+    weight: Number,
+    height: Number,
+    jerseyNumber: Number,
+    date: Date,
+    avatar: String,
+    addBy: { type: Schema.Types.ObjectId, ref: "User" },
   },
   { timestamps: true }
 );
