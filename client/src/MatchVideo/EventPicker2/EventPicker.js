@@ -1,30 +1,27 @@
 import React, { useReducer, useEffect } from "react";
 import { useQuery, useMutation, gql } from "@apollo/client";
-
 import { useParams } from "react-router-dom";
-const SELECT_TYPE = "SELECT_TYPE";
-const SELECT_THROW_OUTCOME = "SELECT_THROW_OUTCOME";
-const SELECT_THROW_TECHNIQUE = "SELECT_THROW_TECHNIQUE";
-const SELECT_TURNOVER_TYPE = "SELECT_TURNOVER_TYPE";
-const SELECT_PUNISHMENT_TYPE = "SELECT_PUNISHMENT_TYPE";
-const SELECT_PLAYER = "SELECT_PLAYER";
-const EventTypes = [
-  "Half Start",
-  "Half End",
-  "Throw",
-  "Turnover",
-  "Punishment",
-];
 
-const ThrowOutcomes = ["Goal", "Miss", "Blocked"];
-const ThrowTechinques = ["Overarm", "Hip", "Jump"];
-const PunishmentTypes = ["2min", "Blue Card", "Red Card", "Yellow Card"];
-const TurnoverTypes = ["Catch", "Pass", "Dribble"];
+import Players from "./Players";
+import EventTypes from "./EventTypes";
+import TurnoverTypes from "./TurnoverTypes";
+import ThrowTechniques from "./ThrowTechniques";
+import ThrowOutcomes from "./ThrowOutcomes";
+import PunishmentTypes from "./PunishmentTypes";
+
+import {
+  SELECT_TYPE,
+  SELECT_THROW_OUTCOME,
+  SELECT_THROW_TECHNIQUE,
+  SELECT_TURNOVER_TYPE,
+  SELECT_PUNISHMENT_TYPE,
+  SELECT_PLAYER,
+} from "./constants";
 
 const reducer = (state, action) => {
   switch (action.type) {
     case SELECT_TYPE:
-      return { type: action.paylode };
+      return { ...state, type: action.paylode };
       break;
     case SELECT_PLAYER:
       return { ...state, player: action.paylode };
@@ -46,12 +43,6 @@ const reducer = (state, action) => {
   }
 };
 
-// ToDo:
-//  add timestamp
-// add player
-//
-//What i Need
-//  match id hometeamid awayteamid
 const GET_MATCH = gql`
   query($matchId: String!) {
     matchById(matchId: $matchId) {
@@ -61,6 +52,10 @@ const GET_MATCH = gql`
         players {
           id
           name
+          currentClub {
+            id
+            name
+          }
         }
       }
       awayTeam {
@@ -68,6 +63,10 @@ const GET_MATCH = gql`
         players {
           id
           name
+          currentClub {
+            id
+            name
+          }
         }
       }
     }
@@ -77,8 +76,8 @@ const GET_MATCH = gql`
 const ADD_THROW_EVENT = gql`
   mutation AddThrowEvent(
     $matchId: String!
-    $playerId: String!
-    $teamId: String!
+    $player: String!
+    $team: String!
     $type: String!
     $location: [Float]!
     $endLocation: [Float]!
@@ -88,15 +87,18 @@ const ADD_THROW_EVENT = gql`
   ) {
     addThrowEvent(
       matchId: $matchId
-      playerId: $playerId
-      teamId: $teamId
+      player: $player
+      team: $team
       type: $type
       location: $location
       endLocation: $endLocation
       outcome: $outcome
       technique: $technique
       timestamp: $timestamp
-    )
+    ) {
+      id
+      type
+    }
   }
 `;
 export default function EventPicker() {
@@ -106,139 +108,42 @@ export default function EventPicker() {
   const { loading, error, data } = useQuery(GET_MATCH, {
     variables: { matchId: matchId },
   });
-  // const { loading, error, playersData } = useQuery(GET_MATCH, {
-  //   variables: { matchId: matchId },
-  // });
 
   useEffect(() => {
     console.log({ Matchdata: data });
   }, [data]);
+
   return (
     <div>
-      <ul>
-        {EventTypes.map((item) => {
-          return (
-            <li onClick={() => dispatch({ type: SELECT_TYPE, paylode: item })}>
-              {item}
-            </li>
-          );
-        })}
-      </ul>
-
-      {state.type == "Throw" && (
-        <div>
-          <ul>
-            {ThrowOutcomes.map((item) => {
-              return (
-                <li
-                  onClick={() =>
-                    dispatch({ type: SELECT_THROW_OUTCOME, paylode: item })
-                  }
-                >
-                  {item}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      )}
-      {state.type == "Throw" && (
-        <div>
-          <ul>
-            {ThrowTechinques.map((item) => {
-              return (
-                <li
-                  onClick={() =>
-                    dispatch({ type: SELECT_THROW_TECHNIQUE, paylode: item })
-                  }
-                >
-                  {item}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      )}
-      {state.type == "Punishment" && (
-        <div>
-          <ul>
-            {PunishmentTypes.map((item) => {
-              return (
-                <li
-                  onClick={() =>
-                    dispatch({ type: SELECT_PUNISHMENT_TYPE, paylode: item })
-                  }
-                >
-                  {item}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      )}
-      {state.type == "Turnover" && (
-        <div>
-          <ul>
-            {TurnoverTypes.map((item) => {
-              return (
-                <li
-                  onClick={() =>
-                    dispatch({ type: SELECT_TURNOVER_TYPE, paylode: item })
-                  }
-                >
-                  {item}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      )}
+      <EventTypes dispatch={dispatch} />
+      {state.type == "Throw" && <ThrowOutcomes dispatch={dispatch} />}
+      {state.type == "Throw" && <ThrowTechniques dispatch={dispatch} />}
+      {state.type == "Punishment" && <PunishmentTypes dispatch={dispatch} />}
+      {state.type == "Turnover" && <TurnoverTypes dispatch={dispatch} />}
       {!loading && (
-        <div>
-          <ul>
-            {data.matchById.homeTeam.players.map((item) => {
-              return (
-                <li
-                  onClick={() =>
-                    dispatch({ type: SELECT_PLAYER, paylode: item.id })
-                  }
-                >
-                  {item.name}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      )}
-      {!loading && (
-        <div>
-          <ul>
-            {data.matchById.awayTeam.players.map((item) => {
-              return (
-                <li
-                  onClick={() =>
-                    dispatch({ type: SELECT_PLAYER, paylode: item.id })
-                  }
-                >
-                  {item.name}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
+        <>
+          <Players
+            players={data.matchById.homeTeam.players}
+            dispatch={dispatch}
+          />
+          <Players
+            players={data.matchById.awayTeam.players}
+            dispatch={dispatch}
+          />
+        </>
       )}
       <button
         onClick={() =>
           addThrowEvent({
             variables: {
               matchId: matchId,
-              playerId: "5e3606a51dba6b0ac451eb42",
-              teamId: "5e259ca1c60ff01770db40ff",
-              type: "Throw",
+              player: state.player.id,
+              team: state.player.currentClub.id,
+              type: state.type,
               location: [1, 1],
               endLocation: [1, 1],
-              outcome: "Goal",
-              technique: "Hip Shot",
+              outcome: state.throw.outcome,
+              technique: state.throw.technique,
               timestamp: 111,
             },
           })
