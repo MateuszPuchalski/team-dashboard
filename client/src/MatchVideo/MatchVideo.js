@@ -61,7 +61,6 @@ const MATCH = gql`
 
 export default function MatchVideo() {
   const { matchId } = useParams();
-  const [toggle, set] = useState(false);
   const { loading, error, data } = useQuery(MATCH, {
     variables: {
       matchId: matchId,
@@ -76,10 +75,6 @@ export default function MatchVideo() {
   return (
     <>
       <Wrapper>
-        <Toggle
-          src={process.env.PUBLIC_URL + "/toggleadd.svg"}
-          onClick={() => set(!toggle)}
-        />
         <ShowEvent>
           <EventList ytVideoRef={ytVideoRef} matchId={matchId} />
         </ShowEvent>
@@ -89,8 +84,6 @@ export default function MatchVideo() {
             ytId={data.matchById.ytId}
             vidRef={vidRef}
           />
-
-          {toggle && <EventPicker ytVideoRef={ytVideoRef} />}
         </Vid>
       </Wrapper>
     </>
