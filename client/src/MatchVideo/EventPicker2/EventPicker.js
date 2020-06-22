@@ -1,9 +1,12 @@
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer } from "react";
 import { useQuery, useMutation, gql } from "@apollo/client";
 import { useParams } from "react-router-dom";
+import useClientRect from "../../Hooks/useClientRect";
 
 import Players from "./Players";
 import EventTypes from "./EventTypes";
+import GoalChart from "./GoalChart";
+import CourtChart from "./CourtChart";
 import TurnoverTypes from "./TurnoverTypes";
 import ThrowTechniques from "./ThrowTechniques";
 import ThrowOutcomes from "./ThrowOutcomes";
@@ -16,6 +19,8 @@ import {
   SELECT_TURNOVER_TYPE,
   SELECT_PUNISHMENT_TYPE,
   SELECT_PLAYER,
+  SET_END_LOCATION,
+  SET_LOCATION,
 } from "./constants";
 
 const reducer = (state, action) => {
@@ -37,6 +42,18 @@ const reducer = (state, action) => {
       break;
     case SELECT_PUNISHMENT_TYPE:
       return { ...state, punishment: { type: action.paylode } };
+      break;
+    case SET_END_LOCATION:
+      return {
+        ...state,
+        throw: { ...state.throw, endLocation: action.paylode },
+      };
+      break;
+    case SET_LOCATION:
+      return {
+        ...state,
+        location: action.paylode,
+      };
       break;
     default:
       break;
@@ -101,53 +118,149 @@ const ADD_THROW_EVENT = gql`
     }
   }
 `;
-export default function EventPicker() {
+
+const ADD_TURNOVER_EVENT = gql`
+  mutation AddTurnoverEvent(
+    $matchId: String!
+    $player: String!
+    $team: String!
+    $type: String!
+    $location: [Float]!
+    $turnoverType: String!
+    $timestamp: Float!
+  ) {
+    addTurnoverEvent(
+      matchId: $matchId
+      player: $player
+      team: $team
+      type: $type
+      location: $location
+      turnoverType: $turnoverType
+      timestamp: $timestamp
+    ) {
+      id
+      type
+    }
+  }
+`;
+
+const ADD_PUNISHMENT_EVENT = gql`
+  mutation AddPunishmentEvent(
+    $matchId: String!
+    $player: String!
+    $team: String!
+    $type: String!
+    $location: [Float]!
+    $punishmentType: String!
+    $timestamp: Float!
+  ) {
+    addPunishmentEvent(
+      matchId: $matchId
+      player: $player
+      team: $team
+      type: $type
+      location: $location
+      punishmentType: $punishmentType
+      timestamp: $timestamp
+    ) {
+      id
+      type
+    }
+  }
+`;
+
+export default function EventPicker({ ytVideoRef }) {
   const { matchId } = useParams();
+  const [rect, ref] = useClientRect();
   const [state, dispatch] = useReducer(reducer, { matchId: matchId });
   const [addThrowEvent] = useMutation(ADD_THROW_EVENT);
+  const [addTurnoverEvent] = useMutation(ADD_TURNOVER_EVENT);
+  const [addPunishmentEvent] = useMutation(ADD_PUNISHMENT_EVENT);
+
   const { loading, error, data } = useQuery(GET_MATCH, {
     variables: { matchId: matchId },
   });
 
-  useEffect(() => {
-    console.log({ Matchdata: data });
-  }, [data]);
-
   return (
-    <div>
-      <EventTypes dispatch={dispatch} />
-      {state.type == "Throw" && <ThrowOutcomes dispatch={dispatch} />}
-      {state.type == "Throw" && <ThrowTechniques dispatch={dispatch} />}
-      {state.type == "Punishment" && <PunishmentTypes dispatch={dispatch} />}
-      {state.type == "Turnover" && <TurnoverTypes dispatch={dispatch} />}
-      {!loading && (
-        <>
-          <Players
-            players={data.matchById.homeTeam.players}
-            dispatch={dispatch}
-          />
-          <Players
-            players={data.matchById.awayTeam.players}
-            dispatch={dispatch}
-          />
-        </>
+    <div ref={ref}>
+      <EventTypes dispatch={dispatch} state={state} />
+      {state.type == "Throw" && (
+        <ThrowOutcomes state={state} dispatch={dispatch} />
       )}
+      {state.type == "Throw" && (
+        <ThrowTechniques state={state} dispatch={dispatch} />
+      )}
+      {state.type == "Throw" && <GoalChart parent={rect} dispatch={dispatch} />}
+      {(state.type == "Throw" ||
+        state.type == "Punishment" ||
+        state.type == "Turnover") && (
+        <CourtChart parent={rect} dispatch={dispatch} />
+      )}
+      {state.type == "Punishment" && (
+        <PunishmentTypes state={state} dispatch={dispatch} />
+      )}
+      {state.type == "Turnover" && (
+        <TurnoverTypes state={state} dispatch={dispatch} />
+      )}
+      {!loading &&
+        (state.type == "Throw" ||
+          state.type == "Punishment" ||
+          state.type == "Turnover") && (
+          <>
+            <Players
+              players={data.matchById.homeTeam.players}
+              dispatch={dispatch}
+            />
+            <Players
+              players={data.matchById.awayTeam.players}
+              dispatch={dispatch}
+            />
+          </>
+        )}
       <button
-        onClick={() =>
-          addThrowEvent({
-            variables: {
-              matchId: matchId,
-              player: state.player.id,
-              team: state.player.currentClub.id,
-              type: state.type,
-              location: [1, 1],
-              endLocation: [1, 1],
-              outcome: state.throw.outcome,
-              technique: state.throw.technique,
-              timestamp: 111,
-            },
-          })
-        }
+        onClick={async () => {
+          if (state.throw) {
+            addThrowEvent({
+              variables: {
+                matchId: matchId,
+                player: state.player.id,
+                team: state.player.currentClub.id,
+                type: state.type,
+                location: state.location,
+                endLocation: state.throw.endLocation,
+                outcome: state.throw.outcome,
+                technique: state.throw.technique,
+                timestamp: await ytVideoRef.current.internalPlayer.getCurrentTime(),
+              },
+            });
+          }
+          if (state.turnover) {
+            addTurnoverEvent({
+              variables: {
+                matchId: matchId,
+                player: state.player.id,
+                team: state.player.currentClub.id,
+                type: state.type,
+                location: state.location,
+                turnoverType: state.turnover.type,
+                timestamp: await ytVideoRef.current.internalPlayer.getCurrentTime(),
+              },
+            });
+          }
+          if (state.punishment) {
+            addPunishmentEvent({
+              variables: {
+                matchId: matchId,
+                player: state.player.id,
+                team: state.player.currentClub.id,
+                type: state.type,
+                location: state.location,
+                punishmentType: state.punishment.type,
+                timestamp: await ytVideoRef.current.internalPlayer.getCurrentTime(),
+              },
+            });
+          }
+        }}
       >
         Add Throw
       </button>
