@@ -26,6 +26,12 @@ require("dotenv").config();
 
 const mongoose = require("mongoose");
 
+const ObjectId = mongoose.Types.ObjectId;
+
+ObjectId.prototype.valueOf = function () {
+  return this.toString();
+};
+
 const uri = process.env.ATLAS_URI;
 
 const CLOUDINARY_NAME = process.env.CLOUDINARY_NAME;
@@ -56,8 +62,39 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const typeDefs = gql`
+  type Mutation {
+    addSomeEvent(matchId: String!, type: String!, timestamp: Float!): Event
+    addThrowEvent(
+      matchId: String!
+      player: String!
+      team: String!
+      type: String!
+      location: [Float]!
+      endLocation: [Float]!
+      outcome: String
+      technique: String
+      timestamp: Float!
+    ): Event
+    addPunishmentEvent(
+      matchId: String!
+      player: String!
+      team: String!
+      type: String!
+      location: [Float]!
+      punishmentType: String!
+      timestamp: Float!
+    ): Event
+    addTurnoverEvent(
+      matchId: String!
+      player: String!
+      team: String!
+      type: String!
+      location: [Float]!
+      turnoverType: String!
+      timestamp: Float!
+    ): Event
+  }
   type Query {
-    hello: String
     playerOne: Player
     playerById(id: String!): Player
     playerByClub(clubId: String!): [Player]!
@@ -89,10 +126,12 @@ const typeDefs = gql`
     awayScore: Int
     ytId: String
   }
+
   type Club {
     id: ID!
     name: String
     logo: String
+    players: [Player]
   }
   interface Event {
     id: ID!
@@ -164,6 +203,87 @@ const resolvers = {
       return "SomeEvent";
     },
   },
+
+  Club: {
+    players: (parent) => {
+      return PlayerModel.find({
+        currentClub: mongoose.Types.ObjectId(parent.id),
+      });
+    },
+  },
+  Player: {
+    currentClub: async (parent) => {
+      return await ClubModel.findOne({
+        _id: parent.currentClub,
+      });
+    },
+  },
+
+  Mutation: {
+    addThrowEvent: (_, args) => {
+      console.log(args);
+      const ThrowEvent = new EventModel({
+        matchId: args.matchId,
+        player: args.player,
+        team: args.team,
+        type: args.type,
+        location: args.location,
+        throw: {
+          endLocation: args.endLocation,
+          outcome: args.outcome,
+          technique: args.technique,
+        },
+        timestamp: args.timestamp,
+      });
+      ThrowEvent.save();
+      return ThrowEvent;
+    },
+    addSomeEvent: (_, args) => {
+      console.log(args);
+      const SomeEvent = new EventModel({
+        matchId: args.matchId,
+
+        type: args.type,
+
+        timestamp: args.timestamp,
+      });
+      SomeEvent.save();
+      return SomeEvent;
+    },
+    addTurnoverEvent: (_, args) => {
+      console.log(args);
+      const TurnoverEvent = new EventModel({
+        matchId: args.matchId,
+        player: args.player,
+        team: args.team,
+        type: args.type,
+        location: args.location,
+        turnover: {
+          type: args.turnoverType,
+        },
+        timestamp: args.timestamp,
+      });
+      TurnoverEvent.save();
+      return TurnoverEvent;
+    },
+    addPunishmentEvent: (_, args) => {
+      console.log(args);
+      const PunishmentEvent = new EventModel({
+        matchId: args.matchId,
+        player: args.player,
+        team: args.team,
+        type: args.type,
+        location: args.location,
+        punishment: {
+          type: args.punishmentType,
+        },
+        timestamp: args.timestamp,
+      });
+      PunishmentEvent.save();
+      return PunishmentEvent;
+    },
+  },
+
   Query: {
     playerOne: () => PlayerModel.findOne().populate(["currentClub"]),
     playerMany: () => PlayerModel.find().populate(["currentClub"]),
@@ -171,6 +291,7 @@ const resolvers = {
       PlayerModel.findById(args.id).populate(["currentClub"]),
     playerByClub: (_, args) =>
       PlayerModel.find({ currentClub: args.clubId }).populate(["currentClub"]),
+
     clubMany: () => ClubModel.find(),
     eventMany: () => EventModel.find(),
     eventByMatch: (_, args) =>
