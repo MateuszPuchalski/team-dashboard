@@ -11,6 +11,7 @@ import TurnoverTypes from "./TurnoverTypes";
 import ThrowTechniques from "./ThrowTechniques";
 import ThrowOutcomes from "./ThrowOutcomes";
 import PunishmentTypes from "./PunishmentTypes";
+import TextMovingButton from "../../components/TextMovingButton";
 
 import {
   SELECT_TYPE,
@@ -69,6 +70,8 @@ const GET_MATCH = gql`
         players {
           id
           name
+          avatar
+          jerseyNumber
           currentClub {
             id
             name
@@ -80,6 +83,8 @@ const GET_MATCH = gql`
         players {
           id
           name
+          avatar
+          jerseyNumber
           currentClub {
             id
             name
@@ -168,6 +173,13 @@ const ADD_PUNISHMENT_EVENT = gql`
     }
   }
 `;
+const ADD_SOME_EVENT = gql`
+  mutation AddSomeEvent($matchId: String!, $type: String!, $timestamp: Float!) {
+    addSomeEvent(matchId: $matchId, type: $type, timestamp: $timestamp) {
+      type
+    }
+  }
+`;
 
 export default function EventPicker({ ytVideoRef }) {
   const { matchId } = useParams();
@@ -176,6 +188,7 @@ export default function EventPicker({ ytVideoRef }) {
   const [addThrowEvent] = useMutation(ADD_THROW_EVENT);
   const [addTurnoverEvent] = useMutation(ADD_TURNOVER_EVENT);
   const [addPunishmentEvent] = useMutation(ADD_PUNISHMENT_EVENT);
+  const [addSomeEvent] = useMutation(ADD_SOME_EVENT);
 
   const { loading, error, data } = useQuery(GET_MATCH, {
     variables: { matchId: matchId },
@@ -190,17 +203,17 @@ export default function EventPicker({ ytVideoRef }) {
       {state.type == "Throw" && (
         <ThrowTechniques state={state} dispatch={dispatch} />
       )}
-      {state.type == "Throw" && <GoalChart parent={rect} dispatch={dispatch} />}
-      {(state.type == "Throw" ||
-        state.type == "Punishment" ||
-        state.type == "Turnover") && (
-        <CourtChart parent={rect} dispatch={dispatch} />
-      )}
       {state.type == "Punishment" && (
         <PunishmentTypes state={state} dispatch={dispatch} />
       )}
       {state.type == "Turnover" && (
         <TurnoverTypes state={state} dispatch={dispatch} />
+      )}
+      {state.type == "Throw" && <GoalChart parent={rect} dispatch={dispatch} />}
+      {(state.type == "Throw" ||
+        state.type == "Punishment" ||
+        state.type == "Turnover") && (
+        <CourtChart parent={rect} dispatch={dispatch} />
       )}
       {!loading &&
         (state.type == "Throw" ||
@@ -208,10 +221,12 @@ export default function EventPicker({ ytVideoRef }) {
           state.type == "Turnover") && (
           <>
             <Players
+              state={state}
               players={data.matchById.homeTeam.players}
               dispatch={dispatch}
             />
             <Players
+              state={state}
               players={data.matchById.awayTeam.players}
               dispatch={dispatch}
             />
@@ -219,7 +234,16 @@ export default function EventPicker({ ytVideoRef }) {
         )}
       <button
         onClick={async () => {
-          if (state.throw) {
+          if (state.type == "Half Start" || state.type == "Half End") {
+            addSomeEvent({
+              variables: {
+                matchId: matchId,
+                type: state.type,
+                timestamp: await ytVideoRef.current.internalPlayer.getCurrentTime(),
+              },
+            });
+          }
+          if (state.throw && state.type == "Throw") {
             addThrowEvent({
               variables: {
                 matchId: matchId,
@@ -234,7 +258,7 @@ export default function EventPicker({ ytVideoRef }) {
               },
             });
           }
-          if (state.turnover) {
+          if (state.turnover && state.type == "Turnover") {
             addTurnoverEvent({
               variables: {
                 matchId: matchId,
@@ -247,7 +271,7 @@ export default function EventPicker({ ytVideoRef }) {
               },
             });
           }
-          if (state.punishment) {
+          if (state.punishment && state.type == "Punishment") {
             addPunishmentEvent({
               variables: {
                 matchId: matchId,
@@ -262,7 +286,7 @@ export default function EventPicker({ ytVideoRef }) {
           }
         }}
       >
-        Add Throw
+        ADD
       </button>
     </div>
   );
