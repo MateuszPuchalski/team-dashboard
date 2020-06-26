@@ -31,15 +31,16 @@ export default function App(props) {
       </PrivateRoute>
 
       <Route exact path="/">
-        {/* <Login2 /> */}
-        <ThrowAnalysis />
+        <Login2 />
       </Route>
 
       <Route exact path="/login">
         <Login />
       </Route>
       <Route exact path="/register" component={Register} />
-      <Route exact path="/testing"></Route>
+      <Route exact path="/testing">
+        <ThrowAnalysis />
+      </Route>
 
       <Route exact path="/admin" component={Admin} />
       <Route exact path="/admin/club" component={ClubSettings} />
