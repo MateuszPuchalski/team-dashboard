@@ -34,10 +34,10 @@ const Throw = Event.discriminator(
     location: [Number],
     throw: {
       endLocation: [Number],
-      outcome: { type: String, enum: ["Goal", "Saved", "Blocked"] },
+      outcome: { type: String, enum: ["Goal", "Saved", "Miss", "Blocked"] },
       technique: {
         type: String,
-        enum: ["Jump Shot", "Hip Shot", "Running Shot"],
+        enum: ["Jump Shot", "Hip Shot", "Overarm Shot"],
       },
     },
   })
