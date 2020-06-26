@@ -6,6 +6,8 @@ const PlayerModel = require("./models/player.model");
 const ClubModel = require("./models/club.model");
 const EventModel = require("./models/event.model");
 const MatchModel = require("./models/match.model");
+const UserModel = require("./models/user.model");
+
 // const newEvent = new EventModel({
 //   matchId: "5e3758f1e60e452598df6397",
 //   type: "Throw",
@@ -93,6 +95,7 @@ const typeDefs = gql`
       turnoverType: String!
       timestamp: Float!
     ): Event
+    createUser(username: String!, password: String!, role: [String!]!): User
   }
   type Query {
     playerOne: Player
@@ -106,6 +109,17 @@ const typeDefs = gql`
     eventThrowByPlayer(playerId: String!): [Event]!
     matchMany: [Match]!
     matchById(matchId: String!): Match
+  }
+  type User {
+    id: ID!
+    username: String!
+    password: String!
+    role: [String!]!
+  }
+  type AuthData {
+    userId: ID!
+    token: String!
+    tokenExpiration: Int!
   }
   type Player {
     id: ID!
@@ -281,6 +295,31 @@ const resolvers = {
       });
       PunishmentEvent.save();
       return PunishmentEvent;
+    },
+    createUser: (_, args) => {
+      const newUser = new UserModel({
+        role,
+        email: args.email,
+        password: args.password,
+      });
+      bcrypt.hash(newUser.password, 10, (err, hash) => {
+        if (err) throw err;
+        newUser.password = hash;
+        newUser.save().then((user) => {
+          jwt.sign(
+            { id: user.id },
+            SECRET,
+            { expiresIn: 3600 },
+            (err, token) => {
+              if (err) throw err;
+              res.json({
+                token,
+                user: { id: user.id, email: user.email },
+              });
+            }
+          );
+        });
+      });
     },
   },
 
