@@ -2,6 +2,13 @@ const express = require("express");
 const cloudinary = require("cloudinary").v2;
 const path = require("path");
 
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
+require("dotenv").config();
+
+const SECRET = process.env.JWT_SECRET;
+
 const PlayerModel = require("./models/player.model");
 const ClubModel = require("./models/club.model");
 const EventModel = require("./models/event.model");
@@ -23,8 +30,6 @@ const UserModel = require("./models/user.model");
 // newEvent.save().then((event) => console.log(event));
 
 const { ApolloServer, gql } = require("apollo-server");
-
-require("dotenv").config();
 
 const mongoose = require("mongoose");
 
@@ -95,7 +100,7 @@ const typeDefs = gql`
       turnoverType: String!
       timestamp: Float!
     ): Event
-    createUser(username: String!, password: String!, role: [String!]!): User
+    createUser(email: String!, password: String!, role: [String!]!): User
   }
   type Query {
     playerOne: Player
@@ -112,7 +117,7 @@ const typeDefs = gql`
   }
   type User {
     id: ID!
-    username: String!
+    email: String!
     password: String!
     role: [String!]!
   }
@@ -298,7 +303,7 @@ const resolvers = {
     },
     createUser: (_, args) => {
       const newUser = new UserModel({
-        role,
+        role: args.role,
         email: args.email,
         password: args.password,
       });
@@ -307,19 +312,17 @@ const resolvers = {
         newUser.password = hash;
         newUser.save().then((user) => {
           jwt.sign(
-            { id: user.id },
+            { email: user.email },
             SECRET,
             { expiresIn: 3600 },
             (err, token) => {
               if (err) throw err;
-              res.json({
-                token,
-                user: { id: user.id, email: user.email },
-              });
+              console.log(newUser);
             }
           );
         });
       });
+      return newUser;
     },
   },
 
