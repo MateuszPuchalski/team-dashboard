@@ -12,7 +12,7 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { ThemeProvider } from "styled-components";
 const link = new HttpLink({
-  uri: "/",
+  uri: "/graphql",
 });
 const client = new ApolloClient({
   cache: new InMemoryCache(),
