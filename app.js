@@ -15,21 +15,7 @@ const EventModel = require("./models/event.model");
 const MatchModel = require("./models/match.model");
 const UserModel = require("./models/user.model");
 
-// const newEvent = new EventModel({
-//   matchId: "5e3758f1e60e452598df6397",
-//   type: "Throw",
-//   timestamp: 123,
-//   throw: {
-//     endLocation: [1, 1],
-//     outcome: "Goal",
-//     technique: "Hip Shot",
-//   },
-//   location: [1, 1],
-//   player: "5e3606a51dba6b0ac451eb42",
-// });
-// newEvent.save().then((event) => console.log(event));
-
-const { ApolloServer, gql } = require("apollo-server");
+const { ApolloServer, gql } = require('apollo-server-express');
 
 const mongoose = require("mongoose");
 
@@ -366,7 +352,8 @@ if (process.env.NODE_ENV === "production") {
 const port = process.env.PORT || 5000;
 
 const server = new ApolloServer({ typeDefs, resolvers });
+server.applyMiddleware({ app });
 
-server
-  .listen({ port })
-  .then(({ url }) => console.log(`Server running at: ${url}`));
+app.listen(port, () =>
+  console.log(`🚀 Server ready at http://localhost:5000${server.graphqlPath}`)
+)
