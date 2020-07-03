@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import { userActions } from "../../_actions";
+import { useMutation, gql } from "@apollo/client";
 import { Link } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
 import TextMovingButton from "../TextMovingButton";
@@ -31,14 +30,21 @@ const Inputs = styled.div`
   }
 `;
 
+const LOGIN = gql`
+  mutation Login($email:String!, $password: String!){
+    login(email:$email, password:$password){
+      token
+    }
+  }
+`
+
 export default function Login() {
   const [inputs, setInputs] = useState({
     email: "",
     password: "",
   });
   const { email, password } = inputs;
-  const dispatch = useDispatch();
-  const loggingIn = useSelector((state) => state.authentication.loggingIn);
+  const [login,{data}] = useMutation(LOGIN)
   const handleChange = (evt) => {
     const { name, value } = evt.target;
     setInputs((inputs) => ({ ...inputs, [name]: value }));
@@ -46,11 +52,15 @@ export default function Login() {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    dispatch(userActions.login(email, password));
+    login({variables: {
+      email:email,
+      password:password
+    }})
   };
 
   return (
     <Form onSubmit={handleSubmit}>
+      {data && <h3>{data.login.token}</h3>}
       <Inputs>
         <div className="formGroup">
           <input
@@ -71,7 +81,7 @@ export default function Login() {
           />
         </div>
       </Inputs>
-      <TextMovingButton text="LOGIN" loading={loggingIn} />
+      <TextMovingButton text="LOGIN" />
     </Form>
   );
 }
