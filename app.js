@@ -15,7 +15,7 @@ const EventModel = require("./models/event.model");
 const MatchModel = require("./models/match.model");
 const UserModel = require("./models/user.model");
 
-const { ApolloServer, gql } = require('apollo-server-express');
+const { ApolloServer, gql, AuthenticationError } = require('apollo-server-express');
 
 const mongoose = require("mongoose");
 
@@ -86,9 +86,11 @@ const typeDefs = gql`
       turnoverType: String!
       timestamp: Float!
     ): Event
+    login(email: String!, password: String!): AuthData
     createUser(email: String!, password: String!, role: [String!]!): User
   }
   type Query {
+    testQuery: String
     playerOne: Player
     playerById(id: String!): Player
     playerByClub(clubId: String!): [Player]!
@@ -101,6 +103,7 @@ const typeDefs = gql`
     matchMany: [Match]!
     matchById(matchId: String!): Match
   }
+  
   type User {
     id: ID!
     email: String!
@@ -110,7 +113,7 @@ const typeDefs = gql`
   type AuthData {
     userId: ID!
     token: String!
-    tokenExpiration: Int!
+    # tokenExpiration: Int!
   }
   type Player {
     id: ID!
@@ -225,6 +228,19 @@ const resolvers = {
   },
 
   Mutation: {
+    login: async (parent, args, {req}) => {
+      const user = await UserModel.findOne({email: args.email})
+      if(!user) throw new AuthenticationError("USER DOESNT EXIST")
+      const isEqual = await bcrypt.compare(args.password, user.password);
+      if(!isEqual) throw new AuthenticationError("INCORECT PASSWORD")
+      const token = jwt.sign(
+        { email: args.email },
+        SECRET,
+        { expiresIn: 3600 }
+      );
+      console.log(user)
+      return {userId: user.id, token: token}
+    },
     addThrowEvent: (_, args) => {
       console.log(args);
       const ThrowEvent = new EventModel({
@@ -313,6 +329,8 @@ const resolvers = {
   },
 
   Query: {
+    
+    testQuery: (parent,args,context)=> console.log(context) ,
     playerOne: () => PlayerModel.findOne().populate(["currentClub"]),
     playerMany: () => PlayerModel.find().populate(["currentClub"]),
     playerById: (_, args) =>
@@ -351,7 +369,12 @@ if (process.env.NODE_ENV === "production") {
 }
 const port = process.env.PORT || 5000;
 
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({ 
+  typeDefs, 
+  resolvers, 
+  context: ({req,res}) => ({req,res})
+})
+
 server.applyMiddleware({ app });
 
 app.listen(port, () =>
