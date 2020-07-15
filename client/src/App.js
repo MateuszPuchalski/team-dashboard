@@ -21,6 +21,7 @@ import Sidebar from "./components/Sidebar";
 import ProfilePage from "./components/ProfilePage/ProfilePage";
 import ClubSettings from "./components/ClubSettings";
 import ThrowAnalysis from "./ThrowAnalysis/ThrowAnalysis";
+import ProtectedRouteTest from "./testComponents/ProtectedRouteTest";
 
 export default function App(props) {
   return (
@@ -40,6 +41,9 @@ export default function App(props) {
       <Route exact path="/register" component={Register} />
       <Route exact path="/testing">
         <ThrowAnalysis />
+      </Route>
+      <Route exact path="/protected">
+        <ProtectedRouteTest/>
       </Route>
 
       <Route exact path="/admin" component={Admin} />

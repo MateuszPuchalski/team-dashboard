@@ -5,18 +5,31 @@ import { store } from "./_helpers";
 import { Router } from "react-router-dom";
 import { history } from "./_helpers";
 import { ApolloProvider } from "@apollo/client";
-import { ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
+import { ApolloClient,ApolloLink, InMemoryCache,HttpLink, concat } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 import "./index.css";
 import "./normalize.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { ThemeProvider } from "styled-components";
-const link = new HttpLink({
-  uri: "/graphql",
-});
+
+
+const httpLink = new HttpLink({ uri: '/graphql', credentials: "include" });
+
+const authMiddleware = new ApolloLink((operation, forward) => {
+  // add the authorization to the headers
+  operation.setContext({
+    headers: {
+      authorization: localStorage.getItem('token') || null,
+    }
+  });
+
+  return forward(operation);
+})
+
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link,
+  link: concat(authMiddleware, httpLink),
 });
 
 const theme = {
