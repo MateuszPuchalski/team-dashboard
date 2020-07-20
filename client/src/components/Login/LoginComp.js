@@ -55,7 +55,9 @@ export default function Login() {
     login({variables: {
       email:email,
       password:password
-    }})
+    }}).then(data => {
+      window.localStorage.setItem("token", "Bearer " + data.data.login.token)
+    })
   };
 
   return (
