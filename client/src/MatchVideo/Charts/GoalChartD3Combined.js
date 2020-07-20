@@ -51,8 +51,8 @@ export default function GoalChartD3Declarative({ throws }) {
       circle
         .enter()
         .append("circle")
-        .attr("cx", (d) => yDataScale(d.throw.endLocation[0].y))
-        .attr("cy", (d) => zAxis(d.throw.endLocation[0].z))
+        .attr("cx", (d) => yDataScale(d.throw.endLocation[0]))
+        .attr("cy", (d) => zAxis(d.throw.endLocation[1]))
         .attr("r", 0)
         .transition()
         .duration(300)
@@ -69,8 +69,8 @@ export default function GoalChartD3Declarative({ throws }) {
     if (contoursToggle) {
       const contours = d3
         .contourDensity()
-        .x((d) => yDataScale(d.throw.endLocation[0].y))
-        .y((d) => zAxis(d.throw.endLocation[0].z))
+        .x((d) => yDataScale(d.throw.endLocation[0]))
+        .y((d) => zAxis(d.throw.endLocation[1]))
         .size([width, height])
         .thresholds(thresholds)
         .bandwidth(bandwidth)(data);

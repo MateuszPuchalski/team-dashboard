@@ -2,8 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { useQuery, gql } from "@apollo/client";
 
-import useClubs from "../../Hooks/useClubs";
-
 const ClubsWrapper = styled.div`
   display: flex;
   flex-direction: row;

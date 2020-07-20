@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { useQuery, useLazyQuery, gql } from "@apollo/client";
 import styled from "styled-components";
 import CourtChartD3Combined from "./CourtChartD3Combined";
 import GoalChartD3Combined from "./GoalChartD3Combined";
@@ -42,13 +43,31 @@ const Arrow = styled.img`
   margin: 0 5px;
 `;
 
+const THROWS_BY_PLAYER = gql`
+  query EventThrowByPlayer($playerId: String!) {
+    eventThrowByPlayer(playerId: $playerId) {
+      type
+      ... on ThrowEvent {
+        id
+        location
+        throw {
+          endLocation
+          outcome
+          technique
+        }
+      }
+    }
+  }
+`;
+
 export default function ChartAnalysis() {
   const [rect, ref] = useClientRect();
   const [clubId, setClubId] = useState({ name: "Choose Club" });
   const [playerId, setPlayerId] = useState({
     name: "Choose Player",
   });
-  const [loadingEvents, events] = useEvents({ playerId: playerId._id });
+  // const [loadingEvents, events] = useEvents({ playerId: playerId._id });
+  const [getThrows, { loading, data }] = useLazyQuery(THROWS_BY_PLAYER);
   const [throws, setThrows] = useState([]);
   const [section, setSection] = useState([[], []]);
   const [filteredThrows, setFilteredThrows] = useState([]);
@@ -56,24 +75,42 @@ export default function ChartAnalysis() {
   const [clubDropdown, toggleClubDropdown] = useState(false);
 
   useEffect(() => {
-    const filteredData = events.filter(
-      (event) =>
-        event.type == "Throw" &&
-        event.throw &&
-        event.throw.type != "7m" &&
-        event.throw.outcome != "Blocked"
-    );
-    setThrows(filteredData);
-  }, [events]);
+    console.log({ graphEvents: data });
+  }, [data]);
+
+  useEffect(() => {
+    if (playerId !== "Choose Player") {
+      getThrows({
+        variables: {
+          playerId: playerId.id,
+        },
+      });
+    }
+  }, [playerId]);
+
+  useEffect(() => {
+    if (data) {
+      const filteredData = data.eventThrowByPlayer.filter(
+        (event) =>
+          event.type == "Throw" &&
+          event.location &&
+          event.throw &&
+          event.throw.endLocation &&
+          event.throw.type != "7m" &&
+          event.throw.outcome != "Blocked"
+      );
+      setThrows(filteredData);
+    }
+  }, [data]);
 
   useEffect(() => {
     const [[x0, y0], [x1, y1]] = section;
     const filtered = throws.filter((item) => {
       return (
-        item.location[0].x >= x0 &&
-        item.location[0].x <= x1 &&
-        item.location[0].y <= y0 &&
-        item.location[0].y >= y1
+        item.location[0] >= x0 &&
+        item.location[0] <= x1 &&
+        item.location[1] <= y0 &&
+        item.location[1] >= y1
       );
     });
     setFilteredThrows(filtered);
@@ -109,7 +146,7 @@ export default function ChartAnalysis() {
         <PlayersList
           dropdown={playerDropdown}
           toggle={togglePlayerDropdown}
-          clubId={clubId}
+          clubId={clubId.id}
           selectPlayer={setPlayerId}
         />
       )}

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useQuery, gql } from "@apollo/client";
-import usePlayers from "../../Hooks/usePlayers";
 
 const PlayersWrapper = styled.div`
   display: flex;
@@ -35,6 +34,7 @@ const Player = styled.div`
 const CLUB_PLAYERS = gql`
   query($clubId: String!) {
     playerByClub(clubId: $clubId) {
+      id
       name
       avatar
     }

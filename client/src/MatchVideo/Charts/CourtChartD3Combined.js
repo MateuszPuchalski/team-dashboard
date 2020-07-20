@@ -196,8 +196,8 @@ export default function CourtChartD3Declarative({ throws, setSection }) {
     circle
       .enter()
       .append("circle")
-      .attr("cx", (d) => xAxis(d.location[0].x) || xAxis(d.location.x))
-      .attr("cy", (d) => yAxis(d.location[0].y) || yAxis(d.location.y))
+      .attr("cx", (d) => xAxis(d.location[0]))
+      .attr("cy", (d) => yAxis(d.location[1]))
       .attr("r", 0)
       .transition()
       .duration(300)
