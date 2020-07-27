@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
-import useEvents from "../../Hooks/useEvents";
-import useMatches from "../../Hooks/useMatches";
 import { useQuery, gql } from "@apollo/client";
 
 import EventCard from "./EventCard";
