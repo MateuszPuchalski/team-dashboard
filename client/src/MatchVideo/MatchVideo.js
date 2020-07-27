@@ -6,9 +6,7 @@ import EventList from "./EventList/EventList";
 import { useQuery, gql } from "@apollo/client";
 
 import EventPicker from "./EventPicker/components/EventPicker";
-
-import useMatches from "../Hooks/useMatches";
-
+import Stats from "../Stats/Stats";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row-reverse;
@@ -17,9 +15,20 @@ const Vid = styled.div`
   position: relative;
   width: 100%;
   height: 100vh;
-  overflow-y: hidden;
   overflow-x: hidden;
   background: rgba(255, 255, 255, 0.4);
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.1);
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.3);
+  }
 `;
 
 const AddEvent = styled.div`
@@ -84,6 +93,7 @@ export default function MatchVideo() {
             ytId={data.matchById.ytId}
             vidRef={vidRef}
           />
+          <Stats matchId={matchId} />
         </Vid>
       </Wrapper>
     </>
