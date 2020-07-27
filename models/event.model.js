@@ -32,12 +32,23 @@ const Throw = Event.discriminator(
       ref: "Club",
     },
     location: [Number],
+    playPattern: {
+      type: String,
+      enum: ["Regular PLay", "Fast Break"],
+    },
     throw: {
       endLocation: [Number],
-      outcome: { type: String, enum: ["Goal", "Saved", "Miss", "Blocked"] },
+      outcome: {
+        type: String,
+        enum: ["Goal", "Saved", "Miss", "Blocked", "Post"],
+      },
       technique: {
         type: String,
-        enum: ["Jump Shot", "Hip Shot", "Overarm Shot"],
+        enum: ["Jump Shot", "Hip Shot", "Overarm Shot", "Spin Shot", "Lob"],
+      },
+      type: {
+        type: String,
+        enum: ["7m", "Free Throw", "Open Play"],
       },
     },
   })
@@ -53,6 +64,10 @@ const Turnover = Event.discriminator(
     team: {
       type: Schema.Types.ObjectId,
       ref: "Club",
+    },
+    playPattern: {
+      type: String,
+      enum: ["Regular PLay", "Fast Break"],
     },
     location: [Number],
     turnover: { type: { type: String, enum: ["Pass", "Catch", "Dribble"] } },
