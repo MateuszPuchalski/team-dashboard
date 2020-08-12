@@ -3,9 +3,9 @@ import { useQuery, gql } from "@apollo/client";
 
 const SET_MATCH_THROW_EFFICIENCY = "SET_MATCH_THROW_EFFICIENCY";
 const SET_HOMETEAM = "SET_HOMETEAM";
-const SET_HOMETEAM_THROW_EFFICIENCY = "SET_HOMETEAM_THROW_EFFICIENCY";
+const SET_HOMETEAM_SUMMARY = "SET_HOMETEAM_SUMMARY";
 const SET_AWAYTEAM = "SET_AWAYTEAM";
-const SET_AWAYTEAM_THROW_EFFICIENCY = "SET_AWAYTEAM_THROW_EFFICIENCY";
+const SET_AWAYTEAM_SUMMARY = "SET_AWAYTEAM_SUMMARY";
 const SET_MATCH_SUMMARY = "SET_MATCH_SUMMARY";
 const MATCH = gql`
   query Match($matchId: String!) {
@@ -95,21 +95,21 @@ const reducer = (state, action) => {
     case SET_AWAYTEAM:
       return { ...state, awayTeam: action.paylode };
       break;
-    case SET_HOMETEAM_THROW_EFFICIENCY:
+    case SET_HOMETEAM_SUMMARY:
       return {
         ...state,
         homeTeam: {
           ...state.homeTeam,
-          throws: action.paylode.throws,
+          ...action.paylode,
         },
       };
       break;
-    case SET_AWAYTEAM_THROW_EFFICIENCY:
+    case SET_AWAYTEAM_SUMMARY:
       return {
         ...state,
         awayTeam: {
           ...state.awayTeam,
-          throws: action.paylode.throws,
+          ...action.paylode,
         },
       };
       break;
@@ -147,11 +147,11 @@ export default function useMatchStats(matchId) {
       dispatch({ type: SET_HOMETEAM, paylode: data.matchById.homeTeam });
       dispatch({ type: SET_AWAYTEAM, paylode: data.matchById.awayTeam });
       dispatch({
-        type: SET_HOMETEAM_THROW_EFFICIENCY,
+        type: SET_HOMETEAM_SUMMARY,
         paylode: matchEventSummary(homeTeamEvents),
       });
       dispatch({
-        type: SET_AWAYTEAM_THROW_EFFICIENCY,
+        type: SET_AWAYTEAM_SUMMARY,
         paylode: matchEventSummary(awayTeamEvents),
       });
     }
