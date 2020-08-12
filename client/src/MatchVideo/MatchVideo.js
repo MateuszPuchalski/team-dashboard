@@ -1,15 +1,19 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import TopBar from "./TopBar";
 import styled from "styled-components";
 import Video from "./Video";
 import EventList from "./EventList/EventList";
 import { useQuery, gql } from "@apollo/client";
 
-import EventPicker from "./EventPicker/components/EventPicker";
-import Stats from "../Stats/Stats";
-const Wrapper = styled.div`
+import EventPicker from "./EventPicker2/EventPicker";
+const Main = styled.div`
   display: flex;
   flex-direction: row-reverse;
+`;
+const Wrapper = styled.div`
+  // display: flex;
+  // flex-direction: row-reverse;
 `;
 const Vid = styled.div`
   position: relative;
@@ -84,17 +88,20 @@ export default function MatchVideo() {
   return (
     <>
       <Wrapper>
-        <ShowEvent>
-          <EventList ytVideoRef={ytVideoRef} matchId={matchId} />
-        </ShowEvent>
-        <Vid ref={vidRef}>
-          <Video
-            ytVideoRef={ytVideoRef}
-            ytId={data.matchById.ytId}
-            vidRef={vidRef}
-          />
-          <Stats matchId={matchId} />
-        </Vid>
+        <TopBar />
+        <Main>
+          <ShowEvent>
+            <EventPicker ytVideoRef={ytVideoRef} />
+            <EventList ytVideoRef={ytVideoRef} matchId={matchId} />
+          </ShowEvent>
+          <Vid ref={vidRef}>
+            <Video
+              ytVideoRef={ytVideoRef}
+              ytId={data.matchById.ytId}
+              vidRef={vidRef}
+            />
+          </Vid>
+        </Main>
       </Wrapper>
     </>
   );
