@@ -2,8 +2,10 @@ const express = require("express");
 const cloudinary = require("cloudinary").v2;
 const path = require("path");
 
-const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+
+const resolvers = require("./resolvers");
+const typeDefs = require("./typeDefs");
 
 require("dotenv").config();
 
@@ -15,7 +17,11 @@ const EventModel = require("./models/event.model");
 const MatchModel = require("./models/match.model");
 const UserModel = require("./models/user.model");
 
-const { ApolloServer, gql, AuthenticationError } = require('apollo-server-express');
+const {
+  ApolloServer,
+  gql,
+  AuthenticationError,
+} = require("apollo-server-express");
 
 const mongoose = require("mongoose");
 
@@ -54,311 +60,6 @@ app.disable("x-powered-by");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const typeDefs = gql`
-  type Mutation {
-    addSomeEvent(matchId: String!, type: String!, timestamp: Float!): Event
-    addThrowEvent(
-      matchId: String!
-      player: String!
-      team: String!
-      type: String!
-      location: [Float]!
-      endLocation: [Float]!
-      outcome: String
-      technique: String
-      timestamp: Float!
-    ): Event
-    addPunishmentEvent(
-      matchId: String!
-      player: String!
-      team: String!
-      type: String!
-      location: [Float]!
-      punishmentType: String!
-      timestamp: Float!
-    ): Event
-    addTurnoverEvent(
-      matchId: String!
-      player: String!
-      team: String!
-      type: String!
-      location: [Float]!
-      turnoverType: String!
-      timestamp: Float!
-    ): Event
-    login(email: String!, password: String!): AuthData
-    createUser(email: String!, password: String!, role: [String!]!): User
-  }
-  type Query {
-    testQuery: String
-    playerOne: Player
-    playerById(id: String!): Player
-    playerByClub(clubId: String!): [Player]!
-    playerMany: [Player]!
-    clubMany: [Club]!
-    eventMany: [Event]!
-    eventByMatch(matchId: String!): [Event]!
-    eventByPlayer(playerId: String!): [Event]!
-    eventThrowByPlayer(playerId: String!): [Event]!
-    matchMany: [Match]!
-    matchById(matchId: String!): Match
-  }
-  
-  type User {
-    id: ID!
-    email: String!
-    password: String!
-    role: [String!]!
-  }
-  type AuthData {
-    userId: ID!
-    token: String!
-    # tokenExpiration: Int!
-  }
-  type Player {
-    id: ID!
-    name: String!
-    currentClub: Club
-    position: String
-    weight: String
-    height: String
-    jerseyNumber: Int
-    avatar: String
-  }
-  type Match {
-    id: ID!
-    date: String
-    homeTeam: Club!
-    awayTeam: Club!
-    homeScore: Int
-    awayScore: Int
-    ytId: String
-  }
-
-  type Club {
-    id: ID!
-    name: String
-    logo: String
-    players: [Player]
-  }
-  interface Event {
-    id: ID!
-    matchId: String
-    type: String
-    timestamp: Float
-  }
-  type SomeEvent implements Event {
-    id: ID!
-    matchId: String!
-    type: String
-    timestamp: Float!
-  }
-  type ThrowEvent implements Event {
-    id: ID!
-    matchId: String
-    team: String
-    type: String
-    timestamp: Float
-    player: Player
-    location: [Float]
-    throw: Throw
-  }
-  type Throw {
-    endLocation: [Float]
-    outcome: String
-    technique: String
-  }
-  type TurnoverEvent implements Event {
-    id: ID!
-    matchId: String
-    team: String
-    type: String
-    timestamp: Float
-    player: Player
-    location: [Float]
-    turnover: Turnover
-  }
-  type Turnover {
-    type: String
-  }
-  type PunishmentEvent implements Event {
-    id: ID!
-    matchId: String
-    team: String
-    type: String
-    timestamp: Float
-    player: Player
-    location: [Float]
-    punishment: Punishment
-  }
-  type Punishment {
-    type: String
-  }
-`;
-
-const resolvers = {
-  Event: {
-    __resolveType(event, context, info) {
-      if (event.throw) {
-        return "ThrowEvent";
-      }
-      if (event.turnover) {
-        return "TurnoverEvent";
-      }
-      if (event.punishment) {
-        return "PunishmentEvent";
-      }
-      return "SomeEvent";
-    },
-  },
-
-  Club: {
-    players: (parent) => {
-      return PlayerModel.find({
-        currentClub: mongoose.Types.ObjectId(parent.id),
-      });
-    },
-  },
-  Player: {
-    currentClub: async (parent) => {
-      return await ClubModel.findOne({
-        _id: parent.currentClub,
-      });
-    },
-  },
-
-  Mutation: {
-    login: async (parent, args, {req}) => {
-      const user = await UserModel.findOne({email: args.email})
-      if(!user) throw new AuthenticationError("USER DOESNT EXIST")
-      const isEqual = await bcrypt.compare(args.password, user.password);
-      if(!isEqual) throw new AuthenticationError("INCORECT PASSWORD")
-      const token = jwt.sign(
-        { email: args.email },
-        SECRET,
-        { expiresIn: 3600 }
-      );
-      console.log(user)
-      return {userId: user.id, token: token}
-    },
-    addThrowEvent: (_, args) => {
-      console.log(args);
-      const ThrowEvent = new EventModel({
-        matchId: args.matchId,
-        player: args.player,
-        team: args.team,
-        type: args.type,
-        location: args.location,
-        throw: {
-          endLocation: args.endLocation,
-          outcome: args.outcome,
-          technique: args.technique,
-        },
-        timestamp: args.timestamp,
-      });
-      ThrowEvent.save();
-      return ThrowEvent;
-    },
-    addSomeEvent: (_, args) => {
-      console.log(args);
-      const SomeEvent = new EventModel({
-        matchId: args.matchId,
-
-        type: args.type,
-
-        timestamp: args.timestamp,
-      });
-      SomeEvent.save();
-      return SomeEvent;
-    },
-    addTurnoverEvent: (_, args) => {
-      console.log(args);
-      const TurnoverEvent = new EventModel({
-        matchId: args.matchId,
-        player: args.player,
-        team: args.team,
-        type: args.type,
-        location: args.location,
-        turnover: {
-          type: args.turnoverType,
-        },
-        timestamp: args.timestamp,
-      });
-      TurnoverEvent.save();
-      return TurnoverEvent;
-    },
-    addPunishmentEvent: (_, args) => {
-      console.log(args);
-      const PunishmentEvent = new EventModel({
-        matchId: args.matchId,
-        player: args.player,
-        team: args.team,
-        type: args.type,
-        location: args.location,
-        punishment: {
-          type: args.punishmentType,
-        },
-        timestamp: args.timestamp,
-      });
-      PunishmentEvent.save();
-      return PunishmentEvent;
-    },
-    createUser: (_, args) => {
-      const newUser = new UserModel({
-        role: args.role,
-        email: args.email,
-        password: args.password,
-      });
-      bcrypt.hash(newUser.password, 10, (err, hash) => {
-        if (err) throw err;
-        newUser.password = hash;
-        newUser.save().then((user) => {
-          jwt.sign(
-            { email: user.email },
-            SECRET,
-            { expiresIn: 3600 },
-            (err, token) => {
-              if (err) throw err;
-              console.log(newUser);
-            }
-          );
-        });
-      });
-      return newUser;
-    },
-  },
-
-  Query: {
-    
-    testQuery: (parent,args,context)=> console.log(context) ,
-    playerOne: () => PlayerModel.findOne().populate(["currentClub"]),
-    playerMany: () => PlayerModel.find().populate(["currentClub"]),
-    playerById: (_, args) =>
-      PlayerModel.findById(args.id).populate(["currentClub"]),
-    playerByClub: (_, args) =>
-      PlayerModel.find({ currentClub: args.clubId }).populate(["currentClub"]),
-
-    clubMany: () => ClubModel.find(),
-    eventMany: () => EventModel.find(),
-    eventByMatch: (_, args) =>
-      EventModel.find({
-        matchId: mongoose.Types.ObjectId(args.matchId),
-      }).populate(["player"]),
-    eventByPlayer: (_, args) =>
-      EventModel.find({
-        player: mongoose.Types.ObjectId(args.playerId),
-      }),
-    eventThrowByPlayer: (_, args) =>
-      EventModel.find({
-        player: mongoose.Types.ObjectId(args.playerId),
-        type: "Throw",
-      }),
-    matchMany: () => MatchModel.find().populate(["homeTeam", "awayTeam"]),
-    matchById: (_, args) =>
-      MatchModel.findById(args.matchId).populate(["homeTeam", "awayTeam"]),
-  },
-};
-
 if (process.env.NODE_ENV === "production") {
   // Set static folder
   app.use(express.static("client/build"));
@@ -369,14 +70,27 @@ if (process.env.NODE_ENV === "production") {
 }
 const port = process.env.PORT || 5000;
 
-const server = new ApolloServer({ 
-  typeDefs, 
-  resolvers, 
-  context: ({req,res}) => ({req,res})
-})
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: ({ req }) => {
+    try {
+      const token = req.headers.authorization;
+
+      if (!token) {
+        return { user: null };
+      }
+
+      const signature = token.split(" ")[1];
+      const decoded = jwt.verify(signature, SECRET);
+      console.log({ DECODED: decoded });
+      return { user: decoded.id };
+    } catch (error) {}
+  },
+});
 
 server.applyMiddleware({ app });
 
 app.listen(port, () =>
   console.log(`🚀 Server ready at http://localhost:5000${server.graphqlPath}`)
-)
+);
