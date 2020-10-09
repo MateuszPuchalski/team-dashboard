@@ -108,6 +108,7 @@ export default function Login() {
   );
   return (
     <Page>
+      <Link to={"/throws"}>THROWS</Link>
       <Wrapper>
         <FormWrapper>
           <h1>{form} to Dash.</h1>
