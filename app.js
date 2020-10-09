@@ -50,14 +50,7 @@ app.disable("x-powered-by");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-if (process.env.NODE_ENV === "production") {
-  // Set static folder
-  app.use(express.static("client/build"));
 
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "build", "index.html"));
-  });
-}
 
 const server = new ApolloServer({
   typeDefs,
@@ -78,7 +71,17 @@ const server = new ApolloServer({
   },
 });
 
+if (process.env.NODE_ENV === "production") {
+  // Set static folder
+  app.use(express.static("client/build"));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "build", "index.html"));
+  });
+}
+
 server.applyMiddleware({ app });
+
 
 app.listen({port: process.env.PORT || 5000}, () =>
   console.log(`🚀 Server ready at http://localhost:5000${server.graphqlPath}`)
