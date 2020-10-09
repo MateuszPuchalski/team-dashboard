@@ -80,7 +80,7 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-server.applyMiddleware({ app });
+server.applyMiddleware({ app, path: "/graphql" });
 
 
 app.listen({port: process.env.PORT || 5000}, () =>
