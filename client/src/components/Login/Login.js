@@ -20,7 +20,7 @@ const Page = styled.div`
     rgba(254, 95, 100, 1) 0%,
     rgba(250, 25, 154, 1) 100%
   );
-
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -108,12 +108,6 @@ export default function Login() {
   );
   return (
     <Page>
-      <StyledLink
-        to="/testing"
-        style={{ position: "absolute", left: "10px", top: "10px" }}
-      >
-        <TextMovingButton text="TESTING" loading={false} />
-      </StyledLink>
       <Wrapper>
         <FormWrapper>
           <h1>{form} to Dash.</h1>

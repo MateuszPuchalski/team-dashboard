@@ -5,61 +5,18 @@ import useClientRect from "../../Hooks/useClientRect";
 
 import Players from "./Players";
 import EventTypes from "./EventTypes";
-import GoalChart from "./GoalChart";
-import CourtChart from "./CourtChart";
+import GoalChart from "./Goal";
+import CourtChart from "./Court";
 import TurnoverTypes from "./TurnoverTypes";
 import ThrowTechniques from "./ThrowTechniques";
 import ThrowOutcomes from "./ThrowOutcomes";
 import PunishmentTypes from "./PunishmentTypes";
 import TextMovingButton from "../../components/TextMovingButton";
+import Checkbox from "../../components/Checkbox";
 
-import {
-  SELECT_TYPE,
-  SELECT_THROW_OUTCOME,
-  SELECT_THROW_TECHNIQUE,
-  SELECT_TURNOVER_TYPE,
-  SELECT_PUNISHMENT_TYPE,
-  SELECT_PLAYER,
-  SET_END_LOCATION,
-  SET_LOCATION,
-} from "./constants";
+import EventDescription from "./EventDescription";
 
-const reducer = (state, action) => {
-  switch (action.type) {
-    case SELECT_TYPE:
-      return { ...state, type: action.paylode };
-      break;
-    case SELECT_PLAYER:
-      return { ...state, player: action.paylode };
-      break;
-    case SELECT_THROW_OUTCOME:
-      return { ...state, throw: { ...state.throw, outcome: action.paylode } };
-      break;
-    case SELECT_THROW_TECHNIQUE:
-      return { ...state, throw: { ...state.throw, technique: action.paylode } };
-      break;
-    case SELECT_TURNOVER_TYPE:
-      return { ...state, turnover: { type: action.paylode } };
-      break;
-    case SELECT_PUNISHMENT_TYPE:
-      return { ...state, punishment: { type: action.paylode } };
-      break;
-    case SET_END_LOCATION:
-      return {
-        ...state,
-        throw: { ...state.throw, endLocation: action.paylode },
-      };
-      break;
-    case SET_LOCATION:
-      return {
-        ...state,
-        location: action.paylode,
-      };
-      break;
-    default:
-      break;
-  }
-};
+import { reducer } from "./EventReducer";
 
 const GET_MATCH = gql`
   query($matchId: String!) {
@@ -184,11 +141,12 @@ const ADD_SOME_EVENT = gql`
 export default function EventPicker({ ytVideoRef }) {
   const { matchId } = useParams();
   const [rect, ref] = useClientRect();
-  const [state, dispatch] = useReducer(reducer, { matchId: matchId });
   const [addThrowEvent] = useMutation(ADD_THROW_EVENT);
   const [addTurnoverEvent] = useMutation(ADD_TURNOVER_EVENT);
   const [addPunishmentEvent] = useMutation(ADD_PUNISHMENT_EVENT);
   const [addSomeEvent] = useMutation(ADD_SOME_EVENT);
+
+  const [state, dispatch] = useReducer(reducer, { matchId: matchId });
 
   const { loading, error, data } = useQuery(GET_MATCH, {
     variables: { matchId: matchId },
@@ -196,24 +154,29 @@ export default function EventPicker({ ytVideoRef }) {
 
   return (
     <div ref={ref}>
+      <EventDescription parent={rect} state={state} dispatch={dispatch} />
+      <div>{JSON.stringify(state)}</div>
+
+      <Checkbox />
       <EventTypes dispatch={dispatch} state={state} />
       {state.type == "Throw" && (
-        <ThrowOutcomes state={state} dispatch={dispatch} />
+        <>
+          <ThrowOutcomes state={state} dispatch={dispatch} />
+          <ThrowTechniques state={state} dispatch={dispatch} />
+          <GoalChart state={state} parent={rect} dispatch={dispatch} />
+        </>
       )}
-      {state.type == "Throw" && (
-        <ThrowTechniques state={state} dispatch={dispatch} />
-      )}
+
       {state.type == "Punishment" && (
         <PunishmentTypes state={state} dispatch={dispatch} />
       )}
       {state.type == "Turnover" && (
         <TurnoverTypes state={state} dispatch={dispatch} />
       )}
-      {state.type == "Throw" && <GoalChart parent={rect} dispatch={dispatch} />}
       {(state.type == "Throw" ||
         state.type == "Punishment" ||
         state.type == "Turnover") && (
-        <CourtChart parent={rect} dispatch={dispatch} />
+        <CourtChart state={state} parent={rect} dispatch={dispatch} />
       )}
       {!loading &&
         (state.type == "Throw" ||

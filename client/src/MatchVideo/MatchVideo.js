@@ -5,14 +5,21 @@ import styled from "styled-components";
 import Video from "./Video";
 import EventList from "./EventList/EventList";
 import { useQuery, gql } from "@apollo/client";
+import useClientRect from "../Hooks/useClientRect";
 
 import EventPicker from "./EventPicker2/EventPicker";
+import EventDescription from "./EventPicker2/EventDescription";
+
 const Main = styled.div`
   display: flex;
   flex-direction: row-reverse;
 `;
 const Wrapper = styled.div`
   // display: flex;
+  position: relative;
+  width: calc(100% - 5rem);
+
+  left: 5rem;
   // flex-direction: row-reverse;
 `;
 const Vid = styled.div`
@@ -81,6 +88,7 @@ export default function MatchVideo() {
   });
   const ytVideoRef = useRef(null);
   const vidRef = useRef(null);
+  const [rect, ref] = useClientRect();
 
   if (loading) return <h3>LOADING!!</h3>;
   if (error) return <h3>ERROR!! {error.message}</h3>;
@@ -88,10 +96,10 @@ export default function MatchVideo() {
   return (
     <>
       <Wrapper>
-        <TopBar />
+        {/* <TopBar /> */}
         <Main>
-          <ShowEvent>
-            <EventPicker ytVideoRef={ytVideoRef} />
+          <ShowEvent ref={ref}>
+            <EventDescription parent={rect} ytVideoRef={ytVideoRef} />
             <EventList ytVideoRef={ytVideoRef} matchId={matchId} />
           </ShowEvent>
           <Vid ref={vidRef}>

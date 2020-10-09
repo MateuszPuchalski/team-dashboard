@@ -30,6 +30,10 @@ const Capsule = styled.div`
     margin: 5px 5px;
     height: 25px;
   }
+  &:hover {
+    transform: scale(1.2);
+    cursor: pointer;
+  }
 `;
 
 const TECHNIQUE_TYPES = [

@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useSpring, animated, config } from "react-spring";
 import ClubPicker from "./ClubPicker";
+
 const PlayerFields = styled.div`
   margin-top: 10px;
 
@@ -27,6 +28,7 @@ const PlayerFields = styled.div`
     line-height: 1rem;
   }
 `;
+
 export default function RegisterPlayerFields() {
   const props = useSpring({
     from: {

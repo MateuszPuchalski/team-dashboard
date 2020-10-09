@@ -1,8 +1,4 @@
-const {
-  ApolloServer,
-  gql,
-  AuthenticationError,
-} = require("apollo-server-express");
+const { AuthenticationError } = require("apollo-server-express");
 const mongoose = require("mongoose");
 require("dotenv").config();
 
@@ -152,7 +148,7 @@ const resolvers = {
       const isEqual = await bcrypt.compare(args.password, user.password);
       if (!isEqual) throw new AuthenticationError("INCORECT PASSWORD");
       const token = jwt.sign({ email: args.email, id: user._id }, SECRET, {
-        expiresIn: 3600,
+        expiresIn: 360000,
       });
       return { userId: user.id, email: user.email, token: token };
     },

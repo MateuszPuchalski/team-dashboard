@@ -1,12 +1,19 @@
 import React, { useState } from "react";
 import { useSpring, animated } from "react-spring";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import { userActions } from "../../_actions";
-
 import TextMovingButton from "../TextMovingButton";
-import RegisterPlayerFields from "./RegisterPlayerFields";
-import RolePicker from "./RolePicker";
+import { useHistory } from "react-router-dom";
+
+import { gql, useMutation } from "@apollo/client";
+
+const CREATE_USER = gql`
+  mutation CreateUser($email: String!, $password: String!) {
+    createUser(email: $email, password: $password) {
+      email
+      password
+    }
+  }
+`;
 
 const Form = styled.form`
   display: flex;
@@ -14,28 +21,31 @@ const Form = styled.form`
 `;
 
 export default function Login() {
-  const [role, setRole] = useState("Select Role");
-  const dispatch = useDispatch();
+  const history = useHistory();
 
-  const loggingIn = useSelector((state) => state.registration.loggingIn);
+  const [createUser, { data }] = useMutation(CREATE_USER);
 
   const handbleSubmit = (evt) => {
     evt.preventDefault();
 
-    dispatch(
-      userActions.register({
-        role,
-        password: evt.target.password.value,
+    createUser({
+      variables: {
         email: evt.target.email.value,
-      })
-    );
+        password: evt.target.password.value,
+      },
+    })
+      .then((data) => history.push("/matches"))
+      .catch((error) => {
+        console.log(error);
+        history.push("/error");
+      });
   };
 
   return (
     <Form onSubmit={handbleSubmit}>
-      <RolePicker role={role} setRole={setRole} />
-      {role == "Player" ? <RegisterPlayerFields /> : null}
-      <TextMovingButton text="Register" loading={loggingIn} />
+      <input type="email" name="email" />
+      <input type="password" name="password" />
+      <TextMovingButton text={"REGISTER"} />
     </Form>
   );
 }

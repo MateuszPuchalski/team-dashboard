@@ -8,90 +8,94 @@ const primarySize = "3rem";
 
 const Card = styled.div`
   color: black;
-  position: relative;
-  background: #eeeeee;
-  border-radius: 0.5rem;
-  margin: 1rem 0;
+  margin: 10px;
+  background: #fff;
+  width: 600px;
+  border-radius: 3px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.16);
+`;
+const Result = styled.div`
+  padding: 16px 80px 0 80px;
   display: flex;
+  justify-content: space-around;
+`;
+const CompetitionName = styled.div`
+  margin: 8px 0;
+  color: #757575;
+  text-align: center;
+  font-size: 12px;
+`;
+const YoutubeFooter = styled.div`
+  color: black;
+  box-sizing: border-box;
+  margin: 0 26px;
+  width: 548px;
+  height: 64px;
+  border-top: solid 1px #ebebeb;
+
+  display: flex;
+  justify-content: flex-start;
   align-items: center;
-  justify-content: space-evenly;
-  text-decoration: none;
-  width: 25rem;
-  height: 8rem;
-  box-shadow: -12px -12px 12px 0 rgba(255, 255, 255, 1),
-    12px 12px 12px 0 rgba(0, 0, 0, 0.1);
-  transition: 333ms box-shadow;
-
-  &:hover {
-    box-shadow: 0px 0px 0px 0 rgba(255, 255, 255, 1),
-      0px 0px 0px 0 rgba(0, 0, 0, 0.1),
-      inset 12px 12px 12px 0 rgba(0, 0, 0, 0.1),
-      inset -12px -12px 12px 0 rgba(255, 255, 255, 1);
-  }
-
-  #yt {
-    width: 1.5rem;
-    position: absolute;
-    bottom: 2rem;
-    left: 0.5rem;
-  }
-
-  img {
-    width: ${primarySize};
-  }
-
-  .score {
-    font-size: 3.5rem;
-    font-weight: bold;
-    margin: 1rem;
-  }
-
-  .midContainer {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    margin: 1rem;
-    font-weight: bold;
-    #date {
-      width: 5rem;
-      display: flex;
-      flex-direction: row;
-      position: absolute;
-      font-size: 0.75rem;
-      top: 2.5rem;
-      right: -0.75rem;
-      opacity: 0.3;
-      #calendar {
-        height: 1rem;
-      }
-    }
-  }
+`;
+const Score = styled.div`
+  color: black;
+  width: 45%;
+  height: 48px;
+  text-align: center;
+  font-size: 36px;
+  display: flex;
+  justify-content: space-between;
+`;
+const Team = styled.div`
+  width: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+const TeamName = styled.div`
+  text-align: center;
+  line-height: 20px;
+  font-size: 14px;
+`;
+const Logo = styled.img`
+  width: 48px;
+  height: 48px;
+`;
+const YtLogo = styled.img`
+  margin-right: 8px;
+  height: 20px;
 `;
 export default function MatchCard({ match }) {
   const date = new Date(match.matchDate);
   return (
     <Card>
-      <div id="home" classname="logoScoreContainer">
-        <img src={match.homeTeam.logo} alt={match.homeTeam.name} />
-        <span className="score">{match.homeScore}</span>
-      </div>
-      <div>
-        <div className="midContainer">
-          <span>FINAL</span>
+      <Result>
+        <Team>
+          <Logo src={match.homeTeam.logo} alt={match.homeTeam.name} />
+          <TeamName>{match.homeTeam.name}</TeamName>
+        </Team>
+        <Score>
+          <div>{match.homeScore}</div>
+          <div style={{ color: "#757575" }}>-</div>
+          <div>{match.awayScore}</div>
+        </Score>
+        <Team>
+          <Logo src={match.awayTeam.logo} alt={match.awayTeam.name} />
+          <TeamName>{match.awayTeam.name}</TeamName>
+        </Team>
+      </Result>
+      <CompetitionName>II Liga Piłki Ręcznej</CompetitionName>
 
-          <div id="date">
-            <img id="calendar" src={`${process.env.PUBLIC_URL}/calendar.svg`} />
-            {date.toLocaleDateString("pl-PL")}
+      {/* <Logo id="calendar" src={`${process.env.PUBLIC_URL}/calendar.svg`} />
+      {date.toLocaleDateString("pl-PL")} */}
+      {match.ytId ? (
+        <YoutubeFooter>
+          <div style={{ display: "flex" }}>
+            <YtLogo src={`${process.env.PUBLIC_URL}/youtube.svg`} />
+            <div>Game Video</div>
           </div>
-          {match.ytId ? (
-            <img id="yt" src={`${process.env.PUBLIC_URL}/youtube.svg`} />
-          ) : null}
-        </div>
-      </div>
-      <div id="away" classname="logoScoreContainer">
-        <span className="score">{match.awayScore}</span>
-        <img src={match.awayTeam.logo} alt={match.awayTeam.name} />
-      </div>
+        </YoutubeFooter>
+      ) : null}
     </Card>
   );
 }

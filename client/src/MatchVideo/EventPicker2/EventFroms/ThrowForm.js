@@ -2,10 +2,11 @@ import React from "react";
 
 import styled from "styled-components";
 import Checkbox from "../../../components/Checkbox";
-import PlayerPickerForm from "./PlayerPickerForm";
+
 import GoalChart from "../Goal";
 import CourtChart from "../Court";
 import TechniquePicker from "./TechniquePicker";
+import PlayerPickerForm from "./PlayerPickerForm";
 
 const CapsuleWrapper = styled.div`
   display: inline-flex;
@@ -40,13 +41,12 @@ const Capsule = styled.div`
 export default function ThrowForm({ state, dispatch, parent }) {
   return (
     <>
+      Player: <PlayerPickerForm state={state} dispatch={dispatch} />
       <Capsule
         onClick={(e) => {
           e.stopPropagation();
         }}
-      >
-        Player: <PlayerPickerForm state={state} dispatch={dispatch} />
-      </Capsule>
+      ></Capsule>
       <Capsule
         onClick={(e) => {
           e.stopPropagation();

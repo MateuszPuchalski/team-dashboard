@@ -86,32 +86,55 @@ export default function PlayerPickerForm({ dispatch, state }) {
   if (loading) return <PlayerDiv>Loading...</PlayerDiv>;
   console.log(data);
   return (
-    <PlayerWrapper>
-      {state.player ? (
+    <>
+      {state.player && !togglePlayers ? (
         <PlayerDiv
-          onClick={() => {
+          onClick={(e) => {
             setTogglePlayers(!togglePlayers);
+            e.stopPropagation();
           }}
         >
           <img src={state.player.avatar} /> {state.player.name}
         </PlayerDiv>
-      ) : null}
-
-      {togglePlayers === true
-        ? data.matchById.awayTeam.players.map((player) => {
-            return (
-              <PlayerDiv
-                key={player.id}
-                onClick={() => {
-                  dispatch({ type: SELECT_PLAYER, paylode: player });
-                  setTogglePlayers(!togglePlayers);
-                }}
-              >
-                <img src={player.avatar} /> {player.name}
-              </PlayerDiv>
-            );
-          })
-        : null}
-    </PlayerWrapper>
+      ) : (
+        <PlayerWrapper>
+          Away:
+          {togglePlayers === true
+            ? data.matchById.awayTeam.players.map((player) => {
+                return (
+                  <PlayerDiv
+                    key={player.id}
+                    onClick={(e) => {
+                      dispatch({ type: SELECT_PLAYER, paylode: player });
+                      setTogglePlayers(!togglePlayers);
+                      e.stopPropagation();
+                    }}
+                  >
+                    <img src={player.avatar} /> {player.name}
+                  </PlayerDiv>
+                );
+              })
+            : null}
+            <div style={{width: "100px", height: "50px"}}></div>
+            Home:
+          {togglePlayers === true
+            ? data.matchById.homeTeam.players.map((player) => {
+                return (
+                  <PlayerDiv
+                    key={player.id}
+                    onClick={(e) => {
+                      dispatch({ type: SELECT_PLAYER, paylode: player });
+                      setTogglePlayers(!togglePlayers);
+                      e.stopPropagation();
+                    }}
+                  >
+                    <img src={player.avatar} /> {player.name}
+                  </PlayerDiv>
+                );
+              })
+            : null}
+        </PlayerWrapper>
+      )}
+    </>
   );
 }

@@ -4,6 +4,7 @@ import { useMutation, gql } from "@apollo/client";
 import { Link } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
 import TextMovingButton from "../TextMovingButton";
+import { useHistory } from "react-router-dom";
 
 const Form = styled.form`
   display: flex;
@@ -31,20 +32,22 @@ const Inputs = styled.div`
 `;
 
 const LOGIN = gql`
-  mutation Login($email:String!, $password: String!){
-    login(email:$email, password:$password){
+  mutation Login($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      userId
       token
     }
   }
-`
+`;
 
 export default function Login() {
+  const history = useHistory();
   const [inputs, setInputs] = useState({
     email: "",
     password: "",
   });
   const { email, password } = inputs;
-  const [login,{data}] = useMutation(LOGIN)
+  const [login, { data }] = useMutation(LOGIN);
   const handleChange = (evt) => {
     const { name, value } = evt.target;
     setInputs((inputs) => ({ ...inputs, [name]: value }));
@@ -52,17 +55,25 @@ export default function Login() {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    login({variables: {
-      email:email,
-      password:password
-    }}).then(data => {
-      window.localStorage.setItem("token", "Bearer " + data.data.login.token)
+    login({
+      variables: {
+        email: email,
+        password: password,
+      },
     })
+      .then((data) => {
+        console.log({ FROMLOGIN: data });
+        window.localStorage.setItem("token", "Bearer " + data.data.login.token);
+        history.push(`/${data.data.login.userId}`);
+      })
+      .catch((error) => {
+        console.log(error);
+        history.push("/error");
+      });
   };
 
   return (
     <Form onSubmit={handleSubmit}>
-      {data && <h3>{data.login.token}</h3>}
       <Inputs>
         <div className="formGroup">
           <input

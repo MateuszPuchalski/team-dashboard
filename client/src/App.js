@@ -1,62 +1,85 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Route,
+  Redirect,
   Link,
   useHistory,
 } from "react-router-dom";
+//import { gql, useQuery } from "apollo-server-express";
 
-import Register from "./components/Login/Register";
-import Login from "./components/Login";
-import Login2 from "./components/Login/Login";
+import Login from "./components/Login/Login";
 import PrivateRoute from "./components/PrivateRoute";
 
-import Admin from "./components/Admin/Admin";
 import MatchVideo from "./MatchVideo/MatchVideo";
-import AdminPlayers from "./components/Admin/AdminPlayers";
-import EditAdminPlayers from "./components/Admin/EditAdminPlayers";
+
 import AdminSchowMatches from "./components/Admin/Matches/AdminSchowMatches";
 import AdminSchowPlayers from "./components/Admin/Players/AdminSchowPlayers";
 import Sidebar from "./components/Sidebar";
 import ProfilePage from "./components/ProfilePage/ProfilePage";
-import ClubSettings from "./components/ClubSettings";
+
 import ThrowAnalysis from "./ThrowAnalysis/ThrowAnalysis";
-import ProtectedRouteTest from "./testComponents/ProtectedRouteTest";
+import Stats from "./Stats/Stats";
+import ClubsList from "./components/ClubsList";
+import ClubPage from "./components/ClubPage";
+
+import RoleChooser from "./components/RoleChooser";
+import CurrentUser from "./components/CurrentUser";
+import Dabrowa from "./components/Dabrowa/Dabrowa";
 
 export default function App(props) {
   return (
     <>
-      {/* <Route path="/admin" component={Sidebar} /> */}
-      <PrivateRoute path={"/profile"}>
-        <ProfilePage />
-      </PrivateRoute>
+      {/* <PrivateRoute exact path="/:id">
+        <Sidebar />
 
-      <Route exact path="/">
-        <Login2 />
+        <CurrentUser />
+      </PrivateRoute> */}
+      {/* <Route path="/:id">
+      </Route> */}
+      <Route path="/role" component={RoleChooser} />
+      <Route path={"/throws"}>
+        <Dabrowa />
       </Route>
-
-      <Route exact path="/login">
+      <Route path={"/profile"}>
+        <ProfilePage />
+      </Route>
+      <Route exact path="/">
         <Login />
       </Route>
-      <Route exact path="/register" component={Register} />
+
       <Route exact path="/testing">
-        <ThrowAnalysis />
-      </Route>
-      <Route exact path="/protected">
-        <ProtectedRouteTest/>
+        {/* <ThrowAnalysis /> */}
+        <Stats />
       </Route>
 
-      <Route exact path="/admin" component={Admin} />
-      <Route exact path="/admin/club" component={ClubSettings} />
-      <Route exact path="/admin/matches" component={AdminSchowMatches} />
-      <Route exact path="/admin/matches/:matchId" component={MatchVideo} />
-      <Route exact path="/admin/players" component={AdminSchowPlayers} />
-      <Route exact path="/admin/players/:playerId" component={AdminPlayers} />
-      <Route
-        exact
-        path="/admin/players/:playerId/edit"
-        component={EditAdminPlayers}
-      />
+      {/* <Route exact path="/admin/matches" component={AdminSchowMatches} /> */}
+      <Route exact path="/clubs">
+        <Sidebar />
+        <ClubsList />
+      </Route>
+      <Route exact path="/clubs/:clubId">
+        <Sidebar />
+        <ClubPage />
+      </Route>
+
+      <Route exact path="/matches">
+        <Sidebar />
+        <AdminSchowMatches />
+      </Route>
+      <Route exact path="/matches/:matchId">
+        <Sidebar />
+        <MatchVideo />
+      </Route>
+
+      <Route exact path="/matches/:matchId/stats">
+        <Sidebar />
+        <Stats />
+      </Route>
+      <Route exact path="/players">
+        <Sidebar />
+        <AdminSchowPlayers />
+      </Route>
     </>
   );
 }

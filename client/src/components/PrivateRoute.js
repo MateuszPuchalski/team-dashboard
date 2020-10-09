@@ -1,20 +1,16 @@
 import React from "react";
-
 import { Route, Redirect } from "react-router-dom";
-const fakeAuth = () => {
-  return true;
-};
-export default function PrivateRoute({ children, ...rest }) {
+import { useAuth } from "../auth";
+
+function PrivateRoute({ children, ...rest }) {
+  const isAuthenticated = useAuth();
+  console.log(isAuthenticated);
   return (
     <Route
       {...rest}
-      render={({ location }) =>
-        sessionStorage.getItem("user") ? (
-          children
-        ) : (
-          <Redirect to={{ pathname: "/", state: { from: location } }} />
-        )
-      }
+      render={(props) => (isAuthenticated ? children : <Redirect to="/" />)}
     />
   );
 }
+
+export default PrivateRoute;

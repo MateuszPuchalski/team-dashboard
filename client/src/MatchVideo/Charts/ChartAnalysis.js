@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useQuery, useLazyQuery, gql } from "@apollo/client";
+import { useLazyQuery, gql } from "@apollo/client";
 import styled from "styled-components";
 import CourtChartD3Combined from "./CourtChartD3Combined";
 import GoalChartD3Combined from "./GoalChartD3Combined";
 import PlayersList from "./PlayersList";
 import ClubsList from "./ClubsList";
 
-import useEvents from "../../Hooks/useEvents";
 const Wrapper = styled.div`
   background: rgba(0, 0, 0, 0.1);
   position: relative;

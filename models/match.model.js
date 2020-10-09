@@ -3,34 +3,38 @@ const Schema = mongoose.Schema;
 
 // Declare the Schema of the Mongo model
 var matchSchema = new Schema({
+  addedBy: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
   competition: {
     type: Schema.Types.ObjectId,
-    ref: "Competition"
+    ref: "Competition",
   },
   matchDate: {
-    type: Date
+    type: Date,
   },
   homeTeam: {
     type: Schema.Types.ObjectId,
     ref: "Club",
-    required: true
+    required: true,
   },
   awayTeam: {
     type: Schema.Types.ObjectId,
     ref: "Club",
-    required: true
+    required: true,
   },
   homeScore: {
     type: Number,
-    required: true
+    required: true,
   },
   awayScore: {
     type: Number,
-    required: true
+    required: true,
   },
   ytId: {
-    type: String
-  }
+    type: String,
+  },
 });
 
 //Export the model

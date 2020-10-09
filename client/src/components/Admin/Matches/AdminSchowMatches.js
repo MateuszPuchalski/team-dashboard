@@ -5,6 +5,7 @@ import { useQuery, gql } from "@apollo/client";
 import { Link, useRouteMatch, useLocation } from "react-router-dom";
 
 import MatchCard from "../../MatchCard";
+import AddMatch from "../../AddMatch";
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -15,8 +16,7 @@ const Wrapper = styled.div`
   text-decoration: none;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  margin: 10px;
-  padding: 10px;
+  margin-left: 80px;
 `;
 
 const MATCHES = gql`
@@ -56,6 +56,7 @@ export default function AdminSchowMatches() {
           <MatchCard match={match} />
         )
       )}
+      <AddMatch />
     </Wrapper>
   );
 }

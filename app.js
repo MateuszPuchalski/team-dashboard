@@ -11,17 +11,7 @@ require("dotenv").config();
 
 const SECRET = process.env.JWT_SECRET;
 
-const PlayerModel = require("./models/player.model");
-const ClubModel = require("./models/club.model");
-const EventModel = require("./models/event.model");
-const MatchModel = require("./models/match.model");
-const UserModel = require("./models/user.model");
-
-const {
-  ApolloServer,
-  gql,
-  AuthenticationError,
-} = require("apollo-server-express");
+const { ApolloServer } = require("apollo-server-express");
 
 const mongoose = require("mongoose");
 

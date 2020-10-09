@@ -11,7 +11,16 @@ const eventSchema = new Schema(
     type: {
       type: String,
       required: true,
-      enum: ["Throw", "Punishment", "Turnover", "Half Start", "Half End"],
+      enum: [
+        "Foul",
+        "Half Start",
+        "Half End",
+        "Interception",
+        "Throw",
+        "Turnover",
+        "Pass",
+        "Punishment",
+      ],
     },
     timestamp: Number,
   },
@@ -40,17 +49,44 @@ const Throw = Event.discriminator(
       endLocation: [Number],
       outcome: {
         type: String,
-        enum: ["Goal", "Saved", "Miss", "Blocked", "Post"],
+        enum: ["Goal", "Saved", "Miss", "Post", "Blocked"],
       },
       technique: {
         type: String,
-        enum: ["Jump Shot", "Hip Shot", "Overarm Shot", "Spin Shot", "Lob"],
+        enum: [
+          "Jump Shot",
+          "Hip Shot",
+          "Overarm Shot",
+          "Spin Shot",
+          "Lob",
+          "7m",
+        ],
       },
       type: {
         type: String,
-        enum: ["7m", "Free Throw", "Open Play"],
+        enum: ["7m", "Open Play"],
       },
     },
+  })
+);
+
+const Foul = Event.discriminator(
+  "Foul",
+  new Schema({
+    player: {
+      type: Schema.Types.ObjectId,
+      ref: "Player",
+    },
+    team: {
+      type: Schema.Types.ObjectId,
+      ref: "Club",
+    },
+    location: [Number],
+    punishment: {
+      type: String,
+      enum: ["2min", "Yellow Card", "Red Card", "Blue Card", "None"],
+    },
+    penalty: Boolean,
   })
 );
 
@@ -70,11 +106,34 @@ const Turnover = Event.discriminator(
       enum: ["Regular PLay", "Fast Break"],
     },
     location: [Number],
-    turnover: { type: { type: String, enum: ["Pass", "Catch", "Dribble"] } },
+    turnover: { type: String, enum: ["Pass", "Catch", "Dribble"] },
   })
 );
 
-const Punishment = Event.discriminator(
+const Pass = Event.discriminator(
+  "Pass",
+  new Schema({
+    player: {
+      type: Schema.Types.ObjectId,
+      ref: "Player",
+    },
+    team: {
+      type: Schema.Types.ObjectId,
+      ref: "Club",
+    },
+    playPattern: {
+      type: String,
+      enum: ["Regular PLay", "Fast Break"],
+    },
+    pass: {
+      recipient: { type: Schema.Types.ObjectId, ref: "Player" },
+      throwAssist: Boolean,
+      goalAssist: Boolean,
+    },
+  })
+);
+
+const BadBehaviour = Event.discriminator(
   "Punishment",
   new Schema({
     player: {

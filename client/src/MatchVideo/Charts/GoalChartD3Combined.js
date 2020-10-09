@@ -53,13 +53,10 @@ export default function GoalChartD3Declarative({ throws }) {
         .append("circle")
         .attr("cx", (d) => yDataScale(d.throw.endLocation[0]))
         .attr("cy", (d) => zAxis(d.throw.endLocation[1]))
-        .attr("r", 0)
-        .transition()
-        .duration(300)
         .attr("r", yAxis(0.085))
         .style("fill", "rgba(0,0,255,0.8)");
 
-      circle.exit().transition().duration(100).attr("r", 0).remove();
+      circle.exit().remove();
     }
   };
 

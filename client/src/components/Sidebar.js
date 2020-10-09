@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import Avatar from "./avatar";
-import { Link, useRouteMatch, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const textPrimary = "white";
-const textSecondary = "#ececec";
-const bgPrimary = "#2D1B34";
+const textSecondary = "#fff";
+const bgPrimary = "#EAF2E8";
 const bgSecondary = "#1B2E33";
 const transitionSpeed = "200ms";
 
@@ -47,7 +46,11 @@ const Navbar = styled.nav`
   height: 100vh;
   z-index: 100;
   transition: ${transitionSpeed} width ease-in-out;
-  background-color: ${bgPrimary};
+  background: linear-gradient(
+    180deg,
+    rgba(254, 95, 100, 1) 0%,
+    rgba(250, 25, 154, 1) 100%
+  );
   ul {
     width: 100%;
     list-style: none;
@@ -67,7 +70,11 @@ const Navbar = styled.nav`
         margin-bottom: 1rem;
         text-align: center;
         color: ${textSecondary};
-        background: ${bgSecondary};
+        background: radial-gradient(
+          circle,
+          rgba(0, 180, 255, 1) 50%,
+          rgba(0, 160, 255, 1) 100%
+        );
         font-size: 1.2rem;
         letter-spacing: 0.3ch;
         width: 100%;
@@ -108,14 +115,14 @@ const Navbar = styled.nav`
   }
 `;
 export default function Sidebar() {
-  const match = useRouteMatch();
   const location = useLocation();
+
   console.log({ locationURL: location });
   return (
     <Navbar>
       <ul>
         <li>
-          <StyledLink to={`${match.url}/club`}>
+          <StyledLink to={`/`}>
             <img src={`${process.env.PUBLIC_URL}/arrows.svg`} />
             <span>Dashboard</span>
           </StyledLink>
@@ -124,11 +131,11 @@ export default function Sidebar() {
         <li>
           <StyledLink
             style={
-              location.pathname.match("/admin/players/*")
+              location.pathname.match("/players/*")
                 ? { borderLeft: "0.5rem solid red" }
                 : null
             }
-            to={`${match.url}/players`}
+            to={`/players`}
           >
             <img src={`${process.env.PUBLIC_URL}/players.svg`} />
             <span>Players</span>
@@ -137,14 +144,24 @@ export default function Sidebar() {
         <li>
           <StyledLink
             style={
-              location.pathname.match("/admin/matches/*")
+              location.pathname.match("/matches/*")
                 ? { borderLeft: "0.5rem solid red" }
                 : null
             }
-            to={`${match.url}/matches`}
+            to={`/matches`}
           >
             <img src={`${process.env.PUBLIC_URL}/matches.svg`} />
             <span>Matches</span>
+          </StyledLink>
+          <StyledLink
+            style={
+              location.pathname.match("/clubs/*")
+                ? { borderLeft: "0.5rem solid red" }
+                : null
+            }
+            to={`/clubs`}
+          >
+            <span>Clubs</span>
           </StyledLink>
         </li>
       </ul>

@@ -14,24 +14,6 @@ const Wrapper = styled.div`
 export default function Video({ ytId, ytVideoRef, vidRef }) {
   const [rect, ref] = useClientRect();
 
-  const [dimensions, setDimensions] = useState({
-    width: 0,
-    height: 0,
-  });
-
-  // useEffect(() => {
-  //   window.addEventListener("resize", () => {
-  //     setDimensions({
-  //       width: vidRef.current.clientWidth,
-  //       height: vidRef.current.clientHeight,
-  //     });
-  //   });
-  //   return () => {
-  //     window.removeEventListener("resize");
-  //   };
-  // }, []);
-
-  console.log({ RECT: rect });
   return (
     <Wrapper ref={ref}>
       {rect && (
@@ -39,7 +21,7 @@ export default function Video({ ytId, ytVideoRef, vidRef }) {
           ref={ytVideoRef}
           opts={{
             width: rect.width,
-            height: window.innerHeight,
+            height: rect.height,
           }}
           videoId={ytId}
         />
