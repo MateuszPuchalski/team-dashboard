@@ -1,7 +1,7 @@
 const express = require("express");
 const cloudinary = require("cloudinary").v2;
 const path = require("path");
-
+const cors = require("cors")
 const jwt = require("jsonwebtoken");
 
 const resolvers = require("./resolvers");
@@ -46,7 +46,7 @@ connection.once("open", () => {
 
 const app = express();
 app.disable("x-powered-by");
-
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
