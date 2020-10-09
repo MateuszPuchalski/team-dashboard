@@ -58,7 +58,6 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.resolve(__dirname, "build", "index.html"));
   });
 }
-const port = process.env.PORT || 5000;
 
 const server = new ApolloServer({
   typeDefs,
@@ -81,6 +80,6 @@ const server = new ApolloServer({
 
 server.applyMiddleware({ app });
 
-app.listen(port, () =>
+app.listen({port: process.env.PORT || 5000}, () =>
   console.log(`🚀 Server ready at http://localhost:5000${server.graphqlPath}`)
 );
