@@ -83,6 +83,10 @@ if (process.env.NODE_ENV === "production") {
 server.applyMiddleware({ app, path: "/graphql" });
 
 
-app.listen({port: process.env.PORT || 5000}, () =>
-  console.log(`🚀 Server ready at http://localhost:5000${server.graphqlPath}`)
-);
+// app.listen({port: process.env.PORT || 5000}, () =>
+//   console.log(`🚀 Server ready at http://localhost:5000${server.graphqlPath}`)
+// );
+
+app.listen({ port: process.env.PORT || 5000 }).then(({ url }) => {
+  console.log(`🚀 Server ready at ${url}`);
+});
