@@ -46,7 +46,7 @@ connection.once("open", () => {
 
 const app = express();
 app.disable("x-powered-by");
-app.use(cors());
+// app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -83,10 +83,10 @@ if (process.env.NODE_ENV === "production") {
 server.applyMiddleware({ app, path: "/graphql" });
 
 
-// app.listen({port: process.env.PORT || 5000}, () =>
-//   console.log(`🚀 Server ready at http://localhost:5000${server.graphqlPath}`)
-// );
+app.listen({port: process.env.PORT || 5000}, () =>
+  console.log(`🚀 Server ready at http://localhost:5000${server.graphqlPath}`)
+);
 
-app.listen({ port: process.env.PORT || 5000 }).then(({ url }) => {
-  console.log(`🚀 Server ready at ${url}`);
-});
+// app.listen({ port: process.env.PORT || 5000 }).then(({ url }) => {
+//   console.log(`🚀 Server ready at ${url}`);
+// });
