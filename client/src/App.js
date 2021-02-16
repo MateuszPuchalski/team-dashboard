@@ -38,7 +38,7 @@ export default function App(props) {
       {/* <Route path="/:id">
       </Route> */}
       <Route path="/role" component={RoleChooser} />
-      <Route path={"/"}>
+      <Route path={"/throws"}>
         <Dabrowa />
       </Route>
       <Route path={"/profile"}>
